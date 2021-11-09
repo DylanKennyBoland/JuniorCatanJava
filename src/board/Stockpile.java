@@ -23,6 +23,26 @@ public class Stockpile {
 		}
 	}
 	
+	public boolean isAvailable(String resourceName, Integer number) {
+		if((this.getStockPile().containsKey(resourceName)) && (this.getStockPile().get(resourceName) >= number)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void trade(String tilein, Integer number, String tileout) {
+		if(! this.isAvailable(tileout, number/2)) {
+			return;
+		}
+		int currentNum = this.getStockPile().get(tilein);
+		this.stockpile.replace(tilein, currentNum + number);
+		int numOut = number/2;
+		currentNum = this.getStockPile().get(tileout);
+		this.stockpile.replace(tileout, currentNum - numOut);		
+	}
+	
 	public Map<String, Integer> getStockPile() {
 		return this.stockpile;
 	}

@@ -24,8 +24,10 @@ public class Should_Update_Stockpile {
 		treasureCave.put("Goats", 3);
 		// Setting up another stock pile object, but this time via the second constructor...
 		Stockpile testStockPile2 = new Stockpile("Treasure Cave", treasureCave);
+		System.out.println(testStockPile2.getStockPile());
 		testStockPile2.updateStockPile("Cutlass", 11);
 		testStockPile2.updateStockPile("Wood", 9);
+		System.out.println(testStockPile2.getStockPile());
 		// Again, we check if the update method has worked as it should...
 		assertEquals((Object)11, (Object)testStockPile2.getStockPile().get("Cutlass"));
 		assertEquals((Object)9, (Object)testStockPile2.getStockPile().get("Wood"));	
