@@ -7,6 +7,21 @@ public class Player {
 	private String colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
 	
+	public Player(String name, String colour, Map<String, Integer> resources) { // The constructor...
+		this.name = name;
+		this.colour = colour;
+		this.resources = resources;
+	}
+	
+	public String toString() {
+		String playerResources = "";
+		for(String resource : this.resources.keySet()) {
+			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
+		}
+		return playerResources;
+	}
+	
+	// 'get' and 'set' methods...
 	public String getName() {
 		return name;
 	}
