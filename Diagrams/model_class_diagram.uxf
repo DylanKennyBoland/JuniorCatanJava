@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>424</x>
+      <y>8</y>
+      <w>80</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>/Model/
+--
+
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>88</x>
+      <y>216</y>
+      <w>224</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Board (Singleton)
+--
+
+- board Board Object
+- islands: List&lt;Islands&gt;
+- marketplace: Marketplace
+- stockpile: Stockpile
+
+--
+
+- getInstance()
+- Board()
++ setIslands()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>152</y>
+      <w>192</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Marketplace
+--
+
+- name: String
+- marketplace:ArrayList&lt;String&gt;
+
+--
+- Marketplace()
+- areTilesAllSame()
+- resetMarketplace()
+- trade()
+- getMarketplace()
+- initializeMarketplace()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>152</y>
+      <w>168</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Stockpile
+--
+
+- name: String
+- stockpile:HashMap&lt;String,Int&gt;
+
+--
+- Stockpile()
+- updateStockpile()
+- isAvailable()
+- trade()
+- getStockpile()
+- initializeStockpile()
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>88</x>
+      <y>424</y>
+      <w>224</w>
+      <h>264</h>
+    </coordinates>
+    <panel_attributes>Islands
+--
+
+- diceNumber:int
+- islandType: enum(PASTURES, CAVES, 
+							RIVERS, SUGAR, FOREST)
+- attachedLairs: List&lt;Integer&gt;
+- attachedShipSites: List&lt;String&gt;
+- ghostCaptain:boolean
+
+--
+
+- Islands()
+- getDiceNumber()
+- getIslandType()
+- hasGhostCaptain()
+- setGhostCaptain()
+- getAttachedLairs()
+- setAttahcedShipSites()
+- getAttahcedShipSites()
+- initializeGhostCaptain()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>352</y>
+      <w>152</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Setup (Singleton)
+--
+
+- setup: Setup
+- setupBoard: SetupBoard 
+- setupPlayers: SetupPlayers
+
+--
+
+- getInstacne()
+- Setup() Constructor
+- setupGame()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>328</x>
+      <y>424</y>
+      <w>152</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>SetupBoard
+--
+
+- board: Board
+- boardIslands: List&lt;Islands&gt;
+
+--
+
+- SetupBoard() constructor
+- startingBoard()
+- createIslands()
+- createMarketplace()
+- createStockpile()
+- buildStartingShips()
+- buildStartingLairs()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>520</y>
+      <w>152</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>SetupPlayers
+--
+
+- playerList: List&lt;Player&gt;
+
+--
+
+- addPlayerToList()
+- createPlayer()
+- getNumPlayers()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>456</x>
+      <y>80</y>
+      <w>248</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;290.0;50.0;290.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>456</x>
+      <y>80</y>
+      <w>24</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>888</x>
+      <y>416</y>
+      <w>80</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Tiles
+--
+
+- type: Enum
+- num: int
+
+--
+
+- Tiles()
+- getType()
+- getNum()
+- setNum()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>632</y>
+      <w>80</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Resource
+--
+
+- type: Enum
+- num: int
+
+--
+
+- Tiles()
+- getType()
+- getNum()
+- setNum()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>952</x>
+      <y>632</y>
+      <w>80</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Coco
+--
+
+- type: Enum
+- num: int
+
+--
+
+- Tiles()
+- getType()
+- getNum()
+- setNum()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>560</y>
+      <w>96</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;100.0;60.0;100.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>832</x>
+      <y>560</y>
+      <w>104</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;110.0;60.0;10.0;60.0;10.0;90.0</additional_attributes>
+  </element>
+</diagram>

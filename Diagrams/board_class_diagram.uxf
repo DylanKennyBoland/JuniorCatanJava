@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>560</y>
+      <w>210</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Stockpile
+--
+-stockpile:HashMap&lt;String,Int&gt;
+
+--
++tradeWithStockpile()
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>240</y>
+      <w>280</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>/Board/
+--
+-LairLocations:ArrayList&lt;int&gt;
+-ShipLocations:ArrayList&lt;int&gt;
+-playerList:List&lt;Player&gt;
+
+
+--
+/+UpdateResources()/
+/+viewResources()/
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>570</y>
+      <w>240</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Marketplace
+--
+-marketplace:ArrayList&lt;string&gt;
+
+--
++tradeWithMarketplace()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>550</y>
+      <w>280</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Islands
+--
+
+- diceNumber:int
+- islandType: enum(PASTURES, CAVES, 
+							RIVERS, SUGAR, FOREST)
+- ghostCaptain:boolean
+
+--
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>890</y>
+      <w>240</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+-resources:HashMap&lt;string, int&gt;
+-name:string
+-colour:enum&lt;RED,WHITE,ORANGE,BLUE&gt;
+-isGhostCaptain:boolean
+-accessibleLairLocations:List&lt;int&gt;
+-accessibleShipLocations:List&lt;int&gt;
+--
+
+-buy()
+-trade()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>830</y>
+      <w>280</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Lair
+--
+-Color:enum
+-location:int range(1:37)
+--
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
