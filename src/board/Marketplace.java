@@ -21,6 +21,26 @@ public class Marketplace implements Tradeable {
 		Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
 	}
 	
+	public boolean isAvailable(String resourceName, Integer number) {
+		boolean result;
+		int count = 0; // A local variable to keep count of the number of the desired resource...
+		if(number > this.marketplaceSize) {
+			result = false;
+			return result;
+		}
+		for(int i = 0; i < this.marketplaceSize; i++) {
+			if(this.marketplace.get(i) == resourceName) {
+				count++;
+			}
+		}
+		if(count != number) {
+			result = false;
+			return result;
+		}
+		result = true;
+		return result;
+	}
+	
 	public ArrayList<String> getMarketPlace() {
 		return this.marketplace;
 	}
