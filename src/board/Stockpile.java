@@ -1,17 +1,23 @@
 package board;
 import java.util.*;
 
-public class Stockpile {
+public class Stockpile implements Tradeable {
+	private Integer resourceQuantity = 18;
 	private String name;
 	private Map<String, Integer> stockpile = new HashMap<String, Integer>();
 	
 	public Stockpile(String name) { // The constructor...
 				this.name = name;
+				this.set();
 	}
-	
-	public Stockpile(String name, Map<String, Integer> stockpile) {
-		this.name = name;
-		this.stockpile = stockpile;
+
+	public void set() {
+		this.stockpile.put("Wood", resourceQuantity);
+		this.stockpile.put("Cutlass", resourceQuantity);
+		this.stockpile.put("Goats", resourceQuantity);
+		this.stockpile.put("Gold", resourceQuantity);
+		this.stockpile.put("Molasses", resourceQuantity);
+		this.stockpile.put("Coco tiles", resourceQuantity);
 	}
 	
 	public void updateStockPile(String resourceName, int number) {
