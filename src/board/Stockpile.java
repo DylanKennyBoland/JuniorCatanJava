@@ -38,15 +38,16 @@ public class Stockpile implements Tradeable {
 		}
 	}
 	
-	public void trade(String tilein, Integer number, String tileout) {
-		if(! this.isAvailable(tileout, number/2)) {
-			return;
+	public String trade(String tilein, String tileout) {
+		if(this.getStockPile().get(tileout) == 0) {
+			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
 		}
-		int currentNum = this.getStockPile().get(tilein);
-		this.stockpile.replace(tilein, currentNum + number);
-		int numOut = number/2;
-		currentNum = this.getStockPile().get(tileout);
-		this.stockpile.replace(tileout, currentNum - numOut);		
+		int currNumTileIn = this.stockpile.get(tilein);
+		int currNumTileOut = this.stockpile.get(tileout);
+		// Now we update the values associated with the keys...
+		this.stockpile.replace(tilein, currNumTileIn + 2);
+		this.stockpile.replace(tileout, currNumTileOut - 1);
+		return String.format("You've traded a %1$s for a %2$s", tilein, tileout);
 	}
 	
 	public Map<String, Integer> getStockPile() {

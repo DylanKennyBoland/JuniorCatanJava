@@ -6,11 +6,21 @@ public class Player {
 	private String name;
 	private String colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
+	private Integer initialNum = 0;
 	
-	public Player(String name, String colour, Map<String, Integer> resources) { // The constructor...
+	public Player(String name, String colour) { // The constructor...
 		this.name = name;
 		this.colour = colour;
-		this.resources = resources;
+		this.initialise();
+	}
+	
+	public void initialise() {
+		this.resources.put("Wood", this.initialNum);
+		this.resources.put("Cutlass", this.initialNum);
+		this.resources.put("Goats", this.initialNum);
+		this.resources.put("Gold", this.initialNum);
+		this.resources.put("Molasses", this.initialNum);
+		this.resources.put("Coco tiles", this.initialNum);
 	}
 	
 	public String toString() {

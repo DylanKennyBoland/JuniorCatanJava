@@ -14,7 +14,7 @@ public class Trade_With_Stockpile {
 		treasureCave.put("Cutlass", 5);
 		treasureCave.put("Molasses", 3);
 		// Let's set up a stock pile object
-		Stockpile testStockPile = new Stockpile("Treasure Cave", treasureCave);
+		Stockpile testStockPile = new Stockpile("Treasure Cave");
 		// Do some brief tests on its isAvailable() method....
 		assertEquals(true, testStockPile.isAvailable("Wood", 4));
 		assertEquals(false, testStockPile.isAvailable("Goats", 20)); // There are no 20 Goats available - does the method return 'false'?
@@ -22,7 +22,7 @@ public class Trade_With_Stockpile {
 		System.out.println(testStockPile.getStockPile());
 		int currNumMolasses = testStockPile.getStockPile().get("Molasses");
 		int currNumWood = testStockPile.getStockPile().get("Wood");
-		testStockPile.trade("Wood", 2, "Molasses");
+		testStockPile.trade("Wood", "Molasses");
 		System.out.println(testStockPile.getStockPile());
 		assertEquals((int)testStockPile.getStockPile().get("Molasses"), (int)currNumMolasses - 1);
 		assertEquals((int)testStockPile.getStockPile().get("Wood"), (int)currNumWood + 2);
