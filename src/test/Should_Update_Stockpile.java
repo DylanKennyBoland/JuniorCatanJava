@@ -23,7 +23,7 @@ public class Should_Update_Stockpile {
 		treasureCave.put("Gold Ingots", 4);
 		treasureCave.put("Goats", 3);
 		// Setting up another stock pile object, but this time via the second constructor...
-		Stockpile testStockPile2 = new Stockpile("Treasure Cave", treasureCave);
+		Stockpile testStockPile2 = new Stockpile("Treasure Cave");
 		System.out.println(testStockPile2.getStockPile());
 		testStockPile2.updateStockPile("Cutlass", 11);
 		testStockPile2.updateStockPile("Wood", 9);
