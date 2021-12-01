@@ -1,17 +1,23 @@
 package model.board;
 import java.util.*;
 
-public class Stockpile {
+public class Stockpile implements Tradeable {
+	private Integer resourceQuantity = 18;
 	private String name;
 	private Map<String, Integer> stockpile = new HashMap<String, Integer>();
 	
 	public Stockpile(String name) { // The constructor...
 				this.name = name;
+				this.set();
 	}
-	
-	public Stockpile(String name, Map<String, Integer> stockpile) {
-		this.name = name;
-		this.stockpile = stockpile;
+
+	public void set() {
+		this.stockpile.put("Wood", resourceQuantity);
+		this.stockpile.put("Cutlass", resourceQuantity);
+		this.stockpile.put("Goats", resourceQuantity);
+		this.stockpile.put("Gold", resourceQuantity);
+		this.stockpile.put("Molasses", resourceQuantity);
+		this.stockpile.put("Coco tiles", resourceQuantity);
 	}
 	
 	public void updateStockPile(String resourceName, int number) {
@@ -32,15 +38,16 @@ public class Stockpile {
 		}
 	}
 	
-	public void trade(String tilein, Integer number, String tileout) {
-		if(! this.isAvailable(tileout, number/2)) {
-			return;
+	public String trade(String tilein, String tileout) {
+		if(this.getStockPile().get(tileout) == 0) {
+			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
 		}
-		int currentNum = this.getStockPile().get(tilein);
-		this.stockpile.replace(tilein, currentNum + number);
-		int numOut = number/2;
-		currentNum = this.getStockPile().get(tileout);
-		this.stockpile.replace(tileout, currentNum - numOut);		
+		int currNumTileIn = this.stockpile.get(tilein);
+		int currNumTileOut = this.stockpile.get(tileout);
+		// Now we update the values associated with the keys...
+		this.stockpile.replace(tilein, currNumTileIn + 2);
+		this.stockpile.replace(tileout, currNumTileOut - 1);
+		return String.format("You've traded a %1$s for a %2$s", tilein, tileout);
 	}
 	
 	public Map<String, Integer> getStockPile() {
