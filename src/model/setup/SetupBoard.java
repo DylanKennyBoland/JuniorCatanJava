@@ -1,7 +1,7 @@
 package model.setup;
 import java.util.*;
-import board.*;
-import enums.*;
+import model.board.*;
+import model.enums.*;
 import model.board.Board;
 import model.board.Islands;
 import model.enums.IslandEnums;
