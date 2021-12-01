@@ -2,8 +2,6 @@ package model.board;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import model.board.*;
-
 
 public class Board {
 	
@@ -25,8 +23,8 @@ public class Board {
 		this.lairLocations = IntStream.rangeClosed(1, 37).boxed().collect(Collectors.toList());
 		this.shipLocations = IntStream.rangeClosed(1, 37).boxed().collect(Collectors.toList());
 		this.islands = new ArrayList<Islands>();
-		this.marketplace = new Marketplace('Marketplace');
-		this.stockpile = new Stockpile('Stockpile');
+		this.marketplace = new Marketplace("The marketplace");
+		this.stockpile = new Stockpile("The stockpile");
 	}
 	
 	public void setIslands(List<Islands> islands) {

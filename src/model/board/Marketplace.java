@@ -1,17 +1,44 @@
 package model.board;
 import java.util.*;
 
-public class Marketplace {
+public class Marketplace implements Tradeable {
+	private Integer marketplaceSize = 5;
 	private String name;
-	private ArrayList<String> marketplace = new ArrayList<String>(5);
+	private ArrayList<String> marketplace = new ArrayList<String>(marketplaceSize);
 	
 	public Marketplace(String name) {
 		this.name = name;
+		this.set(); // Setting up the marketplace
 	}
 	
-	public Marketplace(String name, ArrayList<String> marketplace) {
-		this.name = name;
-		this.marketplace = marketplace;
+	public void set() {
+		this.marketplace.clear();
+		this.marketplace.add("Wood");
+		this.marketplace.add("Cutlass");
+		this.marketplace.add("Goats");
+		this.marketplace.add("Gold");
+		this.marketplace.add("Molasses");
+		Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
+	}
+	
+	public boolean isAvailable(String resourceName, Integer number) {
+		boolean result;
+		int count = 0; // A local variable to keep count of the number of the desired resource...
+		if(number > this.marketplaceSize) {
+			result = false;
+			return result;
+		}
+		for(int i = 0; i < this.marketplaceSize; i++) {
+			if(this.marketplace.get(i) == resourceName) {
+				count++;
+			}
+		}
+		if(count != number) {
+			result = false;
+			return result;
+		}
+		result = true;
+		return result;
 	}
 	
 	public ArrayList<String> getMarketPlace() {
@@ -27,22 +54,7 @@ public class Marketplace {
 		}
 		return allEqual;
 	}
-	
-	public void resetMarketPlace() {
-		if(! this.areTilesAllSame()) { // This method should only be called if all the tiles are currently the same...
-			return;
-		}
-		else {
-			this.marketplace.clear();
-			this.marketplace.add("Wood");
-			this.marketplace.add("Cutlass");
-			this.marketplace.add("Goats");
-			this.marketplace.add("Gold");
-			this.marketplace.add("Molasses");
-			Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
-		}
-	}
-	
+		
 	public String trade(String tilein, String tileout) {
 		int index = this.getMarketPlace().indexOf(tileout);
 		if(index == -1) {
