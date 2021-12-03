@@ -15,7 +15,7 @@ public class Marketplace implements Tradeable {
 		this.marketplace.clear();
 		this.marketplace.add("Wood");
 		this.marketplace.add("Cutlass");
-		this.marketplace.add("Goats");
+		this.marketplace.add("Goat");
 		this.marketplace.add("Gold");
 		this.marketplace.add("Molasses");
 		Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
@@ -75,13 +75,24 @@ public class Marketplace implements Tradeable {
 
 	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
 		if(!this.isAvailable(tileout, numOut)) {
-			return String.format("INFO: there are not enough %1$s in the Marketplace at the moment.", tileout);
+			return String.format("INFO: there are not enough %1$s tiles in the Marketplace at the moment.", tileout);
 		}
 		ArrayList<Integer> indexes = this.locations(tileout);
 		for(Integer index : indexes) {
 			this.marketplace.set(index, tilein);
 		}
-		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
+		if(numIn > 1) {
+			return String.format("You've traded %1$d %2$s tiles for %3$d %4$s tiles.", numIn, tilein, numOut, tileout);
+		}
+		return String.format("You've traded %1$d %2$s tile for %3$d %4$s tile.", numIn, tilein, numOut, tileout);
+	}
+	
+	public String toString() {
+		String result = "";
+		for(String resource : this.marketplace) {
+			result = result + resource + "\n";
+		}
+		return result;
 	}
 
 //	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
