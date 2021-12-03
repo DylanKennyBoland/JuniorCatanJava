@@ -7,7 +7,7 @@ import model.enums.*;
 public class SetupPlayers {
 
 	private ArrayList<PlayerEnums> availableColors = new ArrayList<PlayerEnums>(4);
-	public ArrayList<Player> playerList = new ArrayList<Player>();
+	public ArrayList<Player> playerList = new ArrayList<Player>(4);
 	private boolean validColour = false;
 	
 	public SetupPlayers() {
@@ -21,7 +21,7 @@ public class SetupPlayers {
 	
 	public void CreatePlayer(Scanner player) {
 		System.out.println("\nCreating new player. Please enter your name: ");
-		player.nextLine();
+		player.nextLine(); // This is necessary as we've just run the nextInt() which does not consume the '\n'... Comment out this line to see the effect 
 		String name = player.nextLine();
 		System.out.println("\nYou have entered your name as " + name);
 		System.out.println("\nWhat color would you like: ");
