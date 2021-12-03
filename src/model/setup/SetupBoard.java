@@ -10,13 +10,13 @@ public class SetupBoard {
 	
 	private Board board;
 	private List<Islands> boardIslands = new ArrayList<Islands>();
-	private SetupBoard() {
+	
+	public SetupBoard() {
 		this.board = Board.getInstance();
 	}
 	
 	public void startingBoard() {
 		createIslands();
-		//createShipLocations();
 	}
 	
 	private void createIslands() {
@@ -103,9 +103,4 @@ public class SetupBoard {
 		board.setIslands(boardIslands);
 	}
 	
-//	private void createShipLocations() {
-//		for (Islands island: this.boardIslands){
-//			
-//		}
-//	}
 }

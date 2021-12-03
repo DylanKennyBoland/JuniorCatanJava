@@ -2,13 +2,15 @@ package model.board;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.enums.PlayerEnums;
+
 public class Player {
 	private String name;
-	private String colour;
+	private PlayerEnums colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
 	private Integer initialNum = 0;
 	
-	public Player(String name, String colour) { // The constructor...
+	public Player(String name, PlayerEnums colour) { // The constructor...
 		this.name = name;
 		this.colour = colour;
 		this.initialise();
@@ -28,7 +30,7 @@ public class Player {
 		for(String resource : this.resources.keySet()) {
 			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
 		}
-		return playerResources;
+		return "Name : " + this.name + "\n" + playerResources;
 	}
 	
 	// 'get' and 'set' methods...
@@ -40,11 +42,11 @@ public class Player {
 		this.name = name;
 	}
 	
-	public String getColour() {
+	public PlayerEnums getColour() {
 		return this.colour;
 	}
 	
-	public void setColour(String colour) {
+	public void setColour(PlayerEnums colour) {
 		this.colour = colour;
 	}
 	

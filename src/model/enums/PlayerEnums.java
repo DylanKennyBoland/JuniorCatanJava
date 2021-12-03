@@ -6,13 +6,13 @@ public enum PlayerEnums {
 	ORANGE("Orange"),
 	BLUE("Blue");
 	
-	private final String color;
+	private final String colour;
 	
-	private PlayerEnums(String color) {
-		this.color = color;
+	private PlayerEnums(String colour) {
+		this.colour = colour;
 	}
 	
-	public String getColor() {
-		return this.color;
+	public String getColour() {
+		return this.colour;
 	}
 }
