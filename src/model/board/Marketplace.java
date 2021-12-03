@@ -21,25 +21,43 @@ public class Marketplace implements Tradeable {
 		Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
 	}
 	
-	public boolean isAvailable(String resourceName, Integer number) {
-		boolean result;
-		int count = 0; // A local variable to keep count of the number of the desired resource...
-		if(number > this.marketplaceSize) {
-			result = false;
-			return result;
-		}
+	public ArrayList<Integer> locations(String resourceName) {
+		ArrayList<Integer> locations = new ArrayList<Integer>();
 		for(int i = 0; i < this.marketplaceSize; i++) {
 			if(this.marketplace.get(i) == resourceName) {
-				count++;
+				locations.add(i);
 			}
 		}
-		if(count != number) {
-			result = false;
-			return result;
-		}
-		result = true;
-		return result;
+		return locations;
 	}
+	
+	public boolean isAvailable(String resourceName, Integer number) {
+		if(this.locations(resourceName).size() >= number) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+//	public boolean isAvailable(String resourceName, Integer number) {
+//		boolean result;
+//		int count = 0; // A local variable to keep count of the number of the desired resource...
+//		if(number > this.marketplaceSize) {
+//			result = false;
+//			return result;
+//		}
+//		for(int i = 0; i < this.marketplaceSize; i++) {
+//			if(this.marketplace.get(i) == resourceName) {
+//				count++;
+//			}
+//		}
+//		if(count != number) {
+//			result = false;
+//			return result;
+//		}
+//		result = true;
+//		return result;
+//	}
 	
 	public ArrayList<String> getMarketPlace() {
 		return this.marketplace;
@@ -54,17 +72,31 @@ public class Marketplace implements Tradeable {
 		}
 		return allEqual;
 	}
-		
-	public String trade(String tilein, String tileout) {
-		int index = this.getMarketPlace().indexOf(tileout);
-		if(index == -1) {
-			return String.format("There are no '%1$s' tiles in the marketplace to trade with.", tileout);
+
+	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
+		if(!this.isAvailable(tileout, numOut)) {
+			return String.format("INFO: there are not enough %1$s in the Marketplace at the moment.", tileout);
 		}
-		else {
+		ArrayList<Integer> indexes = this.locations(tileout);
+		for(Integer index : indexes) {
 			this.marketplace.set(index, tilein);
-			return String.format("You've traded a %1$s for a %2$s", tilein, tileout);
 		}
+		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
 	}
+
+//	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
+//		if(!this.isAvailable(tileout, numOut)) {
+//			return String.format("INFO: there are no %1$s in the Marketplace at the moment.", tileout);
+//		}
+//		int index = this.getMarketPlace().indexOf(tileout);
+//		if(index == -1) {
+//			return String.format("There are no '%1$s' tiles in the marketplace to trade with.", tileout);
+//		}
+//		else {
+//			this.marketplace.set(index, tilein);
+//			return String.format("You've traded a %1$s for a %2$s", tilein, tileout);
+//		}
+//	}
 	
 	public String getName() {
 		return this.name;
