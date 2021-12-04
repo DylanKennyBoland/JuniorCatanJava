@@ -20,15 +20,6 @@ public class Stockpile implements Tradeable {
 		this.stockpile.put("Coco tiles", resourceQuantity);
 	}
 	
-	public void updateStockPile(String resourceName, int number) {
-		if(this.getStockPile().containsKey(resourceName)) {
-			this.stockpile.replace(resourceName, number);
-		}
-		else {
-			this.stockpile.put(resourceName, number);
-		}
-	}
-	
 	public boolean isAvailable(String resourceName, Integer number) {
 		if((this.getStockPile().containsKey(resourceName)) && (this.getStockPile().get(resourceName) >= number)) {
 			return true;
@@ -48,8 +39,29 @@ public class Stockpile implements Tradeable {
 		this.stockpile.replace(tilein, currNumTileIn + numIn);
 		this.stockpile.replace(tileout, currNumTileOut - numOut);
 		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
+	}	
+	
+	public String toString() {
+		String stockpileResources = "";
+		for(String resource : this.stockpile.keySet()) {
+			stockpileResources = stockpileResources + "\n" + resource + ": " + this.stockpile.get(resource);
+		}
+		return "Name : " + this.name + "\n" + stockpileResources;
 	}
 	
+	public void updateStockPile(String resourceName, int number) {
+		if(this.getStockPile().containsKey(resourceName)) {
+			this.stockpile.replace(resourceName, number);
+		}
+		else {
+			this.stockpile.put(resourceName, number);
+		}
+	}
+	
+	// The 'get' and 'set' methods are very useful for when objects of other
+	// classes want to interact with this one, Stockpile. For methods defined
+	// inside this class, however, direct field or attribute access if faster and
+	// more sensible than using the 'get' and 'set' methods.
 	public Map<String, Integer> getStockPile() {
 		return this.stockpile;
 	}
