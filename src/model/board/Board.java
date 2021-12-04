@@ -3,7 +3,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-
 public class Board {
 	
 	private static Board gameBoard;
@@ -28,18 +27,23 @@ public class Board {
 		this.stockpile = new Stockpile("The stockpile");
 	}
 	
-//	public void addIsland(Islands island) {
-//		this.islands.add(island);
-//	}
-	
-//	public void buildLair(Integer i) {
-//		this.lairLocations.remove(i);
-//	}
-	
 	public void setIslands(List<Islands> islands) {
 		this.islands = islands;
 	}
-	
-	
+
+	public List<Islands> getIslands() {
+		// TODO Auto-generated method stub
+		return this.islands;
+	}
+
+	public Marketplace getMarketplace() {
+		// TODO Auto-generated method stub
+		return this.marketplace;
+	}
+
+	public Stockpile getStockpile() {
+		// TODO Auto-generated method stub
+		return this.stockpile;
+	}
 	
 }

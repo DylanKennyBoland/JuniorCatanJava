@@ -10,13 +10,13 @@ public class SetupBoard {
 	
 	private Board board;
 	private List<Islands> boardIslands = new ArrayList<Islands>();
-	private SetupBoard() {
+	
+	public SetupBoard() {
 		this.board = Board.getInstance();
 	}
 	
 	public void startingBoard() {
 		createIslands();
-		//createShipLocations();
 	}
 	
 	private void createIslands() {
@@ -102,10 +102,10 @@ public class SetupBoard {
 						   pastureB, pastureC, sugarA, sugarB, spooky);
 		board.setIslands(boardIslands);
 	}
+
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return this.board;
+	}
 	
-//	private void createShipLocations() {
-//		for (Islands island: this.boardIslands){
-//			
-//		}
-//	}
 }

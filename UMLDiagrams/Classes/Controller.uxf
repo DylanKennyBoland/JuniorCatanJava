@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>20</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>View
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>80</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Model</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>250</y>
+      <w>320</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Controller
+--
+view: View
+model: Model
+--
+&lt;&lt;Constructor&gt;&gt;Controller(Model model, View view)
++actionPerformed(ActionEvent e): void
++genWelcomeMsg(): void
++trade(): void
++build(): void
++options(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
