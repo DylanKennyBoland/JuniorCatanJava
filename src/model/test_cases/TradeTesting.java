@@ -24,7 +24,7 @@ class TradeTesting {
 		System.out.println(marketplace.trade("Molasses", 2, "Goat", 2));
 		// Now there should be a total of 3 Molasses in the marketplace - are there?
 		System.out.println(marketplace.toString());
-		assertEquals(true, marketplace.isAvailable("Molasses", 2));
+		assertEquals(true, marketplace.isAvailable("Molasses", 3));
 		
 		// Check 4 (Won't be possible in actual game): what happens if I try to trade with a non-existent resource?
 		System.out.println(marketplace.trade("Cutlass", 1, "Gun", 1));
