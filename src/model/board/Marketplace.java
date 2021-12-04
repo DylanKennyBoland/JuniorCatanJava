@@ -26,18 +26,21 @@ public class Marketplace implements Tradeable {
 		int count = 0; // A local variable to keep count of the number of the desired resource...
 		if(number > this.marketplaceSize) {
 			result = false;
+			System.out.println("Number requested to big");
 			return result;
 		}
 		for(int i = 0; i < this.marketplaceSize; i++) {
-			if(this.marketplace.get(i) == resourceName) {
+			if(this.marketplace.get(i).contains(resourceName)) {
 				count++;
 			}
 		}
 		if(count != number) {
 			result = false;
+			System.out.println("Marketplace only has " + count + " " + resourceName);
 			return result;
 		}
 		result = true;
+		System.out.println(resourceName + " is available");
 		return result;
 	}
 	
@@ -55,7 +58,7 @@ public class Marketplace implements Tradeable {
 		return allEqual;
 	}
 		
-	public String trade(String tilein, String tileout) {
+	public String trade(String tilein, String tileout, Integer number) {
 		int index = this.getMarketPlace().indexOf(tileout);
 		if(index == -1) {
 			return String.format("There are no '%1$s' tiles in the marketplace to trade with.", tileout);
@@ -72,5 +75,9 @@ public class Marketplace implements Tradeable {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String toString() {
+		return marketplace.toString();
 	}
 }

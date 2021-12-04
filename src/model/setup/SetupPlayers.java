@@ -3,51 +3,92 @@ package model.setup;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.enums.*;
-import model.pieces.*;
+import model.board.*;
 
 public class SetupPlayers {
 
-	private ArrayList<PlayerEnums> availableColors;
-	public ArrayList<Player> playerList;
-	private boolean validColour = false;
+	private PlayerList playerList;
+	private ArrayList<PlayerEnums> availableColors = new ArrayList<PlayerEnums>();
+	private Integer numPlayers;
+	private String numPlayersString;
+	private String colour;
 	
-	public SetupPlayers() {}
-	
-	public void CreatePlayer(Scanner player) {
-		System.out.println("\nCreating new player. Please enter your name: ");
-		String name = player.nextLine();
-		System.out.println("\nWhat color would you like: ");
-		printAvailableColors();
-		String colour = player.nextLine();
-		isValidColour(colour, name);
-		playerList.add(new Player(name, colour));
+	public SetupPlayers() {
+		this.playerList = PlayerList.getInstance();
+		this.availableColors.add(PlayerEnums.BLUE);
+		this.availableColors.add(PlayerEnums.RED);
+		this.availableColors.add(PlayerEnums.WHITE);
+		this.availableColors.add(PlayerEnums.ORANGE);
 	}
 	
-	private void CreateAllPlayers(Scanner player) {
-		System.out.println("\nHow many people are playing the game? (3 or 4): ");
-		int num_players = player.nextInt();
-		for(int i = 0; i < num_players; i++) {
-			CreatePlayer(player);
+	private void CreatePlayer(Scanner player) {
+		System.out.println("\nCreating new player. Please enter your name:");
+		String name = player.nextLine();
+		String colour = getPlayerColour(player);
+		playerList.addPlayer(new Player(name, PlayerEnums.valueOf(colour)));
+	}
+	
+	private String getPlayerColour(Scanner player) {
+		System.out.println("\nWhat colour would you like: ");
+		boolean validColour = false;
+		while(!validColour) {
+			printAvailableColors();
+			colour = player.nextLine().toUpperCase();
+			validColour = isValidColour(colour);
+		}
+		return colour;
+	}
+	
+	public void CreateAllPlayers(Scanner player) {
+		boolean playersSelected = false;
+		numPlayers = getNumPlayers(player);
+
+		while (!playersSelected) {
+			for(int i = 0; i < numPlayers; i++) {
+				CreatePlayer(player);
+			}
+			playersSelected = true;
+		}
+		System.out.println("Players : " + playerList.toString());
+	}
+	
+	private Integer getNumPlayers(Scanner player) {
+		System.out.println("How many people are playing the game? (3 or 4): ");
+		boolean validNumber = false;
+		while(!validNumber) {
+			numPlayersString = player.nextLine();
+			numPlayers = Integer.parseInt(numPlayersString);
+			validNumber = isValidNumber(numPlayers);
+		}
+		return numPlayers;
+	}
+	
+	private boolean isValidNumber(Integer num) {
+		if(num < 3 || num > 4) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 	
 	private void printAvailableColors() {
+		int i = 1;
 		for(PlayerEnums colour : availableColors) {
-            System.out.println("\n" + colour.getColour());
+            System.out.println("\n" + i + " : " +  colour.getColour());
+            i++;
         }
 	}
 	
-	private void isValidColour(String colour, String name) {
-		while(!validColour) {
-			if(availableColors.contains(colour)){
-				System.out.println("\n" + name + " has been registerd.");
-				availableColors.remove(availableColors.indexOf(colour));
-				validColour = true;
-			} else {
-				System.out.println("\nThat color is not available, please choose again!"
-						+ "\nThe available colors are:");
-				printAvailableColors();
-			}
+	private boolean isValidColour(String colour) {
+		if(availableColors.toString().contains(colour)){
+			availableColors.remove(availableColors.indexOf(PlayerEnums.valueOf(colour)));
+			return true;
+		} else {
+			return false;
 		}
+	}
+	
+	public void setNumPlayers(int num) {
+		this.numPlayers = num;
 	}
 }
