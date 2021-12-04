@@ -41,10 +41,10 @@ public class Trade {
 		if(this.marketplace.isAvailable(requestedResource, 1)) {
 			System.out.println("What will you give?");
 			String givenResource = this.inputScanner.nextLine();
-			if(player.checkResources(givenResource, 1)) {
+			if(player.isAvailable(givenResource, 1)) {
 				player.giveResource(requestedResource, 1);
 				player.takeResource(givenResource, 1);
-				this.marketplace.trade(givenResource, requestedResource, 1);
+				this.marketplace.trade(givenResource, 1, requestedResource, 1);
 				this.tradedWithMarketplace = true;
 			}	
 		}	
@@ -65,10 +65,10 @@ public class Trade {
 		if(this.stockpile.isAvailable(requestedResource, numOfResource)) {
 			 System.out.println("What resource will you give?");
 			 String givenResource = this.inputScanner.nextLine();
-			 if(player.checkResources(givenResource, numOfResource*2)) {
+			 if(player.isAvailable(givenResource, numOfResource*2)) {
 				 player.giveResource(requestedResource, numOfResource);
 				 player.takeResource(givenResource, numOfResource*2);
-				 this.stockpile.trade(givenResource, requestedResource, numOfResource);
+				 this.stockpile.trade(givenResource, numOfResource*2, requestedResource, numOfResource);
 			 }
 		}
 	}

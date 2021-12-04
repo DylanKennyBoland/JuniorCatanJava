@@ -29,11 +29,11 @@ public class Build {
 	}
 	
 	public boolean checkResources() {
-		if(player.checkResources("Wood", 1) && player.checkResources("Goats", 1)) {
+		if(player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
 			if(this.buildChoice.contains("Ship")) {
 				return true;
 			}
-			else if(player.checkResources("Cutlass", 1) && player.checkResources("Molasses", 1)){
+			else if(player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1)){
 				return true;
 			}
 		}

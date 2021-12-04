@@ -3,7 +3,6 @@ import model.board.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.enums.*;
-<<<<<<< HEAD
 
 public class SetupPlayers {
 

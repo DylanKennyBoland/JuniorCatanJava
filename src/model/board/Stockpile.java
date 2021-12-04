@@ -73,9 +73,4 @@ public class Stockpile implements Tradeable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String toString() {
-		return stockpile.toString();
-	}
-	
 }

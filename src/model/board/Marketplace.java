@@ -68,7 +68,7 @@ public class Marketplace implements Tradeable {
 	public ArrayList<Integer> locations(String resourceName) {
 		ArrayList<Integer> locations = new ArrayList<Integer>();
 		for(int i = 0; i < this.marketplaceSize; i++) {
-			if(this.marketplace.get(i) == resourceName) {
+			if(this.marketplace.get(i).contains(resourceName)) {
 				locations.add(i);
 			}
 		}

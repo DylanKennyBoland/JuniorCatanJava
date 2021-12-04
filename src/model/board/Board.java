@@ -31,21 +31,6 @@ public class Board {
 		this.islands = islands;
 	}
 
-	public List<Islands> getIslands() {
-		// TODO Auto-generated method stub
-		return this.islands;
-	}
-
-	public Marketplace getMarketplace() {
-		// TODO Auto-generated method stub
-		return this.marketplace;
-	}
-
-	public Stockpile getStockpile() {
-		// TODO Auto-generated method stub
-		return this.stockpile;
-	}
-	
 	public boolean isLairAvailable(String location) {
 		for(Player player: playerList.getList()) {
 			if(player.getAssets().contains(location)) {
