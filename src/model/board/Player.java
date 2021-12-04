@@ -6,7 +6,7 @@ import java.util.Map;
 
 import model.enums.PlayerEnums;
 
-public class Player {
+public class Player implements Tradeable {
 	private String name;
 	private PlayerEnums colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
@@ -16,10 +16,10 @@ public class Player {
 	public Player(String name, PlayerEnums colour) { // The constructor...
 		this.name = name;
 		this.colour = colour;
-		this.initialise();
+		this.set();
 	}
 	
-	public void initialise() {
+	public void set() {
 		this.resources.put("Wood", this.initialNum);
 		this.resources.put("Cutlass", this.initialNum);
 		this.resources.put("Goats", this.initialNum);
@@ -35,9 +35,32 @@ public class Player {
 	public void viewAsset() {
 		System.out.println(this.assets.toString());
 	}
+
 	public List<String> getAssets(){
 		return this.assets;
 	}
+	
+	public boolean isAvailable(String resourceName, Integer number) {
+		if((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
+		if(!this.isAvailable(tileout, numOut)) {
+			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
+		}
+		int currNumTileIn = this.resources.get(tilein);
+		int currNumTileOut = this.resources.get(tileout);
+		// Now we update the values associated with the keys...
+		this.resources.replace(tilein, currNumTileIn + numIn);
+		this.resources.replace(tileout, currNumTileOut - numOut);
+		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
+	}
+	
 	public String toString() {
 		String playerResources = "";
 		for(String resource : this.resources.keySet()) {
@@ -46,7 +69,7 @@ public class Player {
 		return "Name : " + this.name + "\n" + playerResources;
 	}
 	
-	// 'get' and 'set' methods...
+	// 'get' and 'set' methods:
 	public String getName() {
 		return name;
 	}
@@ -73,27 +96,5 @@ public class Player {
 	
 	public void takeResource(String resource, Integer num) {
 		this.resources.put(resource, resources.get(resource) - num);
-	}
-	
-//	public boolean checkResources(String buildChoice) {
-//		if(this.resources.get("Wood") >= 1 && this.resources.get("Goats") >= 1) {
-//			if(buildChoice.contains("Ship")) {
-//				return true;
-//			}
-//			else if(this.resources.get("Cutlass") >= 1 && this.resources.get("Molasses") >= 1){
-//				return true;
-//			}
-//		}
-//		System.out.println("you do not have enough resources");
-//		return false;
-//	}
-	
-	
-	public boolean checkResources(String resource, Integer num) {
-		
-		if(this.resources.get(resource) >= num) {
-			return true;
-		}
-		return false;
 	}
 }

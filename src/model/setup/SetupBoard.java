@@ -102,6 +102,11 @@ public class SetupBoard {
 						   pastureB, pastureC, sugarA, sugarB, spooky);
 		board.setIslands(boardIslands);
 	}
+
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return this.board;
+	}
 	
 	public Board getBoard() {
 		return this.board;

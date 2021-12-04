@@ -1,9 +1,9 @@
 package model.setup;
-
+import model.board.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.enums.*;
-import model.board.*;
+<<<<<<< HEAD
 
 public class SetupPlayers {
 
