@@ -6,15 +6,15 @@ import model.enums.IslandEnums;
 public class Islands{
 	private int diceNumber;
 	private IslandEnums islandType;
-	private List<Integer> attachedLairs = new ArrayList<Integer>();
+	private List<String> attachedLairs;
 	private List<String> attachedShipSites = new ArrayList<String>();
 	private boolean ghostCaptain = false;
 	
 	
-	public Islands(int diceNumber, IslandEnums islandType, List<Integer> lairs) {
+	public Islands(int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
 		this.diceNumber = diceNumber;
 		this.islandType = islandType;
-		this.attachedLairs = lairs;
+		this.attachedLairs = new ArrayList<String>(attachedLairs);
 		setAttachedShipSites();
 		initializeGhostCaptain();
 	}
@@ -35,7 +35,7 @@ public class Islands{
 		this.ghostCaptain = setGhostCaptain;
 	}
 	
-	public List<Integer> getAttachedLairs(){
+	public List<String> getAttachedLairs(){
 		return this.attachedLairs;
 	}
 	
@@ -50,10 +50,12 @@ public class Islands{
 	private void setAttachedShipSites() {
 		for (int i = 0; i < this.attachedLairs.size(); i++) {
 			if (i == (this.attachedLairs.size()-1)){
-				@SuppressWarnings("unused")
-				String shipSite = String.valueOf(this.attachedLairs.get(i)) + '-' + String.valueOf(this.attachedLairs.get(0));
+				if(this.attachedLairs.size() == 6) {
+					String shipSite = this.attachedLairs.get(i) + '-' + this.attachedLairs.get(0);
+					attachedShipSites.add(shipSite);
+				}
 			}else {
-			String shipSite = String.valueOf(this.attachedLairs.get(i)) + '-' + String.valueOf(this.attachedLairs.get(i+1));
+			String shipSite = this.attachedLairs.get(i) + '-' + this.attachedLairs.get(i+1);
 			attachedShipSites.add(shipSite);
 			}
 		}
