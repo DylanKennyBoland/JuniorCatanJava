@@ -2,7 +2,6 @@ package model.board;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +21,6 @@ public class Player implements Tradeable {
 		this.set();
 		this.initializeAssets(); // Setting up the player's starting lair and ship locations...
 	}
-	
-	public List<String> getLairAssets(){
-		return this.assets;
-	}
-	
 
 	@Override
 	public void set() {
