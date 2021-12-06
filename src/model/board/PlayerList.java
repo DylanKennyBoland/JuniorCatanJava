@@ -1,6 +1,7 @@
 package model.board;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PlayerList {
 	private ArrayList<Player> playerList = new ArrayList<Player>();
@@ -23,6 +24,19 @@ public class PlayerList {
 	
 	public String toString() {
 		return this.playerList.toString();
+	}
+	
+	public void sortByAge() {
+        int n = this.playerList.size();
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++)
+                if (this.playerList.get(j).getAge() > this.playerList.get(j+1).getAge())
+                {
+                    // swap arr[j+1] and arr[j]
+                    Player tmpPlayer = this.playerList.get(j);
+                    this.playerList.set(j, this.playerList.get(j+1));
+                    this.playerList.set(j+1, tmpPlayer);
+                }
 	}
 	
 }

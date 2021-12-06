@@ -15,10 +15,12 @@ public class Player implements Tradeable {
 	private Integer initialNum = 0;
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
-
-	public Player(String name, PlayerEnums colour) { // The constructor...
+	private String age;
+	
+	public Player(String name, PlayerEnums colour, String age) { // The constructor...
 		this.name = name;
 		this.colour = colour;
+		this.age = age;
 		this.set();
 		this.initializeAssets(); // Setting up the player's starting lair and ship locations...
 	}
@@ -36,7 +38,11 @@ public class Player implements Tradeable {
 		this.cocoTiles.put("Resource Combination 1", this.initialNum);
 		this.cocoTiles.put("Resource Combination 2", this.initialNum);
 	}
-
+	
+	public Integer getAge() {
+		return Integer.parseInt(this.age);
+	}
+	
 	public void initializeAssets() {
 		switch (this.colour) {
 		case RED:

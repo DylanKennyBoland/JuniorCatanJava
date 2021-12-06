@@ -20,11 +20,17 @@ public class SetupPlayers {
 		this.availableColors.add(PlayerEnums.ORANGE);
 	}
 	
+	public void organizePlayers() {
+		this.playerList.sortByAge();
+	}
+	
 	private void CreatePlayer(Scanner player) {
 		System.out.println("\nCreating new player. Please enter your name:");
 		String name = player.nextLine();
+		System.out.println("\n What is your age?");
+		String age = player.nextLine();
 		String colour = getPlayerColour(player);
-		playerList.addPlayer(new Player(name, PlayerEnums.valueOf(colour)));
+		playerList.addPlayer(new Player(name, PlayerEnums.valueOf(colour), age));
 	}
 	
 	private String getPlayerColour(Scanner player) {
@@ -48,7 +54,7 @@ public class SetupPlayers {
 			}
 			playersSelected = true;
 		}
-		System.out.println("Players : " + playerList.toString());
+		//System.out.println("Players : " + playerList.toString());
 	}
 	
 	private Integer getNumPlayers(Scanner player) {
