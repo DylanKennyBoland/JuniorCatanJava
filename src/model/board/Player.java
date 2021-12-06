@@ -12,7 +12,8 @@ public class Player implements Tradeable {
 	private PlayerEnums colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
 	private Integer initialNum = 0;
-	private List<String> assets = new ArrayList<String>();
+	private List<String> shipAssets = new ArrayList<String>();
+	private List<String> lairAssets = new ArrayList<String>();
 
 	public Player(String name, PlayerEnums colour) { // The constructor...
 		this.name = name;
@@ -35,43 +36,52 @@ public class Player implements Tradeable {
 		switch (this.colour) {
 		case RED:
 			// The two initial lair locations for the red player
-			this.addAsset("5");
-			this.addAsset("15");
+			this.addLairAsset("5");
+			this.addLairAsset("15");
 			// And their two ship locations...
-			this.addAsset(" 5 - 4 ");
-			this.addAsset(" 15 - 16 ");
+			this.addShipAsset(" 5 - 4 ");
+			this.addShipAsset(" 15 - 16 ");
 			break;
 		case WHITE:
-			this.addAsset("2");
-			this.addAsset("18");
-			this.addAsset(" 2 - 3 ");
-			this.addAsset(" 18 - 17 ");
+			this.addLairAsset("2");
+			this.addLairAsset("18");
+			this.addShipAsset(" 2 - 3 ");
+			this.addShipAsset(" 18 - 17 ");
 			break;
 		case ORANGE:
-			this.addAsset("9");
-			this.addAsset("25");
-			this.addAsset(" 9 - 10 ");
-			this.addAsset(" 25 - 24 ");
+			this.addLairAsset("9");
+			this.addLairAsset("25");
+			this.addShipAsset(" 9 - 10 ");
+			this.addShipAsset(" 25 - 24 ");
 			break;
 		case BLUE:
-			this.addAsset("12");
-			this.addAsset("22");
-			this.addAsset(" 12 - 11 ");
-			this.addAsset(" 22 - 23 ");
+			this.addLairAsset("12");
+			this.addLairAsset("22");
+			this.addShipAsset(" 12 - 11 ");
+			this.addShipAsset(" 22 - 23 ");
 			break;
 		}
 	}
 
-	public void addAsset(String asset) {
-		this.assets.add(asset);
+	public void addShipAsset(String asset) {
+		this.shipAssets.add(asset);
 	}
 
-	public void viewAsset() {
-		System.out.println(this.assets.toString());
+	public void addLairAsset(String asset) {
+		this.lairAssets.add(asset);
 	}
 
-	public List<String> getAssets() {
-		return this.assets;
+	public void viewAssets() {
+		System.out.println(this.lairAssets.toString());
+		System.out.println(this.shipAssets.toString());
+	}
+
+	public List<String> getLairAssets() {
+		return this.lairAssets;
+	}
+
+	public List<String> getShipAssets() {
+		return this.shipAssets;
 	}
 
 	@Override
