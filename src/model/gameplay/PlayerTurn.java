@@ -44,6 +44,8 @@ public class PlayerTurn {
 
 	private void rollDice() {
 		Integer roll = random.nextInt(6) + 1;
+		System.out.println("\nIt is " + this.player.getName() + "'s turn!");
+		System.out.println("\nThe dice rolled a " + roll);
 		for (Islands island : islandList) {
 			if (island.getDiceNumber() == roll) {
 				for (Player player : playerList.getList()) {
@@ -53,7 +55,12 @@ public class PlayerTurn {
 					if (!Collections.disjoint(playerLairAssets, islandLairs)) {
 						Integer numOfAttachedLairs = playerLairAssets.stream().distinct().filter(islandLairs::contains)
 								.collect(Collectors.toList()).size();
-						player.giveResource(island.getIslandType().toString(), numOfAttachedLairs);
+						String resource = island.getIslandResource();
+						if(resource.contains(" ")) {
+							break;
+						}else {
+							player.giveResource(resource, numOfAttachedLairs);
+						}
 					}
 				}
 			}

@@ -2,6 +2,7 @@ package model.board;
 import java.util.*;
 
 import model.enums.IslandEnums;
+import model.enums.ResourceEnums;
 
 public class Islands{
 	private int diceNumber;
@@ -25,6 +26,18 @@ public class Islands{
 
 	public IslandEnums getIslandType() {
 		return islandType;
+	}
+	
+	public String getIslandResource() {
+		switch(this.islandType){
+		case FOREST: return ResourceEnums.WOOD.getType();
+		case CAVES: return ResourceEnums.CUTLASS.getType();
+		case RIVERS: return ResourceEnums.GOLD.getType();
+		case SUGAR: return ResourceEnums.MOLASSES.getType();
+		case PASTURES: return ResourceEnums.GOATS.getType();
+		case SPOOKY: return " ";
+		default : return " ";
+		}
 	}
 
 	public boolean hasGhostCaptain() {
