@@ -20,13 +20,13 @@ class PlayerClassTesting {
 		String[] orangeLairLocations = { "9", "25" };
 		String[] orangeShipLocations = { " 9 - 10 ", " 25 - 24 " };
 
-		assertEquals(orangeLairLocations[0], dylan.getAssets().get(0));
-		assertEquals(orangeLairLocations[1], dylan.getAssets().get(1));
-		assertEquals(orangeShipLocations[0], dylan.getAssets().get(2));
-		assertEquals(orangeShipLocations[1], dylan.getAssets().get(3));
+		assertEquals(orangeLairLocations[0], dylan.getLairAssets().get(0));
+		assertEquals(orangeLairLocations[1], dylan.getLairAssets().get(1));
+		assertEquals(orangeShipLocations[0], dylan.getShipAssets().get(0));
+		assertEquals(orangeShipLocations[1], dylan.getShipAssets().get(1));
 
 		// Check 3: can we add a new asset, say a new lair at site 4?
-		dylan.addAsset("4");
-		assertEquals("4", dylan.getAssets().get(4));
+		dylan.addLairAsset("4");
+		assertEquals("4", dylan.getLairAssets().get(2));
 	}
 }
