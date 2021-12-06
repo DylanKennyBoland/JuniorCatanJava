@@ -1,6 +1,7 @@
 package model.board;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +12,17 @@ public class Player implements Tradeable {
 	private PlayerEnums colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
 	private Integer initialNum = 0;
-	private List<String> assets = new ArrayList<String>();
+	private ArrayList<String> assets = new ArrayList<String>();
+	
 	
 	public Player(String name, PlayerEnums colour) { // The constructor...
 		this.name = name;
 		this.colour = colour;
 		this.set();
+	}
+	
+	public List<String> getLairAssets(){
+		return this.assets;
 	}
 	
 	public void set() {
@@ -36,7 +42,7 @@ public class Player implements Tradeable {
 		System.out.println(this.assets.toString());
 	}
 
-	public List<String> getAssets(){
+	public ArrayList<String> getAssets(){
 		return this.assets;
 	}
 	

@@ -39,7 +39,7 @@ public class PlayerTurn {
 	private void rollDice() {
 		Integer roll = random.nextInt(6) + 1;
 		for(Islands island: islandList) {
-			if(island.getDiceNumber() == roll) {
+			if(island.getDiceNumber() == roll && !island.hasGhostCaptain()) {
 				for(Player player: playerList.getList()) {
 					List<String> playerAssets = player.getAssets();
 					List<String> islandLairs = island.getAttachedLairs();
@@ -128,6 +128,14 @@ public class PlayerTurn {
 			}
 		}
 	}
+	
+	public boolean didPlayerWin() {
+		if(this.player.getLairAssets().size() == 7) {
+			return true;
+		} else {
+			return false;
+		}
+	} 	
 	
 	
 	private void displayOptions(ArrayList<String> options) {
