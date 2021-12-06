@@ -163,6 +163,14 @@ public class PlayerTurn {
 		}
 	}
 
+	public boolean didPlayerWin() {
+		if (this.player.getLairAssets().size() == 7) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	private void displayOptions(ArrayList<String> options) {
 		int i = 1;
 		for (String option : options) {
