@@ -1,5 +1,6 @@
 package model.gameplay;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,12 +15,15 @@ public class Build {
 	private HashMap<String,Integer> playerResources;
 	private HashMap<String,Integer> lairCost = new HashMap<String,Integer>();
 	private HashMap<String,Integer> shipCost = new HashMap<String,Integer>();
+	private ArrayList<String> buildOptions;
 	private Scanner inputScanner;
 	
 	public Build(Player player, Scanner inputScanner) {
 		this.player = player;
 		this.board = Board.getInstance();
 		this.inputScanner = inputScanner;
+		this.buildOptions = new ArrayList<String>();
+		//getBuildOptions();
 		this.lairCost.put("Wood", 1);
 		this.lairCost.put("Cutlass", 1);
 		this.lairCost.put("Molasses", 1);
@@ -27,6 +31,15 @@ public class Build {
 		this.shipCost.put("Goats", 1);
 		this.shipCost.put("Wood", 1);
 	}
+	
+//	private void getBuildOptions(){
+//		ArrayList<String> playerAssets = this.player.getAssets();
+//		
+//		
+//		buildOptions.add()
+//		
+//	}
+
 	
 	public boolean checkResources() {
 		if(player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
@@ -46,11 +59,22 @@ public class Build {
 		String lairLocation = inputScanner.nextLine();
 		this.buildChoice = "Lair";
 		//playerResources = player.getResources();
-		if(board.isLairAvailable(lairLocation) && checkResources()) {
+		if(board.isLairAvailable(lairLocation) && checkResources() && canBuild(lairLocation)) {
 			swap(this.lairCost, lairLocation);
 			System.out.println("You now own lair " + lairLocation);
 		}
 	}
+	
+	private boolean canBuild(String location) {
+		for(String asset: player.getAssets()) {
+			if(asset.contains(" " + location + " ")) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	
 	private void swap(HashMap<String, Integer> costs, String asset) {
 		player.addAsset(asset);

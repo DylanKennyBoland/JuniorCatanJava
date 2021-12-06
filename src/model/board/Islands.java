@@ -51,11 +51,11 @@ public class Islands{
 		for (int i = 0; i < this.attachedLairs.size(); i++) {
 			if (i == (this.attachedLairs.size()-1)){
 				if(this.attachedLairs.size() == 6) {
-					String shipSite = this.attachedLairs.get(i) + '-' + this.attachedLairs.get(0);
+					String shipSite = " " + this.attachedLairs.get(i) + " - " + this.attachedLairs.get(0) + " ";
 					attachedShipSites.add(shipSite);
 				}
 			}else {
-			String shipSite = this.attachedLairs.get(i) + '-' + this.attachedLairs.get(i+1);
+			String shipSite = " " + this.attachedLairs.get(i) + " - " + this.attachedLairs.get(i+1) + " ";
 			attachedShipSites.add(shipSite);
 			}
 		}
