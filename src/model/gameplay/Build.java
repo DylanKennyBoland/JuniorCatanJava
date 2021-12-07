@@ -2,6 +2,7 @@ package model.gameplay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -75,8 +76,60 @@ public class Build {
 
 	}
 
+	public List<String> getMatches(List<String> lairs, List<String> freeShipSites) {
+		List<String> matches = new ArrayList<String>();
+		for (String lair : lairs) {
+			for (String shipSite : freeShipSites) {
+				if (shipSite.contains(lair)) {
+					matches.add(shipSite);
+				}
+			}
+		}
+		return matches;
+	}
+
+	public List<String> availableShipLocations() {
+		List<String> allShipSites = new ArrayList<String>(this.getBoard().getShipLocations());
+		allShipSites.removeAll(this.getBoard().getUsedShipSites());
+		List<String> freeShipSites = new ArrayList<String>(allShipSites);
+		List<String> validShipSites = new ArrayList<String>(
+				this.getMatches(this.player.getLairAssets(), freeShipSites));
+		return validShipSites;
+	}
+
 	public void buildShip() {
+		List<String> validShipSites = new ArrayList<String>(this.availableShipLocations());
+		if (validShipSites.size() == 0) {
+			System.out.println("You currently have no valid ship sites to build on!");
+			return;
+		}
+		System.out.println("Where would you like to build a ship? Your options are: ");
+		int n = 0;
+		for (String site : validShipSites) {
+			n++;
+			System.out.println((n) + ": " + site);
+		}
 		this.buildChoice = "Ship";
-		System.out.println("Building Ship");
+		boolean validInput = false;
+		while (!validInput) {
+			System.out.println("\nEnter here: ");
+			Integer shipSite = inputScanner.nextInt();
+			inputScanner.nextLine();
+			if ((shipSite >= 0) && (shipSite <= validShipSites.size())) {
+				System.out.println("You have chosen ship site " + shipSite);
+				System.out.println("Building... ");
+				this.player.addShipAsset(validShipSites.get(shipSite - 1));
+				System.out.println("Done!");
+				validInput = true;
+			} else {
+				System.out.println(
+						"You have input " + shipSite + " which is outside the range of options. Please reenter.");
+			}
+		}
+		System.out.println("Method done.");
+	}
+
+	public Board getBoard() {
+		return this.board;
 	}
 }
