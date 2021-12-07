@@ -14,6 +14,10 @@ public class PlayerList {
         return thePlayerList;
     }
     
+	public Integer getNumOfPlayers() {
+		return this.playerList.size();
+	}
+	
 	public void addPlayer(Player player) {
 		this.playerList.add(player);
 	}

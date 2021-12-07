@@ -11,13 +11,12 @@ public class SetupPlayers {
 	private Integer numPlayers;
 	private String numPlayersString;
 	private String colour;
+	private ArrayList<Integer> colourIndex = new ArrayList<Integer>();
+	private Stockpile stockpile;
+	private Board board;
 	
 	public SetupPlayers() {
 		this.playerList = PlayerList.getInstance();
-		this.availableColors.add(PlayerEnums.BLUE);
-		this.availableColors.add(PlayerEnums.RED);
-		this.availableColors.add(PlayerEnums.WHITE);
-		this.availableColors.add(PlayerEnums.ORANGE);
 	}
 	
 	public void organizePlayers() {
@@ -27,7 +26,7 @@ public class SetupPlayers {
 	private void CreatePlayer(Scanner player) {
 		System.out.println("\nCreating new player. Please enter your name:");
 		String name = player.nextLine();
-		System.out.println("\n What is your age?");
+		System.out.println("\nWhat is your age?");
 		String age = player.nextLine();
 		String colour = getPlayerColour(player);
 		playerList.addPlayer(new Player(name, PlayerEnums.valueOf(colour), age));
@@ -38,15 +37,42 @@ public class SetupPlayers {
 		boolean validColour = false;
 		while(!validColour) {
 			printAvailableColors();
-			colour = player.nextLine().toUpperCase();
-			validColour = isValidColour(colour);
+			String choice = "5";
+			int choiceInt = 5;
+			boolean validChoice = false;
+			while(!validChoice) {
+				try {
+					choice = player.nextLine();
+					choiceInt = Integer.parseInt(choice);
+				}
+				catch(NumberFormatException e) {
+					System.out.println("That is not a number");
+					choiceInt = 5;
+				}
+				if(this.colourIndex.contains(choiceInt)/**choiceInt <= this.availableColors.size() && choiceInt > 0*/) {
+					validChoice = true;
+				}else {
+					System.out.println("\nThat is not a valid choice. Try again.");
+				}
+			}
+			
+			switch (choice) {
+			case "1" :
+				validColour = isValidColour(availableColors.indexOf(PlayerEnums.BLUE)); return "BLUE";
+			case "2":
+				validColour = isValidColour(availableColors.indexOf(PlayerEnums.RED)); return "RED";
+			case "3":
+				validColour = isValidColour(availableColors.indexOf(PlayerEnums.ORANGE)); return "ORANGE";
+			case "4":
+				validColour = isValidColour(availableColors.indexOf(PlayerEnums.WHITE)); return "WHITE";
+			}
 		}
-		return colour;
+		return " ";
 	}
 	
 	public void CreateAllPlayers(Scanner player) {
 		boolean playersSelected = false;
-		numPlayers = getNumPlayers(player);
+		this.numPlayers = getNumPlayers(player);
 
 		while (!playersSelected) {
 			for(int i = 0; i < numPlayers; i++) {
@@ -54,6 +80,10 @@ public class SetupPlayers {
 			}
 			playersSelected = true;
 		}
+		this.board = Board.getInstance();
+		this.stockpile = board.getStockpile();
+		this.stockpile.updateStockPile("Wood", -playerList.getNumOfPlayers());
+		this.stockpile.updateStockPile("Molasses", -playerList.getNumOfPlayers());
 		//System.out.println("Players : " + playerList.toString());
 	}
 	
@@ -71,26 +101,42 @@ public class SetupPlayers {
 	private boolean isValidNumber(Integer num) {
 		if(num < 3 || num > 4) {
 			return false;
+		} else if(num == 3){
+			this.colourIndex.add(1);
+			this.colourIndex.add(2);
+			this.colourIndex.add(3);
+			this.availableColors.add(PlayerEnums.BLUE);
+			this.availableColors.add(PlayerEnums.RED);
+			this.availableColors.add(PlayerEnums.ORANGE);
+			return true;
 		} else {
+			this.colourIndex.add(1);
+			this.colourIndex.add(2);
+			this.colourIndex.add(3);
+			this.colourIndex.add(4);
+			this.availableColors.add(PlayerEnums.BLUE);
+			this.availableColors.add(PlayerEnums.RED);
+			this.availableColors.add(PlayerEnums.ORANGE);
+			this.availableColors.add(PlayerEnums.WHITE);
 			return true;
 		}
 	}
 	
 	private void printAvailableColors() {
-		int i = 1;
+		int i = 0;
 		for(PlayerEnums colour : availableColors) {
-            System.out.println("\n" + i + " : " +  colour.getColour());
+            System.out.println("\n" + colourIndex.get(i) + " : " +  colour.getColour());
             i++;
-        }
+		}
 	}
 	
-	private boolean isValidColour(String colour) {
-		if(availableColors.toString().contains(colour)){
-			availableColors.remove(availableColors.indexOf(PlayerEnums.valueOf(colour)));
+	private boolean isValidColour(int index) {
+		if(availableColors.size() == 1) {
 			return true;
-		} else {
-			return false;
 		}
+		this.availableColors.remove(index);
+		this.colourIndex.remove(index);
+		return true;
 	}
 	
 	public void setNumPlayers(int num) {

@@ -55,9 +55,11 @@ public class Stockpile implements Tradeable {
 	}
 
 	public void updateStockPile(String resourceName, int number) {
-		if (this.getStockPile().containsKey(resourceName)) {
-			this.stockpile.replace(resourceName, number);
-		} else {
+		if(this.getStockPile().containsKey(resourceName)) {
+			int numOfResource = this.stockpile.get(resourceName);
+			this.stockpile.replace(resourceName, numOfResource + number);
+		}
+		else {
 			this.stockpile.put(resourceName, number);
 		}
 	}
@@ -76,5 +78,9 @@ public class Stockpile implements Tradeable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public int getNumOfResource(String resource) {
+		return this.stockpile.get(resource);
 	}
 }

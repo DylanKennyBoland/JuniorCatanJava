@@ -27,11 +27,11 @@ public class Player implements Tradeable {
 
 	@Override
 	public void set() {
-		this.resources.put("Wood", this.initialNum);
+		this.resources.put("Wood", 1);
 		this.resources.put("Cutlass", this.initialNum);
 		this.resources.put("Goats", this.initialNum);
 		this.resources.put("Gold", this.initialNum);
-		this.resources.put("Molasses", this.initialNum);
+		this.resources.put("Molasses", 1);
 		this.resources.put("Coco tiles", this.initialNum);
 		this.cocoTiles.put("Ghost Captain", this.initialNum);
 		this.cocoTiles.put("Build", this.initialNum);

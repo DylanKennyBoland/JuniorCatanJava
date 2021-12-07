@@ -14,14 +14,14 @@ public class Setup {
         return setup;
     }
       
-    private Setup() {
-    	this.setupBoard = new SetupBoard();
+    private Setup() {	
     	this.setupPlayers = new SetupPlayers();
+    	this.setupBoard = new SetupBoard();
     }
     
     public void setupGame(Scanner inputScanner) {
-    	setupBoard.startingBoard();
     	setupPlayers.CreateAllPlayers(inputScanner);
     	setupPlayers.organizePlayers();
+    	setupBoard.startingBoard();
     }
 }
