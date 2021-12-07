@@ -36,28 +36,28 @@ public class Player implements Tradeable {
 		switch (this.colour) {
 		case RED:
 			// The two initial lair locations for the red player
-			this.addLairAsset("5");
-			this.addLairAsset("15");
+			this.addLairAsset(" 5 ");
+			this.addLairAsset(" 15 ");
 			// And their two ship locations...
-			this.addShipAsset(" 5 - 4 ");
+			this.addShipAsset(" 4 - 5 ");
 			this.addShipAsset(" 15 - 16 ");
 			break;
 		case WHITE:
-			this.addLairAsset("2");
-			this.addLairAsset("18");
+			this.addLairAsset(" 2 ");
+			this.addLairAsset(" 18 ");
 			this.addShipAsset(" 2 - 3 ");
-			this.addShipAsset(" 18 - 17 ");
+			this.addShipAsset(" 17 - 18 ");
 			break;
 		case ORANGE:
-			this.addLairAsset("9");
-			this.addLairAsset("25");
+			this.addLairAsset(" 9 ");
+			this.addLairAsset(" 25 ");
 			this.addShipAsset(" 9 - 10 ");
-			this.addShipAsset(" 25 - 24 ");
+			this.addShipAsset(" 24 - 25 ");
 			break;
 		case BLUE:
-			this.addLairAsset("12");
-			this.addLairAsset("22");
-			this.addShipAsset(" 12 - 11 ");
+			this.addLairAsset(" 12 ");
+			this.addLairAsset(" 22 ");
+			this.addShipAsset(" 11 - 12 ");
 			this.addShipAsset(" 22 - 23 ");
 			break;
 		}
@@ -112,7 +112,8 @@ public class Player implements Tradeable {
 		for (String resource : this.resources.keySet()) {
 			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
 		}
-		return "Name: " + this.name + "\n" + "Colour: " + this.colour + "\n\nPlayer's Resources:" + playerResources;
+		return "Name: " + this.name + "\n" + "Colour: " + this.colour + "\n\nPlayer's Resources:" + playerResources
+				+ "\n\nShip Sites:\n" + this.shipAssets.toString() + "\nLair Sites:\n" + this.lairAssets.toString();
 	}
 
 	// 'get' and 'set' methods:
