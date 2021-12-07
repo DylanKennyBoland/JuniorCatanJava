@@ -12,6 +12,7 @@ import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Player;
 import model.board.PlayerList;
+import model.board.Stockpile;
 import model.enums.CocoEnums;
 import model.enums.IslandEnums;
 import model.enums.PlayerEnums;
@@ -20,6 +21,7 @@ import model.enums.ResourceEnums;
 public class PlayerTurn {
 	private Player player;
 	private Board board;
+	Stockpile stockpile;
 	private List<Islands> islandList;
 	private PlayerList playerList;
 	private Scanner inputScanner;
@@ -34,6 +36,7 @@ public class PlayerTurn {
 	public PlayerTurn(Player player, Scanner inputScanner) {
 		this.player = player;
 		this.board = Board.getInstance();
+		this.stockpile = board.getStockpile();
 		this.islandList = board.getIslands();
 		this.inputScanner = inputScanner;
 		this.buildOptions = new Build(player, inputScanner);
@@ -46,8 +49,14 @@ public class PlayerTurn {
 		Integer roll = random.nextInt(6) + 1;
 		System.out.println("\nIt is " + this.player.getName() + "'s turn!");
 		System.out.println("\nThe dice rolled a " + roll);
+		if (roll == 6) {
+			System.out.println("\nGhost Captain is on Island " + board.getGhostIsland().getName());
+			System.out.println("\nWhere would you like to move it to?");
+			String moveTo = this.inputScanner.nextLine();
+			this.board.moveGhostCaptain(moveTo);
+		}
 		for (Islands island : islandList) {
-			if (island.getDiceNumber() == roll) {
+			if (island.getDiceNumber() == roll && !island.hasGhostCaptain()) {
 				for (Player player : playerList.getList()) {
 					List<String> playerLairAssets = player.getLairAssets();
 					List<String> playerShipAssets = player.getShipAssets();
@@ -59,10 +68,14 @@ public class PlayerTurn {
 						if(resource.contains(" ")) {
 							break;
 						}else {
+							System.out.println("Giving " + resource + " to " + player.getName());
 							player.giveResource(resource, numOfAttachedLairs);
+							this.stockpile.updateStockPile(resource, -numOfAttachedLairs);
 						}
 					}
 				}
+			} else if(island.getDiceNumber() == roll && island.hasGhostCaptain()) {
+				System.out.println("Island " + island.getName() + " cannot produce!");
 			}
 		}
 	}
@@ -139,6 +152,7 @@ public class PlayerTurn {
 		tradeOptionsList.add("Stockpile");
 		tradeOptionsList.add("View Resources");
 		tradeOptionsList.add("View Marketplace");
+		tradeOptionsList.add("View Stockpile");
 		tradeOptionsList.add("Go Back");
 		Marketplace marketplace = board.getMarketplace();
 		while (!finishedTrading) {
@@ -155,7 +169,7 @@ public class PlayerTurn {
 				;
 				break;
 			case "2":
-				tradeOptions.tradeStockpile();
+				tradeWithStockpile();
 				break;
 			case "3":
 				viewResources();
@@ -164,12 +178,99 @@ public class PlayerTurn {
 				System.out.println(marketplace.toString());
 				break;
 			case "5":
+				System.out.println(this.stockpile.toString());
+				break;
+			case "6":
 				finishedTrading = true;
 				break;
 			}
 		}
 	}
 
+	
+	public void tradeWithStockpile() {
+		int num;
+		ArrayList<String> tradeInfo ;
+		System.out.println("What resource would you like?");
+		ArrayList<String> stockpileOptions = new ArrayList<String>();
+		stockpileOptions.add("Wood");
+		stockpileOptions.add("Cutlass");
+		stockpileOptions.add("Mollasses");
+		stockpileOptions.add("Gold");
+		stockpileOptions.add("Goats");
+		displayOptions(stockpileOptions);
+		switch(inputScanner.nextLine()) {
+		case "1":
+			num = getNumberFromPlayer("Wood");
+			tradeInfo = new ArrayList<String>(getTradeInfo("Wood", num));
+			tradeOptions.tradeStockpile("Wood", num, tradeInfo);
+			break;
+		case "2":
+			num = getNumberFromPlayer("Cutlass");
+			tradeInfo = new ArrayList<String>(getTradeInfo("Cutlass", num));
+			tradeOptions.tradeStockpile("Cutlass", num, tradeInfo);
+			break;
+		case "3":
+			num = getNumberFromPlayer("Molasses");
+			tradeInfo = new ArrayList<String>(getTradeInfo("Molasses", num));
+			tradeOptions.tradeStockpile("Molasses", num, tradeInfo);
+			break;
+		case "4":
+			num = getNumberFromPlayer("Gold");
+			tradeInfo = new ArrayList<String>(getTradeInfo("Gold", num));
+			tradeOptions.tradeStockpile("Gold", num, tradeInfo);
+			break;
+		case "5":
+			num = getNumberFromPlayer("Goats");
+			tradeInfo = new ArrayList<String>(getTradeInfo("Goats", num));
+			tradeOptions.tradeStockpile("Goats", num, tradeInfo);
+			break;
+		}
+		
+	}
+	
+	public int getNumberFromPlayer(String requestedResource) {
+		boolean enough = false;
+		int num = 0;
+		while(!enough) {
+			System.out.println("How many would you like?" + 
+								"\nThere are " + this.stockpile.getNumOfResource(requestedResource) 
+								+ " in the stockpile.");
+			num = Integer.parseInt(inputScanner.nextLine());
+			if(this.stockpile.isAvailable(requestedResource, num)) {
+				enough = true;
+			} else {
+				System.out.println("There is not enough " + requestedResource + " in the stockpile");
+			}
+		}
+		return num;
+	}
+	
+	public ArrayList<String> getTradeInfo(String requestedResource, int num){
+		ArrayList<String> tradeInfo = new ArrayList<String>();
+		int i = 1;
+		if(this.stockpile.isAvailable(requestedResource, num)) {
+			boolean givingMultiple = false;
+			if(num > 1) {
+				System.out.println("Are you giving multiple resources?");
+				String answer = inputScanner.nextLine();
+				if(answer.toUpperCase().contains("Y")) {
+					givingMultiple = true;
+				}
+			}
+			while(givingMultiple && i <= num) {
+				System.out.println("What resource are you giving?");
+				tradeInfo.add(inputScanner.nextLine());
+				i++;
+			}
+			if(!givingMultiple) {
+				System.out.println("What resource are you giving?");
+				tradeInfo.add(inputScanner.nextLine());
+			}
+		}
+		return tradeInfo;
+	}
+	
 	public boolean didPlayerWin() {
 		if (this.player.getLairAssets().size() == 7) {
 			return true;

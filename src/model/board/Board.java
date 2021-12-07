@@ -21,6 +21,7 @@ public class Board {
 	private Map<String, Integer> cocoTiles = new HashMap<String, Integer>();
 	private Integer currentMaxCocoTiles = 0;
 	private Player playerWithMostCocoTiles;
+	private Islands ghostIsland;
 
 	public static Board getInstance() {
 		if (gameBoard == null) {
@@ -77,6 +78,14 @@ public class Board {
 	public void setIslands(List<Islands> islands) {
 		this.islands = islands;
 	}
+	
+	public void setGhostIsland(Islands island) {
+		this.ghostIsland = island;
+	}
+	
+	public Islands getGhostIsland() {
+		return this.ghostIsland;
+	}
 
 	public boolean isLairAvailable(String location) {
 		for (Player player : playerList.getList()) {
@@ -117,6 +126,22 @@ public class Board {
 			islandInfo += island.toString() + "\n";
 		}
 		return islandInfo;
+	}
+	
+	public void moveGhostCaptain(String islandName) {
+		this.islands.get(islands.indexOf(this.ghostIsland)).setGhostCaptain(false);
+		Islands newGhostIsland = getIslandByName(islandName);
+		newGhostIsland.setGhostCaptain(true);
+		this.ghostIsland = newGhostIsland;
+	}
+	
+	public Islands getIslandByName(String islandName) {
+		for(Islands island: this.islands) {
+			if(island.getName().contains(islandName)){
+				return island;
+			}
+		}
+		return this.ghostIsland;
 	}
 
 	public PlayerList getPlayerList() {

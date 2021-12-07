@@ -1,5 +1,6 @@
 package model.gameplay;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -56,21 +57,39 @@ public class Trade {
 		return true;
 	}
 	
-	public void tradeStockpile(){
-		System.out.println("What would you like?");
-		String requestedResource = this.inputScanner.nextLine();
-		System.out.println("How much " + requestedResource + " would you like?");
-		String num = this.inputScanner.nextLine();
-		Integer numOfResource = Integer.parseInt(num);
-		if(this.stockpile.isAvailable(requestedResource, numOfResource)) {
-			 System.out.println("What resource will you give?");
-			 String givenResource = this.inputScanner.nextLine();
-			 if(player.isAvailable(givenResource, numOfResource*2)) {
-				 player.giveResource(requestedResource, numOfResource);
-				 player.takeResource(givenResource, numOfResource*2);
-				 this.stockpile.trade(givenResource, numOfResource*2, requestedResource, numOfResource);
-			 }
+	public void tradeStockpile(String requestedResource, int num, ArrayList<String> tradeInfo){
+		if(tradeInfo.size()>1){
+			num = 1;
 		}
+		for(String givenResource: tradeInfo) {
+			swapWithStockpile(givenResource, requestedResource, num);
+		}
+//		boolean givingMultiple = false;
+//		int i = 1;
+//		if(this.stockpile.isAvailable(resource, num)) {
+//			if(num > 1) {
+//				System.out.println("Are you giving multiple resources?");
+//				String answer = inputScanner.nextLine();
+//				if(answer.toUpperCase().contains("Y")) {
+//					givingMultiple = true;
+//				}
+//			}
+//			while(givingMultiple && i <= num) {
+//				swapWithStockpile(resource, 1);
+//				i++;
+//			}
+//			if(!givingMultiple) {
+//				swapWithStockpile(resource, num);
+//			}
+//		}
+	}
+	
+	private void swapWithStockpile(String givenResource, String requestedResource, Integer num) {
+		if(player.isAvailable(givenResource, num*2)) {
+			player.giveResource(requestedResource, num);
+			player.takeResource(givenResource, num*2);
+			this.stockpile.trade(givenResource, num*2, requestedResource, num);
+		} else {System.out.println("You do not have enough " + givenResource + " for this trade!");}
 	}
 	
 	

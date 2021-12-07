@@ -5,6 +5,7 @@ import model.enums.IslandEnums;
 import model.enums.ResourceEnums;
 
 public class Islands{
+	private String name;
 	private int diceNumber;
 	private IslandEnums islandType;
 	private List<String> attachedLairs;
@@ -12,7 +13,8 @@ public class Islands{
 	private boolean ghostCaptain = false;
 	
 	
-	public Islands(int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
+	public Islands(String name, int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
+		this.name = name;
 		this.diceNumber = diceNumber;
 		this.islandType = islandType;
 		this.attachedLairs = new ArrayList<String>(attachedLairs);
@@ -40,6 +42,10 @@ public class Islands{
 		}
 	}
 
+	public String getName() {
+		return this.name;
+	}
+	
 	public boolean hasGhostCaptain() {
 		return ghostCaptain;
 	}
