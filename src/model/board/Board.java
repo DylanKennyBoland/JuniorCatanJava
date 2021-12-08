@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import model.players.Player;
+import model.players.PlayerList;
+
 public class Board {
 
 	private static Board gameBoard;

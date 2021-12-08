@@ -3,8 +3,8 @@ package controller;
 import java.util.Scanner;
 
 import model.board.Board;
-import model.board.Player;
-import model.board.PlayerList;
+import model.players.Player;
+import model.players.PlayerList;
 import model.setup.Setup;
 
 public class Controller {
@@ -23,7 +23,7 @@ public class Controller {
     }
     
     public Controller(Setup setupInstance, Scanner inputScanner) {
-    	setupInstance.setupGame(inputScanner);;
+    	setupInstance.setupGame(inputScanner);
     	this.playerList = PlayerList.getInstance();
     	this.gameOver = false;
     	

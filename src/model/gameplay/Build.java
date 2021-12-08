@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import model.board.Board;
-import model.board.Player;
+import model.players.Player;
 
 public class Build {
 	private Player player;

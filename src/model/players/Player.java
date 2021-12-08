@@ -1,10 +1,11 @@
-package model.board;
+package model.players;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.board.Tradeable;
 import model.enums.PlayerEnums;
 
 public class Player implements Tradeable {

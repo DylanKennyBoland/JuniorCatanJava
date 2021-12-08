@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 import model.board.Board;
 import model.board.Marketplace;
-import model.board.Player;
 import model.board.Stockpile;
+import model.players.Player;
 
 public class Trade {
 	private Board board;
@@ -40,7 +40,7 @@ public class Trade {
 			if(player.isAvailable(givenResource, 1)) {
 				player.giveResource(requestedResource, 1);
 				player.takeResource(givenResource, 1);
-				this.marketplace.trade(givenResource, 1, requestedResource, 1);
+				System.out.println(this.marketplace.trade(givenResource, 1, requestedResource, 1));
 				this.tradedWithMarketplace = true;
 			}	
 		}	
@@ -59,7 +59,7 @@ public class Trade {
 		if(player.isAvailable(givenResource, num*2)) {
 			player.giveResource(requestedResource, num);
 			player.takeResource(givenResource, num*2);
-			this.stockpile.trade(givenResource, num*2, requestedResource, num);
+			System.out.println(this.stockpile.trade(givenResource, num*2, requestedResource, num));
 		} else {System.out.println("You do not have enough " + givenResource + " for this trade!");}
 	}
 	

@@ -1,4 +1,4 @@
-package model.board;
+package model.players;
 
 import java.util.ArrayList;
 import java.util.Collections;

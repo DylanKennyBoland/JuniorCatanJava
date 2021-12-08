@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 import model.board.Board;
 import model.board.Islands;
 import model.board.Marketplace;
-import model.board.Player;
-import model.board.PlayerList;
 import model.board.Stockpile;
 import model.enums.*;
 import model.gameplay.*;
+import model.players.Player;
+import model.players.PlayerList;
 
 public class PlayerTurn {
 	private Player player;
@@ -55,12 +55,16 @@ public class PlayerTurn {
 			System.out.println("\nWhere would you like to move it to?");
 			String moveTo = this.inputScanner.nextLine();
 			this.board.moveGhostCaptain(moveTo);
+			return;
 		}
+		produceResources(roll);
+	}
+
+	private void produceResources(Integer roll) {
 		for (Islands island : islandList) {
 			if (island.getDiceNumber() == roll && !island.hasGhostCaptain()) {
 				for (Player player : playerList.getList()) {
 					List<String> playerLairAssets = player.getLairAssets();
-					List<String> playerShipAssets = player.getShipAssets();
 					List<String> islandLairs = island.getAttachedLairs();
 					if (!Collections.disjoint(playerLairAssets, islandLairs)) {
 						Integer numOfAttachedLairs = playerLairAssets.stream().distinct().filter(islandLairs::contains)
@@ -80,7 +84,7 @@ public class PlayerTurn {
 			}
 		}
 	}
-
+	
 	public void startTurn() {
 		boolean turnOver = false;
 		while (!turnOver) {

@@ -3,6 +3,8 @@ import model.board.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.enums.*;
+import model.players.Player;
+import model.players.PlayerList;
 
 public class SetupPlayers {
 
@@ -24,7 +26,7 @@ public class SetupPlayers {
 	}
 	
 	private void CreatePlayer(Scanner player) {
-		System.out.println("\nCreating new player. Please enter your name:");
+		System.out.print("Creating new player. Please enter your name:");
 		String name = player.nextLine();
 		String age = getPlayerAge(player);
 
@@ -107,7 +109,7 @@ public class SetupPlayers {
 	}
 	
 	private Integer getNumPlayers(Scanner player) {
-		System.out.println("How many people are playing the game? (3 or 4): ");
+		System.out.print("How many people are playing the game? (3 or 4): ");
 		boolean validNumber = false;
 		while(!validNumber) {
 			numPlayersString = player.nextLine();
