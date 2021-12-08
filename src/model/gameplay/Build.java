@@ -42,25 +42,40 @@ public class Build {
 //	}
 
 	public boolean checkResources() {
-		if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
-			if (this.buildChoice.contains("Ship")) {
+		if (this.buildChoice.contains("Ship")) {
+			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
 				return true;
-			} else if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1)) {
-				return true;
+			} else {
+				return false;
 			}
+		} else if (this.buildChoice.contains("Lair")) {
+			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
+					&& player.isAvailable("Wood", 1)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
-		System.out.println("you do not have enough resources");
-		return false;
 	}
 
 	public void buildLair() {
+		this.buildChoice = "Lair";
+		List<Integer> validLairSites = new ArrayList<Integer>(this.availableLairLocations());
+		if (validLairSites.size() == 0) {
+			System.out.println("You currently have no valid lair sites to build on!\n");
+			return;
+		}
+		if (this.checkResources()) {
+			return;
+		}
 		System.out.println("Where would you like to build a lair? Your options are: ");
 		int i = 0;
 		for (Integer lair : this.availableLairLocations()) {
 			i++;
 			System.out.println("Option " + (i) + ": " + lair);
 		}
-		this.buildChoice = "Lair";
 		boolean validInput = false;
 		while (!validInput) {
 			System.out.println("\nEnter here: ");
@@ -71,6 +86,14 @@ public class Build {
 				System.out.println("Building... ");
 				this.player.addLairAsset(String.valueOf(" " + this.availableLairLocations().get(option - 1) + " "));
 				System.out.println("Done!\n");
+				this.player.takeResource("Cutlass", 1);
+				this.player.takeResource("Molasses", 1);
+				this.player.takeResource("Goats", 1);
+				this.player.takeResource("Wood", 1);
+				this.getBoard().getStockpile().updateStockPile("Cutlass", 1);
+				this.getBoard().getStockpile().updateStockPile("Molasses", 1);
+				this.getBoard().getStockpile().updateStockPile("Goats", 1);
+				this.getBoard().getStockpile().updateStockPile("Wood", 1);
 				validInput = true;
 			} else {
 				System.out.println(
@@ -84,9 +107,13 @@ public class Build {
 	}
 
 	public void buildShip() {
+		this.buildChoice = "Ship";
 		List<String> validShipSites = new ArrayList<String>(this.availableShipLocations());
 		if (validShipSites.size() == 0) {
 			System.out.println("You currently have no valid ship sites to build on!\n");
+			return;
+		}
+		if (this.checkResources()) {
 			return;
 		}
 		System.out.println("Where would you like to build a ship? Your options are: ");
@@ -95,7 +122,6 @@ public class Build {
 			n++;
 			System.out.println((n) + ": " + site);
 		}
-		this.buildChoice = "Ship";
 		boolean validInput = false;
 		while (!validInput) {
 			System.out.println("\nEnter here: ");
@@ -106,6 +132,10 @@ public class Build {
 				System.out.println("Building... ");
 				this.player.addShipAsset(validShipSites.get(option - 1));
 				System.out.println("Done!\n");
+				this.player.takeResource("Goats", 1);
+				this.player.takeResource("Wood", 1);
+				this.getBoard().getStockpile().updateStockPile("Goats", 1);
+				this.getBoard().getStockpile().updateStockPile("Wood", 1);
 				validInput = true;
 			} else {
 				System.out.println(
