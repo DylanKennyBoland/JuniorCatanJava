@@ -5,7 +5,6 @@ import java.util.Scanner;
 import model.board.Board;
 import model.board.Player;
 import model.board.PlayerList;
-import model.gameplay.PlayerTurn;
 import model.setup.Setup;
 
 public class Controller {

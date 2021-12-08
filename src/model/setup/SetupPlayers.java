@@ -26,12 +26,31 @@ public class SetupPlayers {
 	private void CreatePlayer(Scanner player) {
 		System.out.println("\nCreating new player. Please enter your name:");
 		String name = player.nextLine();
-		System.out.println("\nWhat is your age?");
-		String age = player.nextLine();
+		String age = getPlayerAge(player);
+
 		String colour = getPlayerColour(player);
 		playerList.addPlayer(new Player(name, PlayerEnums.valueOf(colour), age));
 	}
-	
+	private String getPlayerAge(Scanner player) {
+		boolean validAge = false;
+		String age = " ";
+		System.out.println("\nWhat is your age?");
+		while(!validAge) {
+			age = player.nextLine();
+			try {
+				int ageInt = Integer.parseInt(age);
+				if(ageInt < 0) {
+					validAge = false;
+					System.out.println("Number must be non negative. Try again.");
+				}else {validAge = true;}
+			}
+			catch(NumberFormatException e) {
+				System.out.println("That is not a number. Try again.");
+				validAge = false;
+			}
+		}
+		return age;
+	}
 	private String getPlayerColour(Scanner player) {
 		System.out.println("\nWhat colour would you like: ");
 		boolean validColour = false;
@@ -92,7 +111,12 @@ public class SetupPlayers {
 		boolean validNumber = false;
 		while(!validNumber) {
 			numPlayersString = player.nextLine();
-			numPlayers = Integer.parseInt(numPlayersString);
+			try {
+				numPlayers = Integer.parseInt(numPlayersString);
+			}
+			catch(NumberFormatException e){
+				numPlayers = 0;
+			}
 			validNumber = isValidNumber(numPlayers);
 		}
 		return numPlayers;
@@ -100,6 +124,7 @@ public class SetupPlayers {
 	
 	private boolean isValidNumber(Integer num) {
 		if(num < 3 || num > 4) {
+			System.out.println("Not a valid number. Must be 3 or 4. Try again.");
 			return false;
 		} else if(num == 3){
 			this.colourIndex.add(1);
