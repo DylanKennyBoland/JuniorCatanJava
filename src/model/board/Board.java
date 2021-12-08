@@ -37,13 +37,25 @@ public class Board {
 		this.stockpile = new Stockpile("The stockpile");
 		this.playerList = PlayerList.getInstance();
 	}
-	
+
 	public List<String> getUsedShipSites() {
 		List<String> usedShipSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
 			usedShipSites.addAll(player.getShipAssets());
 		}
 		return usedShipSites;
+	}
+
+	public List<Integer> getOccupiedLairs() {
+		List<String> usedLairSites = new ArrayList<String>();
+		for (Player player : this.getPlayerList().getList()) {
+			usedLairSites.addAll(player.getLairAssets());
+		}
+		List<Integer> usedLairSitesAsInts = new ArrayList<Integer>();
+		for (String lair : usedLairSites) {
+			usedLairSitesAsInts.add(Integer.valueOf(lair.replace(" ", "")));
+		}
+		return usedLairSitesAsInts;
 	}
 
 	public void setIslands(List<Islands> islands) {
