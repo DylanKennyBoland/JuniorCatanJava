@@ -27,6 +27,10 @@ class BuildTesting {
 		// to use are different.
 		buildAction.buildShip();
 		buildAction.buildShip();
+		// Check 4: let's see if we can build lairs!
+		buildAction.buildLair();
+		buildAction.buildLair();
+		buildAction.buildLair();
 	}
 
 }
