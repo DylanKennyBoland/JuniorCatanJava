@@ -17,6 +17,8 @@ public class Board {
 	private PlayerList playerList;
 	private Integer initialNumCocoTiles = 18;
 	private Map<String, Integer> cocoTiles = new HashMap<String, Integer>();
+	private Integer currentMaxCocoTiles = 0;
+	private Player playerWithMostCocoTiles;
 
 	public static Board getInstance() {
 		if (gameBoard == null) {
@@ -55,8 +57,20 @@ public class Board {
 		return true;
 	}
 
+	public void incrementCurrentMaxCocoTiles() {
+		this.currentMaxCocoTiles = this.currentMaxCocoTiles + 1;
+	}
+
+	public void setPlayerWithMaxCocoTiles(Player player) {
+		this.playerWithMostCocoTiles = player;
+	}
+
 	public void updateLairLocations(String location) {
 		this.lairLocations.remove(this.lairLocations.indexOf(location));
+	}
+
+	public Integer getCurrentMaxCocoTiles() {
+		return this.currentMaxCocoTiles;
 	}
 
 	public String getIslandInfo() {
