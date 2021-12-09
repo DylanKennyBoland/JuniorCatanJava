@@ -113,7 +113,8 @@ public class Player implements Tradeable {
 			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
 		}
 		return "Name: " + this.name + "\n" + "Colour: " + this.colour + "\n\nPlayer's Resources:" + playerResources
-				+ "\n\nShip Sites:\n" + this.shipAssets.toString() + "\nLair Sites:\n" + this.lairAssets.toString();
+				+ "\n\nShip Sites:\n" + this.shipAssets.toString() + "\nLair Sites:\n" + this.lairAssets.toString()
+				+ "\n";
 	}
 
 	// 'get' and 'set' methods:

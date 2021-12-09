@@ -34,8 +34,8 @@ public class SetupGame {
 		//	System.out.println("Marketplace has been set up correctly");
 		//}
 		
-		System.out.println("Marketplace has : " + marketplace.toString());
-		System.out.println("Stockpile has : " + stockpile.toString());
+		System.out.println(marketplace.toString());
+		System.out.println(stockpile.toString());
 	}
 	
 }
