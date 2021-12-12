@@ -2,6 +2,7 @@ package model.gameplay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -41,25 +42,105 @@ public class Build {
 //	}
 
 	public boolean checkResources() {
-		if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
-			if (this.buildChoice.contains("Ship")) {
+		if (this.buildChoice.contains("Ship")) {
+			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
 				return true;
-			} else if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1)) {
-				return true;
+			} else {
+				return false;
 			}
+		} else if (this.buildChoice.contains("Lair")) {
+			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
+					&& player.isAvailable("Wood", 1)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
-		System.out.println("you do not have enough resources");
-		return false;
 	}
 
 	public void buildLair() {
-		System.out.println("Where would you like to build a lair? (1-32)");
-		String lairLocation = inputScanner.nextLine();
 		this.buildChoice = "Lair";
+		List<Integer> validLairSites = new ArrayList<Integer>(this.availableLairLocations());
+		if (validLairSites.size() == 0) {
+			System.out.println("You currently have no valid lair sites to build on!\n");
+			return;
+		}
+		if (this.checkResources()) {
+			return;
+		}
+		System.out.println("Where would you like to build a lair? Your options are: ");
+		int i = 0;
+		for (Integer lair : this.availableLairLocations()) {
+			i++;
+			System.out.println("Option " + (i) + ": " + lair);
+		}
+		boolean validInput = false;
+		while (!validInput) {
+			System.out.println("\nEnter here: ");
+			Integer option = inputScanner.nextInt();
+			inputScanner.nextLine();
+			if ((option >= 0) && (option <= this.availableLairLocations().size())) {
+				System.out.println("You have chosen option " + option);
+				System.out.println("Building... ");
+				this.player.addLairAsset(String.valueOf(" " + this.availableLairLocations().get(option - 1) + " "));
+				System.out.println("Done!\n");
+				this.player.takeResource("Cutlass", 1);
+				this.player.takeResource("Molasses", 1);
+				this.player.takeResource("Goats", 1);
+				this.player.takeResource("Wood", 1);
+				this.getBoard().getStockpile().updateStockPile("Cutlass", 1);
+				this.getBoard().getStockpile().updateStockPile("Molasses", 1);
+				this.getBoard().getStockpile().updateStockPile("Goats", 1);
+				this.getBoard().getStockpile().updateStockPile("Wood", 1);
+				validInput = true;
+			} else {
+				System.out.println(
+						"You have input " + option + " which is outside the range of options. Please re-enter.");
+			}
+		}
 		// playerResources = player.getResources();
-		if (board.isLairAvailable(lairLocation) && checkResources()) {
-			swap(this.lairCost, lairLocation, "Lair");
-			System.out.println("You now own lair " + lairLocation);
+//		if (board.isLairAvailable(lairLocation) && checkResources()) {
+//			swap(this.lairCost, lairLocation, "Lair");
+//			System.out.println("You now own lair " + lairLocation);
+	}
+
+	public void buildShip() {
+		this.buildChoice = "Ship";
+		List<String> validShipSites = new ArrayList<String>(this.availableShipLocations());
+		if (validShipSites.size() == 0) {
+			System.out.println("You currently have no valid ship sites to build on!\n");
+			return;
+		}
+		if (this.checkResources()) {
+			return;
+		}
+		System.out.println("Where would you like to build a ship? Your options are: ");
+		int n = 0;
+		for (String site : validShipSites) {
+			n++;
+			System.out.println((n) + ": " + site);
+		}
+		boolean validInput = false;
+		while (!validInput) {
+			System.out.println("\nEnter here: ");
+			Integer option = inputScanner.nextInt();
+			inputScanner.nextLine();
+			if ((option >= 0) && (option <= validShipSites.size())) {
+				System.out.println("You have chosen option " + option);
+				System.out.println("Building... ");
+				this.player.addShipAsset(validShipSites.get(option - 1));
+				System.out.println("Done!\n");
+				this.player.takeResource("Goats", 1);
+				this.player.takeResource("Wood", 1);
+				this.getBoard().getStockpile().updateStockPile("Goats", 1);
+				this.getBoard().getStockpile().updateStockPile("Wood", 1);
+				validInput = true;
+			} else {
+				System.out.println(
+						"You have input " + option + " which is outside the range of options. Please re-enter.");
+			}
 		}
 	}
 
@@ -75,8 +156,51 @@ public class Build {
 
 	}
 
-	public void buildShip() {
-		this.buildChoice = "Ship";
-		System.out.println("Building Ship");
+//	public List<String> getMatches(List<String> lairs, List<String> freeShipSites) {
+//		List<String> matches = new ArrayList<String>();
+//		for (String lair : lairs) {
+//			for (String shipSite : freeShipSites) {
+//				if (shipSite.contains(lair)) {
+//					matches.add(shipSite);
+//				}
+//			}
+//		}
+//		return matches;
+//	}
+
+	public List<Integer> availableLairLocations() {
+		List<Integer> allLairSites = new ArrayList<Integer>(this.getBoard().getLairList());
+		allLairSites.removeAll(this.getBoard().getOccupiedLairs());
+		List<Integer> validLairSites = new ArrayList<Integer>();
+		for (Integer lair : allLairSites) {
+			for (String shipSite : this.player.getShipAssets()) {
+				if (shipSite.contains(" " + String.valueOf(lair) + " ")) {
+					validLairSites.add(lair);
+				}
+			}
+		}
+		return validLairSites;
+	}
+
+	public List<String> availableShipLocations() {
+		List<String> allShipSites = new ArrayList<String>(this.getBoard().getShipLocations());
+		allShipSites.removeAll(this.getBoard().getUsedShipSites());
+		List<String> freeShipSites = new ArrayList<String>(allShipSites);
+		List<String> validShipSites = new ArrayList<String>();
+		for (String lair : this.player.getLairAssets()) {
+			for (String shipSite : freeShipSites) {
+				if (shipSite.contains(lair)) {
+					validShipSites.add(shipSite);
+				}
+			}
+		}
+		return validShipSites;
+//		List<String> validShipSites = new ArrayList<String>(
+//				this.getMatches(this.player.getLairAssets(), freeShipSites));
+//		return validShipSites;
+	}
+
+	public Board getBoard() {
+		return this.board;
 	}
 }
