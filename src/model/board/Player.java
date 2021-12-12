@@ -11,6 +11,7 @@ public class Player implements Tradeable {
 	private String name;
 	private PlayerEnums colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
+	private Map<String, Integer> cocoTiles = new HashMap<String, Integer>();
 	private Integer initialNum = 0;
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
@@ -30,6 +31,10 @@ public class Player implements Tradeable {
 		this.resources.put("Gold", this.initialNum);
 		this.resources.put("Molasses", this.initialNum);
 		this.resources.put("Coco tiles", this.initialNum);
+		this.cocoTiles.put("Ghost Captain", this.initialNum);
+		this.cocoTiles.put("Build", this.initialNum);
+		this.cocoTiles.put("Resource Combination 1", this.initialNum);
+		this.cocoTiles.put("Resource Combination 2", this.initialNum);
 	}
 
 	public void initializeAssets() {
@@ -106,6 +111,14 @@ public class Player implements Tradeable {
 		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
 	}
 
+	public Integer getNumOfCocoTiles() {
+		int num = 0;
+		for (Integer value : this.getCocoTiles().values()) {
+			num += value;
+		}
+		return num;
+	}
+
 	@Override
 	public String toString() {
 		String playerResources = "";
@@ -134,6 +147,10 @@ public class Player implements Tradeable {
 
 	public Map<String, Integer> getResources() {
 		return this.resources;
+	}
+
+	public Map<String, Integer> getCocoTiles() {
+		return this.cocoTiles;
 	}
 
 	public void giveResource(String resource, Integer num) {
