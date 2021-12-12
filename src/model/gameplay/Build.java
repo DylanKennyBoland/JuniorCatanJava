@@ -62,7 +62,7 @@ public class Build {
 
 	public void buildLair() {
 		this.buildChoice = "Lair";
-		List<Integer> validLairSites = new ArrayList<Integer>(this.availableLairLocations());
+		List<Integer> validLairSites = new ArrayList<Integer>(this.validLairSites());
 		if (validLairSites.size() == 0) {
 			System.out.println("You currently have no valid lair sites to build on!\n");
 			return;
@@ -72,7 +72,7 @@ public class Build {
 		}
 		System.out.println("Where would you like to build a lair? Your options are: ");
 		int i = 0;
-		for (Integer lair : this.availableLairLocations()) {
+		for (Integer lair : this.validLairSites()) {
 			i++;
 			System.out.println("Option " + (i) + ": " + lair);
 		}
@@ -81,10 +81,10 @@ public class Build {
 			System.out.println("\nEnter here: ");
 			Integer option = inputScanner.nextInt();
 			inputScanner.nextLine();
-			if ((option >= 0) && (option <= this.availableLairLocations().size())) {
+			if ((option >= 0) && (option <= this.validLairSites().size())) {
 				System.out.println("You have chosen option " + option);
 				System.out.println("Building... ");
-				this.player.addLairAsset(String.valueOf(" " + this.availableLairLocations().get(option - 1) + " "));
+				this.player.addLairAsset(String.valueOf(" " + this.validLairSites().get(option - 1) + " "));
 				System.out.println("Done!\n");
 				this.player.takeResource("Cutlass", 1);
 				this.player.takeResource("Molasses", 1);
@@ -108,7 +108,7 @@ public class Build {
 
 	public void buildShip() {
 		this.buildChoice = "Ship";
-		List<String> validShipSites = new ArrayList<String>(this.availableShipLocations());
+		List<String> validShipSites = new ArrayList<String>(this.validShipSites());
 		if (validShipSites.size() == 0) {
 			System.out.println("You currently have no valid ship sites to build on!\n");
 			return;
@@ -168,7 +168,7 @@ public class Build {
 //		return matches;
 //	}
 
-	public List<Integer> availableLairLocations() {
+	public List<Integer> validLairSites() {
 		List<Integer> allLairSites = new ArrayList<Integer>(this.getBoard().getLairList());
 		allLairSites.removeAll(this.getBoard().getOccupiedLairs());
 		List<Integer> validLairSites = new ArrayList<Integer>();
@@ -182,8 +182,8 @@ public class Build {
 		return validLairSites;
 	}
 
-	public List<String> availableShipLocations() {
-		List<String> allShipSites = new ArrayList<String>(this.getBoard().getShipLocations());
+	public List<String> validShipSites() {
+		List<String> allShipSites = new ArrayList<String>(this.getBoard().getShipSites());
 		allShipSites.removeAll(this.getBoard().getUsedShipSites());
 		List<String> freeShipSites = new ArrayList<String>(allShipSites);
 		List<String> validShipSites = new ArrayList<String>();
