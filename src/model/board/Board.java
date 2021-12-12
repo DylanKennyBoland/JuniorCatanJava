@@ -11,7 +11,7 @@ public class Board {
 
 	private static Board gameBoard;
 	private List<Integer> lairLocations;
-	private List<String> shipLocations = new ArrayList<String>();
+	private List<String> shipSites = new ArrayList<String>();
 	private List<Islands> islands;
 	private Marketplace marketplace;
 	private Stockpile stockpile;
@@ -30,14 +30,14 @@ public class Board {
 
 	private Board() {
 		this.lairLocations = IntStream.rangeClosed(1, 32).boxed().collect(Collectors.toList());
-		this.shipLocations.add(" 3 - 4 ");
-		this.shipLocations.add(" 2 - 3 ");
-		this.shipLocations.add(" 27 - 28 ");
-		this.shipLocations.add(" 9 - 10 ");
-		this.shipLocations.add(" 4 - 5 ");
-		this.shipLocations.add(" 5 - 6 ");
-		this.shipLocations.add(" 15 - 16 ");
-		this.shipLocations.add(" 14 - 15 ");
+		this.shipSites.add(" 3 - 4 ");
+		this.shipSites.add(" 2 - 3 ");
+		this.shipSites.add(" 27 - 28 ");
+		this.shipSites.add(" 9 - 10 ");
+		this.shipSites.add(" 4 - 5 ");
+		this.shipSites.add(" 5 - 6 ");
+		this.shipSites.add(" 15 - 16 ");
+		this.shipSites.add(" 14 - 15 ");
 		this.islands = new ArrayList<Islands>();
 		this.marketplace = new Marketplace("The marketplace");
 		this.stockpile = new Stockpile("The stockpile");
@@ -126,8 +126,8 @@ public class Board {
 		return this.islands;
 	}
 
-	public List<String> getShipLocations() {
-		return this.shipLocations;
+	public List<String> getShipSites() {
+		return this.shipSites;
 	}
 
 	public List<Integer> getLairList() {
