@@ -203,4 +203,13 @@ public class Build {
 	public Board getBoard() {
 		return this.board;
 	}
+	
+	private boolean canBuild(String location) {
+		for(String asset: player.getLairAssets()) {
+			if(asset.contains(" " + location + " ")) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

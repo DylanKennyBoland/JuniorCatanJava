@@ -48,17 +48,32 @@ public class Islands{
 	}
 	
 	private void setAttachedShipSites() {
+		List<String> lairs = new ArrayList<String>(); 
 		for (int i = 0; i < this.attachedLairs.size(); i++) {
 			if (i == (this.attachedLairs.size()-1)){
 				if(this.attachedLairs.size() == 6) {
-					String shipSite = " " + this.attachedLairs.get(i) + " - " + this.attachedLairs.get(0) + " ";
+					String shipSite = " " + this.attachedLairs.get(0) + " - " + this.attachedLairs.get(i) + " ";
 					attachedShipSites.add(shipSite);
 				}
 			}else {
-			String shipSite = " " + this.attachedLairs.get(i) + " - " + this.attachedLairs.get(i+1) + " ";
+
+			lairs = greaterThan(this.attachedLairs.get(i),this.attachedLairs.get(i+1));
+			String shipSite = " " + lairs.get(0) + " - " + lairs.get(1) + " ";
 			attachedShipSites.add(shipSite);
 			}
 		}
+	}
+	
+	public List<String> greaterThan(String src, String dst) {
+		if(Integer.parseInt(src) > Integer.parseInt(dst)) {
+			String tmpDst = src;
+			src = dst;
+			dst = tmpDst;
+		}
+		List<String> lairs = new ArrayList<String>();
+		lairs.add(src);
+		lairs.add(dst);
+		return lairs;
 	}
 	
 	public List<String> getAttachedShipSites(){

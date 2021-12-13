@@ -13,9 +13,9 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner inputScanner = new Scanner(System.in);
 		
-		Setup.getInstance().setupGame(inputScanner);
+		//Setup.getInstance().setupGame(inputScanner);
 		
-		Controller.getInstance().playGame(inputScanner);
+		Controller.getInstance(Setup.getInstance(), inputScanner).playGame(inputScanner);
 //        SetupPlayers playerSetup = new SetupPlayers();
 //        playerSetup.CreateAllPlayers(inputScanner);
 //		Player player1 = new Player("Adam", PlayerEnums.BLUE);

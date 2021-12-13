@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,6 +40,7 @@ public class Board {
 		this.shipSites.add(" 15 - 16 ");
 		this.shipSites.add(" 14 - 15 ");
 		this.islands = new ArrayList<Islands>();
+		this.shipLocations = new ArrayList<String>();
 		this.marketplace = new Marketplace("The marketplace");
 		this.stockpile = new Stockpile("The stockpile");
 		this.playerList = PlayerList.getInstance();
@@ -102,6 +104,13 @@ public class Board {
 		return this.currentMaxCocoTiles;
 	}
 
+	public void setShipLocations() {
+		for(Islands island: islands) {
+			this.shipLocations.removeAll(island.getAttachedShipSites());
+			this.shipLocations.addAll(island.getAttachedShipSites());
+		}
+	}
+	
 	public String getIslandInfo() {
 		String islandInfo = "";
 		for (Islands island : islands) {

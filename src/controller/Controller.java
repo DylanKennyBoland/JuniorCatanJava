@@ -6,24 +6,28 @@ import model.board.Board;
 import model.board.Player;
 import model.board.PlayerList;
 import model.gameplay.PlayerTurn;
+import model.setup.Setup;
 
 public class Controller {
 	private Player player;
 	private PlayerList playerList;
 	private Scanner inputScanner;
+	private Setup setup;
 	private boolean gameOver;
 	private static Controller controller;
 	
-    public static Controller getInstance(){
+    public static Controller getInstance(Setup setupInstance, Scanner inputScanner){
         if(controller == null){
-            controller = new Controller();
+            controller = new Controller(setupInstance, inputScanner);
         }
         return controller;
     }
     
-    public Controller() {
+    public Controller(Setup setupInstance, Scanner inputScanner) {
+    	setupInstance.setupGame(inputScanner);;
     	this.playerList = PlayerList.getInstance();
     	this.gameOver = false;
+    	
     }
     
     public void playGame(Scanner inputScanner) {
