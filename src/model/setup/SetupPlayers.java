@@ -5,6 +5,7 @@ import java.util.Scanner;
 import model.enums.*;
 import model.players.Player;
 import model.players.PlayerList;
+import view.View;
 
 public class SetupPlayers {
 
@@ -15,9 +16,12 @@ public class SetupPlayers {
 	private ArrayList<Integer> colourIndex = new ArrayList<Integer>();
 	private Stockpile stockpile;
 	private Board board;
+	private View view;
 	
 	public SetupPlayers() {
 		this.playerList = PlayerList.getInstance();
+		this.board = Board.getInstance();
+		this.view = View.getInstance();
 	}
 	
 	public void CreateAllPlayers(Scanner player) {
@@ -34,11 +38,11 @@ public class SetupPlayers {
 		this.stockpile = board.getStockpile();
 		this.stockpile.updateStockPile("Wood", -playerList.getNumOfPlayers());
 		this.stockpile.updateStockPile("Molasses", -playerList.getNumOfPlayers());
-		//System.out.println("Players : " + playerList.toString());
+		//this.view.display("Players : " + playerList.toString());
 	}
 
 	private void CreatePlayer(Scanner player) {
-		System.out.println("Creating new player. Please enter your name:");
+		this.view.display("Creating new player. Please enter your name:");
 		String name = player.nextLine();
 		String age = getPlayerAge(player);
 
@@ -53,18 +57,18 @@ public class SetupPlayers {
 	private String getPlayerAge(Scanner player) {
 		boolean validAge = false;
 		String age = " ";
-		System.out.println("\nWhat is your age?");
+		this.view.display("\nWhat is your age?");
 		while(!validAge) {
 			age = player.nextLine();
 			try {
 				int ageInt = Integer.parseInt(age);
 				if(ageInt < 0) {
 					validAge = false;
-					System.out.println("Number must be non negative. Try again.");
+					this.view.display("Number must be non negative. Try again.");
 				}else {validAge = true;}
 			}
 			catch(NumberFormatException e) {
-				System.out.println("That is not a number. Try again.");
+				this.view.display("That is not a number. Try again.");
 				validAge = false;
 			}
 		}
@@ -72,7 +76,7 @@ public class SetupPlayers {
 	}
 	
 	private String getPlayerColour(Scanner player) {
-		System.out.println("\nWhat colour would you like: ");
+		this.view.display("\nWhat colour would you like: ");
 		boolean validColour = false;
 		while(!validColour) {
 			printAvailableColors();
@@ -85,13 +89,13 @@ public class SetupPlayers {
 					choiceInt = Integer.parseInt(choice);
 				}
 				catch(NumberFormatException e) {
-					System.out.println("That is not a number");
+					this.view.display("That is not a number");
 					choiceInt = 5;
 				}
 				if(this.colourIndex.contains(choiceInt)/**choiceInt <= this.availableColors.size() && choiceInt > 0*/) {
 					validChoice = true;
 				}else {
-					System.out.println("\nThat is not a valid choice. Try again.");
+					this.view.display("\nThat is not a valid choice. Try again.");
 				}
 			}
 			
@@ -110,7 +114,7 @@ public class SetupPlayers {
 	}
 	
 	private Integer getNumPlayers(Scanner player) {
-		System.out.print("How many people are playing the game? (3 or 4): ");
+		this.view.display("How many people are playing the game? (3 or 4): ");
 		boolean validNumber = false;
 		while(!validNumber) {
 			numPlayersString = player.nextLine();
@@ -127,7 +131,7 @@ public class SetupPlayers {
 	
 	private boolean isValidNumber(Integer num) {
 		if(num < 0 || num > 4) {
-			System.out.println("Not a valid number. Must be 3 or 4. Try again.");
+			this.view.display("Not a valid number. Must be 3 or 4. Try again.");
 			return false;
 		} else if(num == 3){
 			this.colourIndex.add(1);
@@ -162,7 +166,7 @@ public class SetupPlayers {
 	private void printAvailableColors() {
 		int i = 0;
 		for(PlayerEnums colour : availableColors) {
-            System.out.println("\n" + colourIndex.get(i) + " : " +  colour.getColour());
+            this.view.display("\n" + colourIndex.get(i) + " : " +  colour.getColour());
             i++;
 		}
 	}

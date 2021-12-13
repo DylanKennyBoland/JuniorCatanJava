@@ -7,12 +7,15 @@ import controller.PlayerTurn;
 import model.board.*;
 import model.enums.PlayerEnums;
 import model.setup.*;
+import view.View;
 
 
 public class Main {
 	public static void main(String[] args) {
 		Scanner inputScanner = new Scanner(System.in);
-		Controller.getInstance(Setup.getInstance(), inputScanner).playGame(inputScanner);
+		
+		View view = View.getInstance();
+		Controller.getInstance(view, Setup.getInstance(), inputScanner).playGame(inputScanner);
 
         inputScanner.close();
 	}
