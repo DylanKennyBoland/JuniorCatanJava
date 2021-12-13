@@ -168,21 +168,31 @@ public class PlayerTurn {
 			return;
 		}
 		this.view.display("Where would you like to build a lair? Your options are: ");
-		this.displayOptions(validLairSites);
+		ArrayList<String> options = new ArrayList<String>(validLairSites);
+		options.add("Cancel Build");
+		this.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
 			this.view.display("\nEnter here: ");
-			int option = inputScanner.nextInt();
-			inputScanner.nextLine();
-			inputScanner.nextLine();
-			if ((option >= 0) && (option <= validLairSites.size())) {
-				this.view.display("You have chosen option " + option);
-				this.view.display("\nBuilding... ");
-				this.buildOptions.buildLair(validLairSites.get(option - 1));
-				validInput = true;
-			} else {
-				this.view.display(
-						"You have input " + option + " which is outside the range of options. Please re-enter.");
+			if(inputScanner.hasNextInt()) {
+				int option = inputScanner.nextInt();
+				inputScanner.nextLine();
+				inputScanner.nextLine();
+				if ((option >= 1) && (option <= validLairSites.size())) {
+					this.view.display("You have chosen option " + option);
+					this.view.display("\nBuilding... ");
+					this.buildOptions.buildLair(validLairSites.get(option - 1));
+					validInput = true;
+				} else if(option == options.size()) {
+					this.view.display("Canceling build ...");
+					validInput = true;
+				}else {
+					this.view.display(
+							"You have input " + option + " which is outside the range of options. Please re-enter.");
+				}
+			}else {
+				this.view.display("Please input an integer for the option number.");
+				inputScanner.next();
 			}
 		}
 	}
@@ -198,20 +208,30 @@ public class PlayerTurn {
 			return;
 		}
 		this.view.display("Where would you like to build a ship? Your options are: ");
-		this.displayOptions(validShipSites);
+		ArrayList<String> options = new ArrayList<String>(validShipSites);
+		options.add("Cancel Build");
+		this.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
 			this.view.display("\nEnter here: ");
-			Integer option = inputScanner.nextInt();
-			inputScanner.nextLine();
-			if ((option >= 0) && (option <= validShipSites.size())) {
-				this.view.display("You have chosen option " + option);
-				this.view.display("Building... ");
-				this.buildOptions.buildShip(validShipSites.get(option - 1));
-				validInput = true;
-			} else {
-				this.view.display(
-						"You have input " + option + " which is outside the range of options. Please re-enter.");
+			if(inputScanner.hasNextInt()) {
+				Integer option = inputScanner.nextInt();
+				inputScanner.nextLine();
+				if ((option >= 0) && (option <= validShipSites.size())) {
+					this.view.display("You have chosen option " + option);
+					this.view.display("Building... ");
+					this.buildOptions.buildShip(validShipSites.get(option - 1));
+					validInput = true;
+				} else if(option == options.size()) {
+					this.view.display("Canceling build ...");
+					validInput = true;
+				}else {
+					this.view.display(
+							"You have input " + option + " which is outside the range of options. Please re-enter.");
+				}
+			}else {
+				this.view.display("Please input an integer for the option number.");
+				inputScanner.next();
 			}
 		}
 	}
