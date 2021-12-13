@@ -16,13 +16,12 @@ public class Marketplace implements Tradeable {
 	@Override
 	public void set() {
 		this.marketplace.clear();
-		this.marketplace.add("Wood");
-		this.marketplace.add("Cutlass");
-		this.marketplace.add("Goat");
 		this.marketplace.add("Gold");
 		this.marketplace.add("Molasses");
-		Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each
-													// time...
+		this.marketplace.add("Wood");
+		this.marketplace.add("Goats");
+		this.marketplace.add("Cutlass");
+		//Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
 	}
 
 	@Override
@@ -65,9 +64,9 @@ public class Marketplace implements Tradeable {
 
 	@Override
 	public String toString() {
-		String result = "Name: " + this.name + "\n";
-		for (String resource : this.marketplace) {
-			result = result + resource + "\n";
+		String result = "";
+		for(String resource : this.marketplace) {
+			result = result + "\t" + resource + "\n";
 		}
 		return result;
 	}

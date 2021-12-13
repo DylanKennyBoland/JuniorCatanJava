@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import model.players.Player;
+import model.players.PlayerList;
 
 public class Board {
 
@@ -16,10 +20,11 @@ public class Board {
 	private Marketplace marketplace;
 	private Stockpile stockpile;
 	private PlayerList playerList;
-	private Integer initialNumCocoTiles = 18;
+	private Integer initialNumCocoTiles = 17;
 	private Map<String, Integer> cocoTiles = new HashMap<String, Integer>();
 	private Integer currentMaxCocoTiles = 0;
 	private Player playerWithMostCocoTiles;
+	private Islands ghostIsland;
 
 	public static Board getInstance() {
 		if (gameBoard == null) {
@@ -30,19 +35,26 @@ public class Board {
 
 	private Board() {
 		this.lairLocations = IntStream.rangeClosed(1, 32).boxed().collect(Collectors.toList());
-		this.shipSites.add(" 3 - 4 ");
-		this.shipSites.add(" 2 - 3 ");
-		this.shipSites.add(" 27 - 28 ");
-		this.shipSites.add(" 9 - 10 ");
-		this.shipSites.add(" 4 - 5 ");
-		this.shipSites.add(" 5 - 6 ");
-		this.shipSites.add(" 15 - 16 ");
-		this.shipSites.add(" 14 - 15 ");
+//		this.shipSites.add(" 3 - 4 ");
+//		this.shipSites.add(" 2 - 3 ");
+//		this.shipSites.add(" 27 - 28 ");
+//		this.shipSites.add(" 9 - 10 ");
+//		this.shipSites.add(" 4 - 5 ");
+//		this.shipSites.add(" 5 - 6 ");
+//		this.shipSites.add(" 15 - 16 ");
+//		this.shipSites.add(" 14 - 15 ");
 		this.islands = new ArrayList<Islands>();
 		this.marketplace = new Marketplace("The marketplace");
 		this.stockpile = new Stockpile("The stockpile");
 		this.playerList = PlayerList.getInstance();
 		this.setUpCocoTiles();
+	}
+	
+	public void setupShipSites() {
+		for(Islands island: this.islands) {
+			this.shipSites.removeAll(island.getAttachedShipSites());
+			this.shipSites.addAll(island.getAttachedShipSites());
+		}
 	}
 
 	public void setUpCocoTiles() {
@@ -55,6 +67,7 @@ public class Board {
 	public List<String> getUsedShipSites() {
 		List<String> usedShipSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
+			System.out.println("Used Ship Sites : " + player.getShipAssets());
 			usedShipSites.addAll(player.getShipAssets());
 		}
 		return usedShipSites;
@@ -74,6 +87,14 @@ public class Board {
 
 	public void setIslands(List<Islands> islands) {
 		this.islands = islands;
+	}
+	
+	public void setGhostIsland(Islands island) {
+		this.ghostIsland = island;
+	}
+	
+	public Islands getGhostIsland() {
+		return this.ghostIsland;
 	}
 
 	public boolean isLairAvailable(String location) {
@@ -108,6 +129,22 @@ public class Board {
 			islandInfo += island.toString() + "\n";
 		}
 		return islandInfo;
+	}
+	
+	public void moveGhostCaptain(String islandName) {
+		this.islands.get(islands.indexOf(this.ghostIsland)).setGhostCaptain(false);
+		Islands newGhostIsland = getIslandByName(islandName);
+		newGhostIsland.setGhostCaptain(true);
+		this.ghostIsland = newGhostIsland;
+	}
+	
+	public Islands getIslandByName(String islandName) {
+		for(Islands island: this.islands) {
+			if(island.getName().contains(islandName)){
+				return island;
+			}
+		}
+		return this.ghostIsland;
 	}
 
 	public PlayerList getPlayerList() {

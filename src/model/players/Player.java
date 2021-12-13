@@ -1,10 +1,11 @@
-package model.board;
+package model.players;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.board.Tradeable;
 import model.enums.PlayerEnums;
 
 public class Player implements Tradeable {
@@ -15,28 +16,34 @@ public class Player implements Tradeable {
 	private Integer initialNum = 0;
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
-
-	public Player(String name, PlayerEnums colour) { // The constructor...
+	private String age;
+	
+	public Player(String name, PlayerEnums colour, String age) { // The constructor...
 		this.name = name;
 		this.colour = colour;
+		this.age = age;
 		this.set();
 		this.initializeAssets(); // Setting up the player's starting lair and ship locations...
 	}
 
 	@Override
 	public void set() {
-		this.resources.put("Wood", this.initialNum);
+		this.resources.put("Wood", 1);
 		this.resources.put("Cutlass", this.initialNum);
 		this.resources.put("Goats", this.initialNum);
 		this.resources.put("Gold", this.initialNum);
-		this.resources.put("Molasses", this.initialNum);
+		this.resources.put("Molasses", 1);
 		this.resources.put("Coco tiles", this.initialNum);
 		this.cocoTiles.put("Ghost Captain", this.initialNum);
 		this.cocoTiles.put("Build", this.initialNum);
 		this.cocoTiles.put("Resource Combination 1", this.initialNum);
 		this.cocoTiles.put("Resource Combination 2", this.initialNum);
 	}
-
+	
+	public Integer getAge() {
+		return Integer.parseInt(this.age);
+	}
+	
 	public void initializeAssets() {
 		switch (this.colour) {
 		case RED:
@@ -92,6 +99,7 @@ public class Player implements Tradeable {
 	@Override
 	public boolean isAvailable(String resourceName, Integer number) {
 		if ((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
+			System.out.println("Player has " + resources.get(resourceName) + " " + resourceName);
 			return true;
 		} else {
 			return false;
@@ -125,9 +133,7 @@ public class Player implements Tradeable {
 		for (String resource : this.resources.keySet()) {
 			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
 		}
-		return "Name: " + this.name + "\n" + "Colour: " + this.colour + "\n\nPlayer's Resources:" + playerResources
-				+ "\n\nShip Sites:\n" + this.shipAssets.toString() + "\nLair Sites:\n" + this.lairAssets.toString()
-				+ "\n";
+		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\tPlayer's lairs:" + this.lairAssets.toString() + "\n\tPlayer's ships:" + this.shipAssets.toString();
 	}
 
 	// 'get' and 'set' methods:

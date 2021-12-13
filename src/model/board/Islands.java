@@ -2,8 +2,10 @@ package model.board;
 import java.util.*;
 
 import model.enums.IslandEnums;
+import model.enums.ResourceEnums;
 
 public class Islands{
+	private String name;
 	private int diceNumber;
 	private IslandEnums islandType;
 	private List<String> attachedLairs;
@@ -11,7 +13,8 @@ public class Islands{
 	private boolean ghostCaptain = false;
 	
 	
-	public Islands(int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
+	public Islands(String name, int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
+		this.name = name;
 		this.diceNumber = diceNumber;
 		this.islandType = islandType;
 		this.attachedLairs = new ArrayList<String>(attachedLairs);
@@ -26,7 +29,23 @@ public class Islands{
 	public IslandEnums getIslandType() {
 		return islandType;
 	}
+	
+	public String getIslandResource() {
+		switch(this.islandType){
+		case FOREST: return ResourceEnums.WOOD.getType();
+		case CAVES: return ResourceEnums.CUTLASS.getType();
+		case RIVERS: return ResourceEnums.GOLD.getType();
+		case SUGAR: return ResourceEnums.MOLASSES.getType();
+		case PASTURES: return ResourceEnums.GOATS.getType();
+		case SPOOKY: return " ";
+		default : return " ";
+		}
+	}
 
+	public String getName() {
+		return this.name;
+	}
+	
 	public boolean hasGhostCaptain() {
 		return ghostCaptain;
 	}
@@ -48,17 +67,32 @@ public class Islands{
 	}
 	
 	private void setAttachedShipSites() {
+		List<String> lairs = new ArrayList<String>(); 
 		for (int i = 0; i < this.attachedLairs.size(); i++) {
 			if (i == (this.attachedLairs.size()-1)){
 				if(this.attachedLairs.size() == 6) {
-					String shipSite = " " + this.attachedLairs.get(i) + " - " + this.attachedLairs.get(0) + " ";
+					String shipSite = this.attachedLairs.get(0) + "-" + this.attachedLairs.get(i);
 					attachedShipSites.add(shipSite);
 				}
 			}else {
-			String shipSite = " " + this.attachedLairs.get(i) + " - " + this.attachedLairs.get(i+1) + " ";
+
+			lairs = greaterThan(this.attachedLairs.get(i),this.attachedLairs.get(i+1));
+			String shipSite = lairs.get(0) + "-" + lairs.get(1);
 			attachedShipSites.add(shipSite);
 			}
 		}
+	}
+	
+	public List<String> greaterThan(String src, String dst) {
+		if(Integer.parseInt(src.trim()) > Integer.parseInt(dst.trim())) {
+			String tmpDst = src;
+			src = dst;
+			dst = tmpDst;
+		}
+		List<String> lairs = new ArrayList<String>();
+		lairs.add(src);
+		lairs.add(dst);
+		return lairs;
 	}
 	
 	public List<String> getAttachedShipSites(){

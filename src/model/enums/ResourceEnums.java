@@ -2,7 +2,7 @@ package model.enums;
 
 public enum ResourceEnums {
 	CUTLASS("Cutlass"),
-	GOAT("Goat"),
+	GOATS("Goats"),
 	WOOD("Wood"),
 	GOLD("Gold"),
 	MOLASSES("Molasses");
