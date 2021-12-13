@@ -4,15 +4,15 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
-import model.board.Player;
 import model.enums.PlayerEnums;
 import model.gameplay.Build;
+import model.players.Player;
 
 class BuildTesting {
 
 	@Test
 	void test() {
-		Player dylan = new Player("Dylan", PlayerEnums.RED); // Creating a player object
+		Player dylan = new Player("Dylan", PlayerEnums.RED, "22"); // Creating a player object
 		// Check 1: let's see if the player has their resource hash map set up:
 		System.out.println(dylan.toString());
 
