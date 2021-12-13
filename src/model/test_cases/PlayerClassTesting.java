@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import model.board.Player;
 import model.enums.PlayerEnums;
+import model.players.Player;
 
 class PlayerClassTesting {
 
 	@Test
 	void test() {
-		Player dylan = new Player("Dylan", PlayerEnums.ORANGE); // Creating a player object
+		Player dylan = new Player("Dylan", PlayerEnums.ORANGE, "22"); // Creating a player object
 
 		// Check 1: let's see if the player has their resource hash map set up:
 		System.out.println(dylan.toString());
