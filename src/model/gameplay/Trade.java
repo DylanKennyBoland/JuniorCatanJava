@@ -31,32 +31,37 @@ public class Trade {
 		return true;
 	}
 	
-	public void tradeMarketplace(String requestedResource, String givenResource) {
+	public String tradeMarketplace(String requestedResource, String givenResource) {
 		if(this.marketplace.isAvailable(requestedResource, 1)) {
 			if(player.isAvailable(givenResource, 1)) {
 				player.giveResource(requestedResource, 1);
 				player.takeResource(givenResource, 1);
-				System.out.println(this.marketplace.trade(givenResource, 1, requestedResource, 1));
 				this.tradedWithMarketplace = true;
+				return(this.marketplace.trade(givenResource, 1, requestedResource, 1));
 			}	
-		}	
+		}else {
+			return("The marketplace does not have any " + requestedResource);
+		}
+		return("Error, something went wrong!");
 	}
 	
-	public void tradeStockpile(String requestedResource, int num, ArrayList<String> tradeInfo){
+	public String tradeStockpile(String requestedResource, int num, ArrayList<String> tradeInfo){
+		String output = "";
 		if(tradeInfo.size()>1){
 			num = 1;
 		}
 		for(String givenResource: tradeInfo) {
-			swapWithStockpile(givenResource, requestedResource, num);
+			output  += swapWithStockpile(givenResource, requestedResource, num);
 		}
+		return output;
 	}
 	
-	private void swapWithStockpile(String givenResource, String requestedResource, Integer num) {
+	private String swapWithStockpile(String givenResource, String requestedResource, Integer num) {
 		if(player.isAvailable(givenResource, num*2)) {
 			player.giveResource(requestedResource, num);
 			player.takeResource(givenResource, num*2);
-			System.out.println(this.stockpile.trade(givenResource, num*2, requestedResource, num));
-		} else {System.out.println("You do not have enough " + givenResource + " for this trade!");}
+			return(this.stockpile.trade(givenResource, num*2, requestedResource, num));
+		} else {return("You do not have enough " + givenResource + " for this trade!");}
 	}
 	
 	

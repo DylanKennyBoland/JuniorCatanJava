@@ -83,9 +83,8 @@ public class Player implements Tradeable {
 		this.lairAssets.add(asset);
 	}
 
-	public void viewAssets() {
-		System.out.println(this.lairAssets.toString());
-		System.out.println(this.shipAssets.toString());
+	public String viewAssets() {
+		return ("You own these lairs: " + this.lairAssets.toString() + "\nYou own these ships: " + this.shipAssets.toString());
 	}
 
 	public List<String> getLairAssets() {
@@ -99,7 +98,6 @@ public class Player implements Tradeable {
 	@Override
 	public boolean isAvailable(String resourceName, Integer number) {
 		if ((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
-			System.out.println("Player has " + resources.get(resourceName) + " " + resourceName);
 			return true;
 		} else {
 			return false;
