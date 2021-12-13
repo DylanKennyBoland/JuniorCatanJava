@@ -98,7 +98,18 @@ public class Build {
 	}
 
 	public String buildShip(String ship) {
-//		this.buildChoice = "Ship";
+		this.buildChoice = "Ship";
+		this.player.addLairAsset(ship);
+		this.player.takeResource("Cutlass", 1);
+		this.player.takeResource("Molasses", 1);
+		this.player.takeResource("Goats", 1);
+		this.player.takeResource("Wood", 1);
+		this.getBoard().getStockpile().updateStockPile("Cutlass", 1);
+		this.getBoard().getStockpile().updateStockPile("Molasses", 1);
+		this.getBoard().getStockpile().updateStockPile("Goats", 1);
+		this.getBoard().getStockpile().updateStockPile("Wood", 1);
+		return ("Done!\n");
+	}
 //		List<String> validShipSites = new ArrayList<String>(this.validShipSites());
 //		if (validShipSites.size() == 0) {
 //			System.out.println("You currently have no valid ship sites to build on!\n");
@@ -114,13 +125,11 @@ public class Build {
 //			n++;
 //			System.out.println((n) + ": " + site);
 //		}
->>>>>>> master
 //		boolean validInput = false;
 //		while (!validInput) {
 //			System.out.println("\nEnter here: ");
 //			Integer option = inputScanner.nextInt();
 //			inputScanner.nextLine();
-<<<<<<< HEAD
 //			if (option == (i + 1)) {
 //				System.out.println("Canceling build...");
 //				validInput = true;
@@ -151,6 +160,63 @@ public class Build {
 ////			System.out.println("You now own lair " + lairLocation);
 //	}
 
+	public void buildLair() {
+		this.buildChoice = "Lair";
+		List<String> validLairSites = new ArrayList<String>(this.validLairSites());
+		if (validLairSites.size() == 0) {
+			System.out.println("You currently have no valid lair sites to build on!\n");
+			return;
+		}
+
+		if (this.checkResources("Lair")) {
+			return;
+		}
+
+//		if (!this.checkResources()) {
+//			System.out.println("You do not have enough resources!");
+//			return;
+//		}
+
+		System.out.println("Where would you like to build a lair? Your options are: ");
+		int n = 0;
+		for (String lair : validLairSites) {
+			n++;
+			System.out.println((n) + ": " + lair);
+		}
+		System.out.println("\n" + (n + 1) + ": cancel build");
+		boolean validInput = false;
+		while (!validInput) {
+			System.out.println("\nEnter here: ");
+			if (inputScanner.hasNextInt()) {
+				Integer option = inputScanner.nextInt();
+				inputScanner.nextLine();
+				if (option == (n + 1)) {
+					System.out.println("Canceling build...");
+					validInput = true;
+					continue;
+				}
+				if ((option >= 1) && (option <= validLairSites.size())) {
+					System.out.println("You have chosen option " + option);
+					System.out.println("Building... ");
+					this.player.addLairAsset(validLairSites.get(option - 1));
+					System.out.println("Done!\n");
+					this.player.takeResource("Goats", 1);
+					this.player.takeResource("Wood", 1);
+					this.getBoard().getStockpile().updateStockPile("Goats", 1);
+					this.getBoard().getStockpile().updateStockPile("Wood", 1);
+					validInput = true;
+				} else {
+					System.out.println(
+							"You have input " + option + " which is outside the range of options. Please re-enter.");
+				}
+
+			} else {
+				System.out.println("Please input an integer for the option number.");
+				inputScanner.next();
+			}
+		}
+	}
+
 	public void buildShip() {
 		this.buildChoice = "Ship";
 		List<String> validShipSites = new ArrayList<String>(this.validShipSites());
@@ -159,7 +225,7 @@ public class Build {
 			return;
 		}
 
-		if (this.checkResources()) {
+		if (this.checkResources("Ship")) {
 			return;
 		}
 
@@ -194,12 +260,12 @@ public class Build {
 				this.player.takeResource("Wood", 1);
 				this.getBoard().getStockpile().updateStockPile("Goats", 1);
 				this.getBoard().getStockpile().updateStockPile("Wood", 1);
-//				validInput = true;
-//			} else {
-//				System.out.println(
-//						"You have input " + option + " which is outside the range of options. Please re-enter.");
-//			}
-//		}
+				validInput = true;
+			} else {
+				System.out.println(
+						"You have input " + option + " which is outside the range of options. Please re-enter.");
+			}
+		}
 	}
 
 	private void swap(HashMap<String, Integer> costs, String asset, String type) {
