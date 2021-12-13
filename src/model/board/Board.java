@@ -14,7 +14,7 @@ import model.players.PlayerList;
 public class Board {
 
 	private static Board gameBoard;
-	private List<Integer> lairLocations;
+	private List<String> lairLocations = new ArrayList<String>();
 	private List<String> shipSites = new ArrayList<String>();
 	private List<Islands> islands;
 	private Marketplace marketplace;
@@ -34,7 +34,7 @@ public class Board {
 	}
 
 	private Board() {
-		this.lairLocations = IntStream.rangeClosed(1, 32).boxed().collect(Collectors.toList());
+		this.initializeLairLocations();
 //		this.shipSites.add(" 3 - 4 ");
 //		this.shipSites.add(" 2 - 3 ");
 //		this.shipSites.add(" 27 - 28 ");
@@ -48,6 +48,12 @@ public class Board {
 		this.stockpile = new Stockpile("The stockpile");
 		this.playerList = PlayerList.getInstance();
 		this.setUpCocoTiles();
+	}
+	
+	private void initializeLairLocations() {
+		for(int i=1; i<33; i++) {
+			this.lairLocations.add(" " + String.valueOf(i) + " ");
+		}
 	}
 	
 	public void setupShipSites() {
@@ -67,22 +73,21 @@ public class Board {
 	public List<String> getUsedShipSites() {
 		List<String> usedShipSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
-			System.out.println("Used Ship Sites : " + player.getShipAssets());
 			usedShipSites.addAll(player.getShipAssets());
 		}
 		return usedShipSites;
 	}
 
-	public List<Integer> getOccupiedLairs() {
+	public List<String> getOccupiedLairs() {
 		List<String> usedLairSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
 			usedLairSites.addAll(player.getLairAssets());
 		}
-		List<Integer> usedLairSitesAsInts = new ArrayList<Integer>();
-		for (String lair : usedLairSites) {
-			usedLairSitesAsInts.add(Integer.valueOf(lair.replace(" ", "")));
-		}
-		return usedLairSitesAsInts;
+//		List<String> usedLairSitesAsInts = new ArrayList<String>();
+//		for (String lair : usedLairSites) {
+//			usedLairSitesAsInts.add(Integer.valueOf(lair.replace(" ", "")));
+//		}
+		return usedLairSites;
 	}
 
 	public void setIslands(List<Islands> islands) {
@@ -100,7 +105,6 @@ public class Board {
 	public boolean isLairAvailable(String location) {
 		for (Player player : playerList.getList()) {
 			if (player.getLairAssets().contains(location)) {
-				System.out.println("Lair location is not available");
 				return false;
 			}
 		}
@@ -167,7 +171,7 @@ public class Board {
 		return this.shipSites;
 	}
 
-	public List<Integer> getLairList() {
+	public List<String> getLairList() {
 		return this.lairLocations;
 	}
 }

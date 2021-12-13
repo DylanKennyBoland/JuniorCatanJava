@@ -6,24 +6,28 @@ import model.board.Board;
 import model.players.Player;
 import model.players.PlayerList;
 import model.setup.Setup;
+import view.View;
 
 public class Controller {
 	private Player player;
 	private PlayerList playerList;
 	private Scanner inputScanner;
 	private Setup setup;
+	private View view;
 	private boolean gameOver;
 	private static Controller controller;
 	
-    public static Controller getInstance(Setup setupInstance, Scanner inputScanner){
+    public static Controller getInstance(View viewInstance, Setup setupInstance, Scanner inputScanner){
         if(controller == null){
-            controller = new Controller(setupInstance, inputScanner);
+            controller = new Controller(viewInstance, setupInstance, inputScanner);
         }
         return controller;
     }
     
-    public Controller(Setup setupInstance, Scanner inputScanner) {
+    public Controller(View viewInstance, Setup setupInstance, Scanner inputScanner) {
     	setupInstance.setupGame(inputScanner);
+    	this.view = viewInstance;
+    	this.setup = setupInstance;
     	this.playerList = PlayerList.getInstance();
     	this.gameOver = false;
     	
@@ -37,7 +41,7 @@ public class Controller {
     			currentTurn = new PlayerTurn(player, inputScanner);
     			currentTurn.startTurn();
     			if(currentTurn.didPlayerWin()) {
-    				System.out.println("you have won the game");
+    				this.view.display("you have won the game");
     				gameOver = true;
     				break;
     			}
