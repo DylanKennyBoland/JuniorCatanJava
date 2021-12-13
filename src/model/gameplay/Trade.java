@@ -1,7 +1,6 @@
 package model.gameplay;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
 
 import model.board.Board;
@@ -10,10 +9,8 @@ import model.board.Stockpile;
 import model.players.Player;
 
 public class Trade {
-	private Board board;
 	private Player player;
-	private Map<String,Integer> playerResources;
-	private Scanner inputScanner;
+	private Board board;
 	private Marketplace marketplace;
 	private Stockpile stockpile;
 	private boolean tradedWithMarketplace;
@@ -23,7 +20,6 @@ public class Trade {
 		this.board = Board.getInstance();
 		this.marketplace = board.getMarketplace();
 		this.stockpile = board.getStockpile();
-		this.inputScanner = inputScanner;	
 		this.tradedWithMarketplace = false;
 		
 	}

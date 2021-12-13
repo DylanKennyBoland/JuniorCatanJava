@@ -12,7 +12,6 @@ import model.board.Board;
 import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Stockpile;
-import model.enums.*;
 import model.gameplay.*;
 import model.players.Player;
 import model.players.PlayerList;
@@ -25,10 +24,6 @@ public class PlayerTurn {
 	private List<Islands> islandList;
 	private PlayerList playerList;
 	private Scanner inputScanner;
-	private CocoEnums cocoTile;
-	private ResourceEnums resource;
-	private PlayerEnums playerColour;
-	private IslandEnums islandType;
 	private Build buildOptions;
 	private Trade tradeOptions;
 	private Random random = new Random();
@@ -47,14 +42,22 @@ public class PlayerTurn {
 	}
 
 	private void rollDice() {
+		boolean validChoice = false;
 		Integer roll = random.nextInt(6) + 1;
 		System.out.println("\nIt is " + this.player.getName() + "'s turn!");
 		System.out.println("\nThe dice rolled a " + roll);
 		if (roll == 6) {
 			System.out.println("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-			System.out.println("\nWhere would you like to move it to?");
-			String moveTo = this.inputScanner.nextLine();
-			this.board.moveGhostCaptain(moveTo);
+			System.out.println("\nWhere would you like to move it to? (Input a letter from A - M) ");
+			while(!validChoice) {
+				char moveTo = this.inputScanner.next().charAt(0);
+				if((int) moveTo < 65 || (int) moveTo > 77) {
+					System.out.println("That is not a valid location. Choose a letter between A and M.");
+				} else {
+					this.board.moveGhostCaptain(String.valueOf(moveTo));
+					validChoice = true;
+				}
+			}
 			return;
 		}
 		produceResources(roll);
@@ -88,34 +91,35 @@ public class PlayerTurn {
 	public void startTurn() {
 		boolean turnOver = false;
 		while (!turnOver) {
-
-			// String input = inputScanner.nextLine();
-
 			ArrayList<String> options = new ArrayList<String>();
-			options.add("End Turn");
 			options.add("Build");
 			options.add("Trade");
 			options.add("View Resources");
+			options.add("View Marketplace");
+			options.add("View Board");
+			options.add("End Turn");
 			displayOptions(options);
 			switch (inputScanner.nextLine()) {
 			case "1":
-				turnOver = true;
-				break;
-			case "2":
 				build();
 				break;
-			case "3":
+			case "2":
 				trade();
 				break;
-			case "4":
+			case "3":
 				viewResources();
+				break;
+			case "4":
+				viewMarketplace();
+				break;
+			case "5":
+				viewBoard();
+				break;
+			case "6":
+				turnOver = true;
 				break;
 			}
 		}
-	}
-
-	private void viewResources() {
-		System.out.println(this.player.getResources().toString());
 	}
 
 	private void build() {
@@ -124,12 +128,11 @@ public class PlayerTurn {
 		buildOptionsList.add("Lair");
 		buildOptionsList.add("Ship");
 		buildOptionsList.add("View Resources");
-		buildOptionsList.add("View Assets");
+		buildOptionsList.add("View My Assets");
 		buildOptionsList.add("Go Back");
 		while (!finishedBuilding) {
 			System.out.println("\nWhat would you like to build?");
 			displayOptions(buildOptionsList);
-			// String buildInput = inputScanner.nextLine();
 			switch (inputScanner.nextLine()) {
 			case "1":
 				buildOptions.buildLair();
@@ -163,7 +166,6 @@ public class PlayerTurn {
 		while (!finishedTrading) {
 			System.out.println("\nWhat would you like to trade with?");
 			displayOptions(tradeOptionsList);
-			// String buildInput = inputScanner.nextLine();
 			switch (inputScanner.nextLine()) {
 			case "1":
 				if (tradeOptions.canTradeWithMarketplace()) {
@@ -198,7 +200,6 @@ public class PlayerTurn {
 		ArrayList<String> marketplaceOptions = new ArrayList<String>();
 		marketplaceOptions = this.marketplace.getMarketPlace();
 		displayOptions(marketplaceOptions);
-		//String requestedResource = this.inputScanner.nextLine();
 		switch (inputScanner.nextLine()) {
 		case "1":
 			giveResource = getGivenResources();
@@ -230,7 +231,6 @@ public class PlayerTurn {
 			giveOptions.add((String) resource.getKey() + " (You have " + (Integer)resource.getValue() + ")");
 		}
 		displayOptions(giveOptions);
-		//String requestedResource = this.inputScanner.nextLine();
 		switch (inputScanner.nextLine()) {
 		case "1":
 			giveResource.add("Gold");
@@ -251,11 +251,6 @@ public class PlayerTurn {
 		return giveResource;
 	}
 	
-//	private ArrayList<String> getMarketplaceOptions(){
-//		ArrayList<String> options = new ArrayList<String>();
-//		
-//		return options;
-//	}
 	public void tradeWithStockpile() {
 		int num;
 		ArrayList<String> tradeInfo ;
@@ -345,9 +340,32 @@ public class PlayerTurn {
 
 	private void displayOptions(ArrayList<String> options) {
 		int i = 1;
+		System.out.println("\nYour options are: ");
 		for (String option : options) {
-			System.out.println("\n" + i + " : " + option);
+			System.out.println("\n\t" + i + " : " + option);
 			i++;
 		}
 	}
+	
+	private void viewMarketplace() {
+		System.out.println("The Marketplace contains the following resources: ");
+		System.out.println(this.marketplace.toString());
+	}
+	
+	private void viewStockpile() {
+		System.out.println(this.stockpile.toString());
+	}
+	
+	private void viewResources() {
+		System.out.println(this.player.getResources().toString());
+	}
+	
+	private void viewBoard() {
+		System.out.println("The board currently looks like this: ");
+		for(Player player: this.playerList.getList()) {
+			System.out.println(player.toString());
+		}
+		System.out.println("\nThe Ghost captain is on island: \t" + this.board.getGhostIsland().getName());
+	}
+	
 }

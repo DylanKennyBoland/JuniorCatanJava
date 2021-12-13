@@ -132,9 +132,7 @@ public class Player implements Tradeable {
 		for (String resource : this.resources.keySet()) {
 			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
 		}
-		return "Name: " + this.name + "\n" + "Colour: " + this.colour + "\n\nPlayer's Resources:" + playerResources
-				+ "\n\nShip Sites:\n" + this.shipAssets.toString() + "\nLair Sites:\n" + this.lairAssets.toString()
-				+ "\n";
+		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\tPlayer's lairs:" + this.lairAssets.toString() + "\n\tPlayer's ships:" + this.shipAssets.toString();
 	}
 
 	// 'get' and 'set' methods:

@@ -12,7 +12,6 @@ public class SetupPlayers {
 	private ArrayList<PlayerEnums> availableColors = new ArrayList<PlayerEnums>();
 	private Integer numPlayers;
 	private String numPlayersString;
-	private String colour;
 	private ArrayList<Integer> colourIndex = new ArrayList<Integer>();
 	private Stockpile stockpile;
 	private Board board;
@@ -21,18 +20,36 @@ public class SetupPlayers {
 		this.playerList = PlayerList.getInstance();
 	}
 	
-	public void organizePlayers() {
-		this.playerList.sortByAge();
+	public void CreateAllPlayers(Scanner player) {
+		boolean playersSelected = false;
+		this.numPlayers = getNumPlayers(player);
+
+		while (!playersSelected) {
+			for(int i = 0; i < numPlayers; i++) {
+				CreatePlayer(player);
+			}
+			playersSelected = true;
+		}
+		this.board = Board.getInstance();
+		this.stockpile = board.getStockpile();
+		this.stockpile.updateStockPile("Wood", -playerList.getNumOfPlayers());
+		this.stockpile.updateStockPile("Molasses", -playerList.getNumOfPlayers());
+		//System.out.println("Players : " + playerList.toString());
 	}
-	
+
 	private void CreatePlayer(Scanner player) {
-		System.out.print("Creating new player. Please enter your name:");
+		System.out.println("Creating new player. Please enter your name:");
 		String name = player.nextLine();
 		String age = getPlayerAge(player);
 
 		String colour = getPlayerColour(player);
 		playerList.addPlayer(new Player(name, PlayerEnums.valueOf(colour), age));
 	}
+	
+	public void organizePlayers() {
+		this.playerList.sortByAge();
+	}
+	
 	private String getPlayerAge(Scanner player) {
 		boolean validAge = false;
 		String age = " ";
@@ -53,6 +70,7 @@ public class SetupPlayers {
 		}
 		return age;
 	}
+	
 	private String getPlayerColour(Scanner player) {
 		System.out.println("\nWhat colour would you like: ");
 		boolean validColour = false;
@@ -91,23 +109,6 @@ public class SetupPlayers {
 		return " ";
 	}
 	
-	public void CreateAllPlayers(Scanner player) {
-		boolean playersSelected = false;
-		this.numPlayers = getNumPlayers(player);
-
-		while (!playersSelected) {
-			for(int i = 0; i < numPlayers; i++) {
-				CreatePlayer(player);
-			}
-			playersSelected = true;
-		}
-		this.board = Board.getInstance();
-		this.stockpile = board.getStockpile();
-		this.stockpile.updateStockPile("Wood", -playerList.getNumOfPlayers());
-		this.stockpile.updateStockPile("Molasses", -playerList.getNumOfPlayers());
-		//System.out.println("Players : " + playerList.toString());
-	}
-	
 	private Integer getNumPlayers(Scanner player) {
 		System.out.print("How many people are playing the game? (3 or 4): ");
 		boolean validNumber = false;
@@ -125,7 +126,7 @@ public class SetupPlayers {
 	}
 	
 	private boolean isValidNumber(Integer num) {
-		if(num < 3 || num > 4) {
+		if(num < 0 || num > 4) {
 			System.out.println("Not a valid number. Must be 3 or 4. Try again.");
 			return false;
 		} else if(num == 3){
@@ -149,14 +150,6 @@ public class SetupPlayers {
 		}
 	}
 	
-	private void printAvailableColors() {
-		int i = 0;
-		for(PlayerEnums colour : availableColors) {
-            System.out.println("\n" + colourIndex.get(i) + " : " +  colour.getColour());
-            i++;
-		}
-	}
-	
 	private boolean isValidColour(int index) {
 		if(availableColors.size() == 1) {
 			return true;
@@ -164,6 +157,14 @@ public class SetupPlayers {
 		this.availableColors.remove(index);
 		this.colourIndex.remove(index);
 		return true;
+	}
+	
+	private void printAvailableColors() {
+		int i = 0;
+		for(PlayerEnums colour : availableColors) {
+            System.out.println("\n" + colourIndex.get(i) + " : " +  colour.getColour());
+            i++;
+		}
 	}
 	
 	public void setNumPlayers(int num) {

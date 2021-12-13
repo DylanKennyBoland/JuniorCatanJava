@@ -64,9 +64,9 @@ public class Marketplace implements Tradeable {
 
 	@Override
 	public String toString() {
-		String result = "Name: " + this.name + "\n";
-		for (String resource : this.marketplace) {
-			result = result + resource + "\n";
+		String result = "";
+		for(String resource : this.marketplace) {
+			result = result + "\t" + resource + "\n";
 		}
 		return result;
 	}

@@ -24,7 +24,6 @@ public class Build {
 		this.board = Board.getInstance();
 		this.inputScanner = inputScanner;
 		this.buildOptions = new ArrayList<String>();
-		// getBuildOptions();
 		this.lairCost.put("Wood", 1);
 		this.lairCost.put("Cutlass", 1);
 		this.lairCost.put("Molasses", 1);
@@ -33,13 +32,6 @@ public class Build {
 		this.shipCost.put("Wood", 1);
 	}
 
-//	private void getBuildOptions(){
-//		ArrayList<String> playerAssets = this.player.getAssets();
-//
-//
-//		buildOptions.add()
-//
-//	}
 
 	public boolean checkResources() {
 		if (this.buildChoice.contains("Ship")) {
