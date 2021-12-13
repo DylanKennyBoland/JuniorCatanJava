@@ -20,7 +20,7 @@ public class Board {
 	private Marketplace marketplace;
 	private Stockpile stockpile;
 	private PlayerList playerList;
-	private Integer initialNumCocoTiles = 18;
+	private Integer initialNumCocoTiles = 17;
 	private Map<String, Integer> cocoTiles = new HashMap<String, Integer>();
 	private Integer currentMaxCocoTiles = 0;
 	private Player playerWithMostCocoTiles;
@@ -35,20 +35,26 @@ public class Board {
 
 	private Board() {
 		this.lairLocations = IntStream.rangeClosed(1, 32).boxed().collect(Collectors.toList());
-		this.shipSites.add(" 3 - 4 ");
-		this.shipSites.add(" 2 - 3 ");
-		this.shipSites.add(" 27 - 28 ");
-		this.shipSites.add(" 9 - 10 ");
-		this.shipSites.add(" 4 - 5 ");
-		this.shipSites.add(" 5 - 6 ");
-		this.shipSites.add(" 15 - 16 ");
-		this.shipSites.add(" 14 - 15 ");
+//		this.shipSites.add(" 3 - 4 ");
+//		this.shipSites.add(" 2 - 3 ");
+//		this.shipSites.add(" 27 - 28 ");
+//		this.shipSites.add(" 9 - 10 ");
+//		this.shipSites.add(" 4 - 5 ");
+//		this.shipSites.add(" 5 - 6 ");
+//		this.shipSites.add(" 15 - 16 ");
+//		this.shipSites.add(" 14 - 15 ");
 		this.islands = new ArrayList<Islands>();
-		this.shipLocations = new ArrayList<String>();
 		this.marketplace = new Marketplace("The marketplace");
 		this.stockpile = new Stockpile("The stockpile");
 		this.playerList = PlayerList.getInstance();
 		this.setUpCocoTiles();
+	}
+	
+	public void setupShipSites() {
+		for(Islands island: this.islands) {
+			this.shipSites.removeAll(island.getAttachedShipSites());
+			this.shipSites.addAll(island.getAttachedShipSites());
+		}
 	}
 
 	public void setUpCocoTiles() {
@@ -61,6 +67,7 @@ public class Board {
 	public List<String> getUsedShipSites() {
 		List<String> usedShipSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
+			System.out.println("Used Ship Sites : " + player.getShipAssets());
 			usedShipSites.addAll(player.getShipAssets());
 		}
 		return usedShipSites;
@@ -116,13 +123,6 @@ public class Board {
 		return this.currentMaxCocoTiles;
 	}
 
-	public void setShipLocations() {
-		for(Islands island: islands) {
-			this.shipLocations.removeAll(island.getAttachedShipSites());
-			this.shipLocations.addAll(island.getAttachedShipSites());
-		}
-	}
-	
 	public String getIslandInfo() {
 		String islandInfo = "";
 		for (Islands island : islands) {

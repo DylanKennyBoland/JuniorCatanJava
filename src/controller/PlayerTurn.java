@@ -51,6 +51,7 @@ public class PlayerTurn {
 			System.out.println("\nWhere would you like to move it to? (Input a letter from A - M) ");
 			while(!validChoice) {
 				char moveTo = this.inputScanner.next().charAt(0);
+				inputScanner.nextLine();
 				if((int) moveTo < 65 || (int) moveTo > 77) {
 					System.out.println("That is not a valid location. Choose a letter between A and M.");
 				} else {

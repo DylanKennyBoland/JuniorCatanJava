@@ -99,6 +99,7 @@ public class Player implements Tradeable {
 	@Override
 	public boolean isAvailable(String resourceName, Integer number) {
 		if ((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
+			System.out.println("Player has " + resources.get(resourceName) + " " + resourceName);
 			return true;
 		} else {
 			return false;
