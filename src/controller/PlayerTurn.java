@@ -140,11 +140,9 @@ public class PlayerTurn {
 			switch (inputScanner.nextLine()) {
 			case "1":
 				this.buildLair();
-				//this.view.display(buildOptions.buildLair());
 				break;
 			case "2":
 				this.buildShip();
-				//this.view.display(buildOptions.buildShip());
 				break;
 			case "3":
 				viewResources();

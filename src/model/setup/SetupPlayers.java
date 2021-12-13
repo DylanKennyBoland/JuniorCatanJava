@@ -38,7 +38,6 @@ public class SetupPlayers {
 		this.stockpile = board.getStockpile();
 		this.stockpile.updateStockPile("Wood", -playerList.getNumOfPlayers());
 		this.stockpile.updateStockPile("Molasses", -playerList.getNumOfPlayers());
-		//this.view.display("Players : " + playerList.toString());
 	}
 
 	private void CreatePlayer(Scanner player) {
