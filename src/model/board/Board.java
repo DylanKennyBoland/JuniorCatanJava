@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import model.players.Player;
 import model.players.PlayerList;
@@ -49,15 +46,15 @@ public class Board {
 		this.playerList = PlayerList.getInstance();
 		this.setUpCocoTiles();
 	}
-	
+
 	private void initializeLairLocations() {
-		for(int i=1; i<33; i++) {
+		for (int i = 1; i < 33; i++) {
 			this.lairLocations.add(" " + String.valueOf(i) + " ");
 		}
 	}
-	
+
 	public void setupShipSites() {
-		for(Islands island: this.islands) {
+		for (Islands island : this.islands) {
 			this.shipSites.removeAll(island.getAttachedShipSites());
 			this.shipSites.addAll(island.getAttachedShipSites());
 		}
@@ -68,6 +65,9 @@ public class Board {
 		this.cocoTiles.put("Build", this.initialNumCocoTiles);
 		this.cocoTiles.put("Resource Combination 1", this.initialNumCocoTiles);
 		this.cocoTiles.put("Resource Combination 2", this.initialNumCocoTiles);
+//		this.cocoTiles.put("Build", 0);
+//		this.cocoTiles.put("Resource Combination 1", 0);
+//		this.cocoTiles.put("Resource Combination 2", 0);
 	}
 
 	public List<String> getUsedShipSites() {
@@ -93,11 +93,19 @@ public class Board {
 	public void setIslands(List<Islands> islands) {
 		this.islands = islands;
 	}
-	
+
 	public void setGhostIsland(Islands island) {
 		this.ghostIsland = island;
 	}
-	
+
+	public Map<String, Integer> getCocoTiles() {
+		return this.cocoTiles;
+	}
+
+	public void removeCocoTile(String cocoTileType) {
+		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) - 1);
+	}
+
 	public Islands getGhostIsland() {
 		return this.ghostIsland;
 	}
@@ -134,21 +142,29 @@ public class Board {
 		}
 		return islandInfo;
 	}
-	
+
 	public void moveGhostCaptain(String islandName) {
 		this.islands.get(islands.indexOf(this.ghostIsland)).setGhostCaptain(false);
 		Islands newGhostIsland = getIslandByName(islandName);
 		newGhostIsland.setGhostCaptain(true);
 		this.ghostIsland = newGhostIsland;
 	}
-	
+
 	public Islands getIslandByName(String islandName) {
-		for(Islands island: this.islands) {
-			if(island.getName().contains(islandName)){
+		for (Islands island : this.islands) {
+			if (island.getName().contains(islandName)) {
 				return island;
 			}
 		}
 		return this.ghostIsland;
+	}
+
+	public Integer getNumOfCocoTiles() {
+		int num = 0;
+		for (Integer value : this.cocoTiles.values()) {
+			num += value;
+		}
+		return num;
 	}
 
 	public PlayerList getPlayerList() {

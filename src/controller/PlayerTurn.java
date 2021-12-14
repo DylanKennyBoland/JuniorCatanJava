@@ -1,7 +1,9 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,7 +14,8 @@ import model.board.Board;
 import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Stockpile;
-import model.gameplay.*;
+import model.gameplay.Build;
+import model.gameplay.Trade;
 import model.players.Player;
 import model.players.PlayerList;
 import view.View;
@@ -52,10 +55,10 @@ public class PlayerTurn {
 		if (roll == 6) {
 			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
 			this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
-			while(!validChoice) {
+			while (!validChoice) {
 				char moveTo = this.inputScanner.next().charAt(0);
 				inputScanner.nextLine();
-				if((int) moveTo < 65 || (int) moveTo > 77) {
+				if (moveTo < 65 || moveTo > 77) {
 					this.view.display("That is not a valid location. Choose a letter between A and M.");
 				} else {
 					this.board.moveGhostCaptain(String.valueOf(moveTo));
@@ -77,21 +80,21 @@ public class PlayerTurn {
 						Integer numOfAttachedLairs = playerLairAssets.stream().distinct().filter(islandLairs::contains)
 								.collect(Collectors.toList()).size();
 						String resource = island.getIslandResource();
-						if(resource.contains(" ")) {
+						if (resource.contains(" ")) {
 							break;
-						}else {
+						} else {
 							this.view.display("Giving " + resource + " to " + player.getName());
 							player.giveResource(resource, numOfAttachedLairs);
 							this.stockpile.updateStockPile(resource, -numOfAttachedLairs);
 						}
 					}
 				}
-			} else if(island.getDiceNumber() == roll && island.hasGhostCaptain()) {
+			} else if (island.getDiceNumber() == roll && island.hasGhostCaptain()) {
 				this.view.display("Island " + island.getName() + " cannot produce!");
 			}
 		}
 	}
-	
+
 	public void startTurn() {
 		boolean turnOver = false;
 		while (!turnOver) {
@@ -156,91 +159,255 @@ public class PlayerTurn {
 			}
 		}
 	}
-	
+
 	private void buildLair() {
 		ArrayList<String> validLairSites = new ArrayList<String>(this.buildOptions.validLairSites());
 		if (validLairSites.size() == 0) {
 			this.view.display("You currently have no valid lair sites to build on!\n");
 			return;
 		}
-		if (!this.buildOptions.checkResources("Lair")) {
-			this.view.display("You do not have enough resources");
-			return;
+		if (this.player.skipResourcesCheckStatus() == false) { // Meaning we should not skip checking their resources...
+			if (!this.buildOptions.checkResources("Lair")) { // They don't have enough resources...
+				this.view.display("You do not have enough resources");
+				return;
+			}
 		}
 		this.view.display("Where would you like to build a lair? Your options are: ");
 		ArrayList<String> options = new ArrayList<String>(validLairSites);
-		options.add("Cancel Build");
+		if (this.player.skipResourcesCheckStatus() == false) {
+			options.add("Cancel Build");
+		}
 		this.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
 			this.view.display("\nEnter here: ");
-			if(inputScanner.hasNextInt()) {
+			if (inputScanner.hasNextInt()) {
 				int option = inputScanner.nextInt();
-				inputScanner.nextLine();
 				inputScanner.nextLine();
 				if ((option >= 1) && (option <= validLairSites.size())) {
 					this.view.display("You have chosen option " + option);
 					this.view.display("\nBuilding... ");
 					this.buildOptions.buildLair(validLairSites.get(option - 1));
 					validInput = true;
-				} else if(option == options.size()) {
-					this.view.display("Canceling build ...");
-					validInput = true;
-				}else {
+				} else if (option == options.size()) {
+					if (this.player.skipResourcesCheckStatus() == true) {
+						this.view.display("You have input " + option
+								+ " which is outside the range of options. Please re-enter.");
+					} else {
+						this.view.display("Canceling build ...");
+						validInput = true;
+					}
+				} else {
 					this.view.display(
 							"You have input " + option + " which is outside the range of options. Please re-enter.");
 				}
-			}else {
+			} else {
 				this.view.display("Please input an integer for the option number.");
 				inputScanner.next();
 			}
 		}
 	}
-	
+
 	private void buildShip() {
 		ArrayList<String> validShipSites = new ArrayList<String>(this.buildOptions.validShipSites());
 		if (validShipSites.size() == 0) {
 			this.view.display("You currently have no valid ship sites to build on!\n");
 			return;
 		}
-		if (!this.buildOptions.checkResources("Ship")) {
-			this.view.display("You do not have enough resources!");
-			return;
+		if (this.player.skipResourcesCheckStatus() == false) { // Meaning we should not skip checking their resources...
+			if (!this.buildOptions.checkResources("Ship")) { // They don't have enough resources...
+				this.view.display("You do not have enough resources");
+				return;
+			}
 		}
 		this.view.display("Where would you like to build a ship? Your options are: ");
 		ArrayList<String> options = new ArrayList<String>(validShipSites);
-		options.add("Cancel Build");
+		// Next, we need to check if the player is currently using a build-type coco
+		// tile... if they are
+		// then we shouldn't give the option to cancel a build (as the rules state that
+		// they must build a lair or ship immediately)
+		if (this.player.skipResourcesCheckStatus() == false) {
+			options.add("Cancel Build");
+		}
 		this.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
 			this.view.display("\nEnter here: ");
-			if(inputScanner.hasNextInt()) {
+			if (inputScanner.hasNextInt()) {
 				Integer option = inputScanner.nextInt();
 				inputScanner.nextLine();
-				if ((option >= 0) && (option <= validShipSites.size())) {
+				if ((option >= 1) && (option <= validShipSites.size())) {
 					this.view.display("You have chosen option " + option);
 					this.view.display("Building... ");
 					this.buildOptions.buildShip(validShipSites.get(option - 1));
 					validInput = true;
-				} else if(option == options.size()) {
+				} else if (option == options.size()) {
+					if (this.player.skipResourcesCheckStatus() == true) {
+						this.view.display("You have input " + option
+								+ " which is outside the range of options. Please re-enter.");
+						continue;
+					}
 					this.view.display("Canceling build ...");
 					validInput = true;
-				}else {
+				} else {
 					this.view.display(
 							"You have input " + option + " which is outside the range of options. Please re-enter.");
 				}
-			}else {
+			} else {
 				this.view.display("Please input an integer for the option number.");
 				inputScanner.next();
 			}
 		}
 	}
-	
+
+	public Integer pickCocoTile() {
+		Map<Integer, String> cocoTypes = new HashMap<Integer, String>();
+		cocoTypes.put(1, "Ghost Captain");
+		cocoTypes.put(2, "Build");
+		cocoTypes.put(3, "Resource Combination 1");
+		cocoTypes.put(4, "Resource Combination 2");
+		List<Integer> validTypes = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+		for (int i = 1; i < 5; i++) {
+			String cocoType = cocoTypes.get(i);
+			if (this.board.getCocoTiles().get(cocoType) == 0) {
+				validTypes.remove(Integer.valueOf(i));
+			}
+		}
+		Integer randi = random.nextInt(validTypes.size());
+		return validTypes.get(randi);
+	}
+
+	public void buyCocoTile() {
+		if (!this.buildOptions.checkResources("CocoTile") && this.board.getNumOfCocoTiles() >= 1) {
+			Integer cocoTileNum = this.pickCocoTile(); // A number corresponding to the type of Coco tile a player pulls
+			switch (cocoTileNum) {
+			case 1:
+				this.player.addCocoTile("Ghost Captain");
+				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
+				this.board.removeCocoTile("Ghost Captain");
+				boolean validChoice = false;
+				this.view.display("You picked a ghost captain coco tile!");
+				this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
+				this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
+				while (!validChoice) {
+					char moveTo = this.inputScanner.next().charAt(0);
+					inputScanner.nextLine();
+					if (moveTo < 65 || moveTo > 77) {
+						this.view.display("That is not a valid location. Choose a letter between A and M.");
+					} else {
+						this.board.moveGhostCaptain(String.valueOf(moveTo));
+						validChoice = true;
+					}
+				}
+				break;
+			case 2:
+				this.player.addCocoTile("Build");
+				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
+				this.board.removeCocoTile("Build");
+				if ((this.buildOptions.validShipSites().size() != 0)
+						&& (this.buildOptions.validShipSites().size() != 0)) {
+					this.view.display("You can build a lair or a ship!");
+					boolean validInput = false;
+					while (!validInput) {
+						this.view.display("Which would you like to build?");
+						this.view.display("\n1: Ship\n2: Lair");
+						if (inputScanner.hasNextInt()) {
+							Integer option = inputScanner.nextInt();
+							inputScanner.nextLine();
+							if (option == 1) {
+								this.player.setResourcesCheckStatus(true);
+								this.buildShip();
+								this.player.setResourcesCheckStatus(false);
+								validInput = true;
+							} else if (option == 2) {
+								this.player.setResourcesCheckStatus(true);
+								this.buildLair();
+								this.player.setResourcesCheckStatus(false);
+								validInput = true;
+							} else {
+								this.view.display("You have input " + option
+										+ " which is outside the range of options. Please re-enter.");
+							}
+						} else {
+							this.view.display("Please input an integer for the option number.");
+							inputScanner.next();
+						}
+					}
+				} else if (this.buildOptions.validLairSites().size() != 0) {
+					this.view.display("You can buld a lair! (You currently have no valid ship sites.)");
+					this.player.setResourcesCheckStatus(true);
+					this.buildLair();
+					this.player.setResourcesCheckStatus(false);
+				} else {
+					this.view.display("You can buld a ship! (You currently have no valid lair sites.)");
+					this.player.setResourcesCheckStatus(true);
+					this.buildShip();
+					this.player.setResourcesCheckStatus(false);
+				}
+				break;
+			case 3:
+				this.player.addCocoTile("Resource Combination 1");
+				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
+				this.board.removeCocoTile("Resource Combination 1");
+				this.view.display("You get 2 Molasses and 2 Woods!\n");
+				this.player.giveResource("Molasses", 2);
+				this.player.giveResource("Wood", 2);
+				this.stockpile.updateStockPile("Molasses", -2);
+				this.stockpile.updateStockPile("Wood", -2);
+				break;
+			case 4:
+				this.player.addCocoTile("Resource Combination 2");
+				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
+				this.board.removeCocoTile("Resource Combination 2");
+				this.view.display("You get 2 Goats and 2 Cutlass!\n");
+				this.player.giveResource("Goats", 2);
+				this.player.giveResource("Cutlass", 2);
+				this.stockpile.updateStockPile("Goats", -2);
+				this.stockpile.updateStockPile("Cutlass", -2);
+				break;
+			default:
+				this.view.display("Invalid number received for coco tile type.");
+				break;
+			}
+		} else {
+			if (this.buildOptions.checkResources("CocoTile")) {
+				this.view.display("You do not have enough resources for a coco tile unfortunately!");
+			} else {
+				this.view.display("Unfortunately there are no coco tiles left!");
+			}
+		}
+	}
+//	public void buyCocoTile() {
+//		boolean purchaseDone = false;
+//		this.view.display("How many Coco tiles would you like to buy? Enter 'Q' or 'q' to go back.");
+//		while (!purchaseDone) {
+//			this.view.display("\nEnter here: ");
+//			if (inputScanner.hasNextInt()) {
+//				Integer number = inputScanner.nextInt();
+//				inputScanner.nextLine();
+//				if (number == 0) {
+//					this.view.display("You entered 0, please enter a positive integer.");
+//					continue;
+//				} else if ((number == 1) && (this.buildOptions.checkResources("CocoTile"))
+//						&& (this.board.getNumOfCocoTiles() >= number)) {
+//					this.view.display("Giving you a coco tile now!");
+//				}
+//			} else if (inputScanner.nextLine() == "Q" || inputScanner.nextLine() == "q") {
+//				purchaseDone = true;
+//				continue;
+//			} else {
+//				this.view.display("Please input an integer for the option number.");
+//				inputScanner.next();
+//			}
+//		}
+//	}
+
 	private void trade() {
 		boolean finishedTrading = false;
 		ArrayList<String> tradeOptionsList = new ArrayList<String>();
 		tradeOptionsList.add("Marketplace");
 		tradeOptionsList.add("Stockpile");
+		tradeOptionsList.add("Buy Coco tile");
 		tradeOptionsList.add("View Resources");
 		tradeOptionsList.add("View Marketplace");
 		tradeOptionsList.add("View Stockpile");
@@ -262,15 +429,18 @@ public class PlayerTurn {
 				tradeWithStockpile();
 				break;
 			case "3":
-				viewResources();
+				buyCocoTile();
 				break;
 			case "4":
-				this.view.display(marketplace.toString());
+				viewResources();
 				break;
 			case "5":
-				this.view.display(this.stockpile.toString());
+				this.view.display(marketplace.toString());
 				break;
 			case "6":
+				this.view.display(this.stockpile.toString());
+				break;
+			case "7":
 				finishedTrading = true;
 				break;
 			}
@@ -306,12 +476,13 @@ public class PlayerTurn {
 			break;
 		}
 	}
+
 	private ArrayList<String> getGivenResources() {
 		ArrayList<String> giveResource = new ArrayList<String>();
 		this.view.display("What will you give?");
 		ArrayList<String> giveOptions = new ArrayList<String>();
-		for(Map.Entry resource: this.player.getResources().entrySet()) {
-			giveOptions.add((String) resource.getKey() + " (You have " + (Integer)resource.getValue() + ")");
+		for (Map.Entry resource : this.player.getResources().entrySet()) {
+			giveOptions.add((String) resource.getKey() + " (You have " + resource.getValue() + ")");
 		}
 		displayOptions(giveOptions);
 		switch (inputScanner.nextLine()) {
@@ -333,19 +504,21 @@ public class PlayerTurn {
 		}
 		return giveResource;
 	}
-	
+
 	public void tradeWithStockpile() {
 		int num;
-		ArrayList<String> tradeInfo ;
+		ArrayList<String> tradeInfo;
 		this.view.display("What resource would you like?");
 		ArrayList<String> stockpileOptions = new ArrayList<String>();
 		stockpileOptions.add("Gold (There are " + this.stockpile.getNumOfResource("Gold") + " in the stockpile)");
-		stockpileOptions.add("Mollasses (There are " + this.stockpile.getNumOfResource("Molasses") + " in the stockpile)");;
+		stockpileOptions
+				.add("Mollasses (There are " + this.stockpile.getNumOfResource("Molasses") + " in the stockpile)");
+		;
 		stockpileOptions.add("Wood (There are " + this.stockpile.getNumOfResource("Wood") + " in the stockpile)");
 		stockpileOptions.add("Goats (There are " + this.stockpile.getNumOfResource("Goats") + " in the stockpile)");
 		stockpileOptions.add("Cutlass (There are " + this.stockpile.getNumOfResource("Cutlass") + " in the stockpile)");
 		displayOptions(stockpileOptions);
-		switch(inputScanner.nextLine()) {
+		switch (inputScanner.nextLine()) {
 		case "1":
 			num = getNumberFromPlayer("Gold");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Gold", num));
@@ -372,16 +545,16 @@ public class PlayerTurn {
 			tradeOptions.tradeStockpile("Cutlass", num, tradeInfo);
 			break;
 		}
-		
+
 	}
-	
+
 	public int getNumberFromPlayer(String requestedResource) {
 		boolean enough = false;
 		int num = 0;
-		while(!enough) {
+		while (!enough) {
 			this.view.display("How many would you like?");
 			num = Integer.parseInt(inputScanner.nextLine());
-			if(this.stockpile.isAvailable(requestedResource, num)) {
+			if (this.stockpile.isAvailable(requestedResource, num)) {
 				enough = true;
 			} else {
 				this.view.display("There is not enough " + requestedResource + " in the stockpile");
@@ -389,30 +562,30 @@ public class PlayerTurn {
 		}
 		return num;
 	}
-	
-	public ArrayList<String> getTradeInfo(String requestedResource, int num){
+
+	public ArrayList<String> getTradeInfo(String requestedResource, int num) {
 		ArrayList<String> tradeInfo = new ArrayList<String>();
 		int i = 1;
-		if(this.stockpile.isAvailable(requestedResource, num)) {
+		if (this.stockpile.isAvailable(requestedResource, num)) {
 			boolean givingMultiple = false;
-			if(num > 1) {
+			if (num > 1) {
 				this.view.display("Are you giving multiple resources?");
 				String answer = inputScanner.nextLine();
-				if(answer.toUpperCase().contains("Y")) {
+				if (answer.toUpperCase().contains("Y")) {
 					givingMultiple = true;
 				}
 			}
-			while(givingMultiple && i <= num) {
+			while (givingMultiple && i <= num) {
 				tradeInfo.addAll(getGivenResources());
 				i++;
 			}
-			if(!givingMultiple) {
+			if (!givingMultiple) {
 				tradeInfo.addAll(getGivenResources());
 			}
 		}
 		return tradeInfo;
 	}
-	
+
 	public boolean didPlayerWin() {
 		if (this.player.getLairAssets().size() == 7) {
 			return true;
@@ -429,26 +602,26 @@ public class PlayerTurn {
 			i++;
 		}
 	}
-	
+
 	private void viewMarketplace() {
 		this.view.display("The Marketplace contains the following resources: ");
 		this.view.display(this.marketplace.toString());
 	}
-	
+
 	private void viewStockpile() {
 		this.view.display(this.stockpile.toString());
 	}
-	
+
 	private void viewResources() {
 		this.view.display(this.player.getResources().toString());
 	}
-	
+
 	private void viewBoard() {
 		this.view.display("The board currently looks like this: ");
-		for(Player player: this.playerList.getList()) {
+		for (Player player : this.playerList.getList()) {
 			this.view.display(player.toString());
 		}
 		this.view.display("\nThe Ghost captain is on island: \t" + this.board.getGhostIsland().getName());
 	}
-	
+
 }

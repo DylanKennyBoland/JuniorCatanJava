@@ -32,23 +32,55 @@ public class Build {
 		this.shipCost.put("Wood", 1);
 	}
 
-	public boolean checkResources(String buildChoice) {
-		if (buildChoice.contains("Ship")) {
+//	public boolean checkResources(String buildChoice) {
+//		if (buildChoice.contains("Ship")) {
+//			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		} else if (buildChoice.contains("Lair")) {
+//			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
+//					&& player.isAvailable("Wood", 1)) {
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		} else {
+//			return false;
+//		}
+//	}
+	public boolean checkResources(String type) {
+		boolean result;
+		switch (type) {
+		case "Ship":
 			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
-				return true;
+				result = true;
+
 			} else {
-				return false;
+				result = false;
 			}
-		} else if (buildChoice.contains("Lair")) {
+			break;
+		case "Lair":
 			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
 					&& player.isAvailable("Wood", 1)) {
-				return true;
+				result = true;
 			} else {
-				return false;
+				result = false;
 			}
-		} else {
-			return false;
+			break;
+		case "CocoTile":
+			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1)
+					&& player.isAvailable("Gold", 1)) {
+				result = true;
+			} else {
+				result = false;
+			}
+			break;
+		default:
+			result = false;
 		}
+		return result;
 	}
 
 	public String buildLair(String lair) {
@@ -62,7 +94,7 @@ public class Build {
 		this.getBoard().getStockpile().updateStockPile("Molasses", 1);
 		this.getBoard().getStockpile().updateStockPile("Goats", 1);
 		this.getBoard().getStockpile().updateStockPile("Wood", 1);
-		return("Done!\n");
+		return ("Done!\n");
 	}
 
 	public String buildShip(String ship) {
@@ -71,7 +103,7 @@ public class Build {
 		this.player.takeResource("Wood", 1);
 		this.getBoard().getStockpile().updateStockPile("Goats", 1);
 		this.getBoard().getStockpile().updateStockPile("Wood", 1);
-		return("Done!\n");
+		return ("Done!\n");
 	}
 
 	private void swap(HashMap<String, Integer> costs, String asset, String type) {

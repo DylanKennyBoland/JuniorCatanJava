@@ -17,7 +17,9 @@ public class Player implements Tradeable {
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
 	private String age;
-	
+	private boolean skipResourcesCheck = false; // Used for when the player gets a Coco tile that allows them to
+	// immediately build a lair or a ship...
+
 	public Player(String name, PlayerEnums colour, String age) { // The constructor...
 		this.name = name;
 		this.colour = colour;
@@ -39,11 +41,11 @@ public class Player implements Tradeable {
 		this.cocoTiles.put("Resource Combination 1", this.initialNum);
 		this.cocoTiles.put("Resource Combination 2", this.initialNum);
 	}
-	
+
 	public Integer getAge() {
 		return Integer.parseInt(this.age);
 	}
-	
+
 	public void initializeAssets() {
 		switch (this.colour) {
 		case RED:
@@ -84,7 +86,8 @@ public class Player implements Tradeable {
 	}
 
 	public String viewAssets() {
-		return ("You own these lairs: " + this.lairAssets.toString() + "\nYou own these ships: " + this.shipAssets.toString());
+		return ("You own these lairs: " + this.lairAssets.toString() + "\nYou own these ships: "
+				+ this.shipAssets.toString());
 	}
 
 	public List<String> getLairAssets() {
@@ -131,12 +134,21 @@ public class Player implements Tradeable {
 		for (String resource : this.resources.keySet()) {
 			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
 		}
-		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\tPlayer's lairs:" + this.lairAssets.toString() + "\n\tPlayer's ships:" + this.shipAssets.toString();
+		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\tPlayer's lairs:"
+				+ this.lairAssets.toString() + "\n\tPlayer's ships:" + this.shipAssets.toString();
 	}
 
 	// 'get' and 'set' methods:
 	public String getName() {
 		return name;
+	}
+
+	public boolean skipResourcesCheckStatus() {
+		return this.skipResourcesCheck;
+	}
+
+	public void setResourcesCheckStatus(boolean status) {
+		this.skipResourcesCheck = status;
 	}
 
 	public void setName(String name) {
@@ -157,6 +169,10 @@ public class Player implements Tradeable {
 
 	public Map<String, Integer> getCocoTiles() {
 		return this.cocoTiles;
+	}
+
+	public void addCocoTile(String cocoTileType) {
+		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) + 1);
 	}
 
 	public void giveResource(String resource, Integer num) {
