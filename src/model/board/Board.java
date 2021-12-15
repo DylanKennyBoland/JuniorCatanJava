@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import model.players.Player;
 import model.players.PlayerList;
@@ -221,16 +222,16 @@ public class Board {
 		return islandInfo;
 	}
 
-	public void moveGhostCaptain(String islandName) {
+	public void moveGhostCaptain(char islandName) {
 		this.islands.get(islands.indexOf(this.ghostIsland)).setGhostCaptain(false);
 		Islands newGhostIsland = getIslandByName(islandName);
 		newGhostIsland.setGhostCaptain(true);
 		this.ghostIsland = newGhostIsland;
 	}
 
-	public Islands getIslandByName(String islandName) {
+	public Islands getIslandByName(char islandName) {
 		for (Islands island : this.islands) {
-			if (island.getName().contains(islandName)) {
+			if (island.getName() == islandName) {
 				return island;
 			}
 		}

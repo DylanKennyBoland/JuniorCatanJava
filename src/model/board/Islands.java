@@ -6,15 +6,16 @@ import java.util.List;
 import model.enums.IslandEnums;
 import model.enums.ResourceEnums;
 
-public class Islands {
-	private String name;
+public class Islands{
+	private char name;
 	private int diceNumber;
 	private IslandEnums islandType;
 	private List<String> attachedLairs;
 	private List<String> attachedShipSites = new ArrayList<String>();
 	private boolean ghostCaptain = false;
-
-	public Islands(String name, int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
+	
+	
+	public Islands(char name, int diceNumber, IslandEnums islandType, List<String> attachedLairs) {
 		this.name = name;
 		this.diceNumber = diceNumber;
 		this.islandType = islandType;
@@ -50,7 +51,7 @@ public class Islands {
 		}
 	}
 
-	public String getName() {
+	public char getName() {
 		return this.name;
 	}
 

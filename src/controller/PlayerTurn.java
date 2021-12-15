@@ -2,16 +2,13 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import model.board.Board;
-import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Stockpile;
 import model.enums.TradeEnums;
@@ -26,7 +23,6 @@ public class PlayerTurn {
 	private Board board;
 	private Stockpile stockpile;
 	private Marketplace marketplace;
-	private List<Islands> islandList;
 	private PlayerList playerList;
 	private Scanner inputScanner;
 	private Build buildOptions;
@@ -39,7 +35,6 @@ public class PlayerTurn {
 		this.board = Board.getInstance();
 		this.stockpile = board.getStockpile();
 		this.marketplace = board.getMarketplace();
-		this.islandList = board.getIslands();
 		this.inputScanner = inputScanner;
 		this.buildOptions = new Build(player, inputScanner);
 		this.tradeOptions = new Trade(player, inputScanner);
@@ -89,14 +84,17 @@ public class PlayerTurn {
 		this.view.display("\nThe dice rolled a " + roll);
 		if (roll == 6) {
 			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-			this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
+			this.view.display("\nWhere would you like to move it to? (Input a letter from A - L) ");
 			while(!validChoice) {
 				char moveTo = this.inputScanner.next().charAt(0);
 				inputScanner.nextLine();
-				if((int) moveTo < 65 || (int) moveTo > 77) {
-					this.view.display("That is not a valid location. Choose a letter between A and M.");
-				} else {
-					this.board.moveGhostCaptain(String.valueOf(moveTo));
+				if ( moveTo < 65 || moveTo > 76) {
+					this.view.display("That is not a valid location. (Input a letter from A - L) ");
+				} else if ( moveTo  == this.board.getGhostIsland().getName()) {
+					this.view.display("You have to move the Ghost Captain to a new Island. Try Again!");
+				} 
+				else {
+					this.board.moveGhostCaptain(moveTo);
 					validChoice = true;
 				}
 			}
@@ -153,7 +151,7 @@ public class PlayerTurn {
 		if (this.player.skipResourcesCheckStatus() == false) {
 			options.add("Cancel Build");
 		}
-		this.displayOptions(options);
+		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
 			this.view.display("\nEnter here: ");
@@ -206,7 +204,7 @@ public class PlayerTurn {
 		if (this.player.skipResourcesCheckStatus() == false) {
 			options.add("Cancel Build");
 		}
-		this.displayOptions(options);
+		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
 			this.view.display("\nEnter here: ");
@@ -291,7 +289,7 @@ public class PlayerTurn {
 					if (moveTo < 65 || moveTo > 77) {
 						this.view.display("That is not a valid location. Choose a letter between A and M.");
 					} else {
-						this.board.moveGhostCaptain(String.valueOf(moveTo));
+						this.board.moveGhostCaptain(moveTo);
 						validChoice = true;
 					}
 				}
@@ -459,7 +457,7 @@ public class PlayerTurn {
 				this.view.viewResources(this.player);
 				break;
 			case "4":
-				viewResources();
+				this.view.viewResources(this.player);
 				break;
 			case "5":
 				this.view.display(marketplace.toString());
@@ -508,7 +506,7 @@ public class PlayerTurn {
 		ArrayList<String> giveResource = new ArrayList<String>();
 		this.view.display("What will you give?");
 		ArrayList<String> giveOptions = new ArrayList<String>();
-		for (Map.Entry resource : this.player.getResources().entrySet()) {
+		for (Map.Entry<String, Integer> resource : this.player.getResources().entrySet()) {
 			giveOptions.add((String) resource.getKey() + " (You have " + resource.getValue() + ")");
 		}
 		this.view.displayOptions(giveOptions);
