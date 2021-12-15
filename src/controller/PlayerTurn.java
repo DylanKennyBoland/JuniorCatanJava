@@ -83,23 +83,43 @@ public class PlayerTurn {
 		this.view.display("\nIt is " + this.player.getName() + "'s turn!");
 		this.view.display("\nThe dice rolled a " + roll);
 		if (roll == 6) {
-			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-			this.view.display("\nWhere would you like to move it to? (Input a letter from A - L) ");
-			while(!validChoice) {
-				char moveTo = this.inputScanner.next().charAt(0);
-				inputScanner.nextLine();
-				if ( moveTo < 65 || moveTo > 76) {
-					this.view.display("That is not a valid location. (Input a letter from A - L) ");
-				} else if ( moveTo  == this.board.getGhostIsland().getName()) {
-					this.view.display("You have to move the Ghost Captain to a new Island. Try Again!");
-				} 
-				else {
-					this.board.moveGhostCaptain(moveTo);
-					validChoice = true;
-				}
-			}
+			this.moveGhostCaptain();
+//			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
+//			this.view.display("\nWhere would you like to move it to? (Input a letter from A - L) ");
+//			while(!validChoice) {
+//				char moveTo = this.inputScanner.next().charAt(0);
+//				inputScanner.nextLine();
+//				if ( moveTo < 65 || moveTo > 76) {
+//					this.view.display("That is not a valid location. (Input a letter from A - L) ");
+//				} else if ( moveTo  == this.board.getGhostIsland().getName()) {
+//					this.view.display("You have to move the Ghost Captain to a new Island. Try Again!");
+//				} 
+//				else {
+//					this.board.moveGhostCaptain(moveTo);
+//					validChoice = true;
+//				}
+//			}
 		} else {
 			this.view.display(this.board.produceResources(roll));
+		}
+	}
+	
+	private void moveGhostCaptain() {
+		boolean validChoice = false;
+		this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
+		this.view.display("\nWhere would you like to move it to? (Input a letter from A - L) ");
+		while(!validChoice) {
+			char moveTo = this.inputScanner.next().charAt(0);
+			inputScanner.nextLine();
+			if ( moveTo < 65 || moveTo > 76) {
+				this.view.display("That is not a valid location. (Input a letter from A - L) ");
+			} else if ( moveTo  == this.board.getGhostIsland().getName()) {
+				this.view.display("You have to move the Ghost Captain to a new Island. Try Again!");
+			} 
+			else {
+				this.board.moveGhostCaptain(moveTo);
+				validChoice = true;
+			}
 		}
 	}
 
@@ -281,18 +301,19 @@ public class PlayerTurn {
 				this.exchange(TradeEnums.COCO_TILE_GHOST_CAPTAIN);
 				boolean validChoice = false;
 				this.view.display("You picked a ghost captain coco tile!");
-				this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-				this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
-				while (!validChoice) {
-					char moveTo = this.inputScanner.next().charAt(0);
-					inputScanner.nextLine();
-					if (moveTo < 65 || moveTo > 77) {
-						this.view.display("That is not a valid location. Choose a letter between A and M.");
-					} else {
-						this.board.moveGhostCaptain(moveTo);
-						validChoice = true;
-					}
-				}
+				this.moveGhostCaptain();
+//				this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
+//				this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
+//				while (!validChoice) {
+//					char moveTo = this.inputScanner.next().charAt(0);
+//					inputScanner.nextLine();
+//					if (moveTo < 65 || moveTo > 77) {
+//						this.view.display("That is not a valid location. Choose a letter between A and M.");
+//					} else {
+//						this.board.moveGhostCaptain(moveTo);
+//						validChoice = true;
+//					}
+//				}
 				break;
 			case 2:
 				this.exchange(TradeEnums.COCO_TILE_BUILD);
