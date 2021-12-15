@@ -544,7 +544,6 @@ public class PlayerTurn {
 		stockpileOptions.add("Wood (There are " + this.stockpile.getNumOfResource("Wood") + " in the stockpile)");
 		stockpileOptions.add("Goats (There are " + this.stockpile.getNumOfResource("Goats") + " in the stockpile)");
 		stockpileOptions.add("Cutlass (There are " + this.stockpile.getNumOfResource("Cutlass") + " in the stockpile)");
-
 		this.view.displayOptions(stockpileOptions);
 		switch(inputScanner.nextLine()) {
 		case "1":
