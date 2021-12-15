@@ -45,58 +45,10 @@ public class PlayerTurn {
 		this.tradeOptions = new Trade(player, inputScanner);
 		this.playerList = PlayerList.getInstance();
 		this.view = View.getInstance();
-		rollDice();
-	}
-
-	private void rollDice() {
-		boolean validChoice = false;
-		Integer roll = random.nextInt(6) + 1;
-		this.view.display("\nIt is " + this.player.getName() + "'s turn!");
-		this.view.display("\nThe dice rolled a " + roll);
-		if (roll == 6) {
-			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-			this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
-			while (!validChoice) {
-				char moveTo = this.inputScanner.next().charAt(0);
-				inputScanner.nextLine();
-				if (moveTo < 65 || moveTo > 77) {
-					this.view.display("That is not a valid location. Choose a letter between A and M.");
-				} else {
-					this.board.moveGhostCaptain(String.valueOf(moveTo));
-					validChoice = true;
-				}
-			}
-			return;
-		}
-		produceResources(roll);
-	}
-
-	private void produceResources(Integer roll) {
-		for (Islands island : islandList) {
-			if (island.getDiceNumber() == roll && !island.hasGhostCaptain()) {
-				for (Player player : playerList.getList()) {
-					List<String> playerLairAssets = player.getLairAssets();
-					List<String> islandLairs = island.getAttachedLairs();
-					if (!Collections.disjoint(playerLairAssets, islandLairs)) {
-						Integer numOfAttachedLairs = playerLairAssets.stream().distinct().filter(islandLairs::contains)
-								.collect(Collectors.toList()).size();
-						String resource = island.getIslandResource();
-						if (resource.contains(" ")) {
-							break;
-						} else {
-							this.view.display("Giving " + resource + " to " + player.getName());
-							player.update(resource, numOfAttachedLairs);
-							this.stockpile.update(resource, -numOfAttachedLairs);
-						}
-					}
-				}
-			} else if (island.getDiceNumber() == roll && island.hasGhostCaptain()) {
-				this.view.display("Island " + island.getName() + " cannot produce!");
-			}
-		}
 	}
 
 	public void startTurn() {
+		rollDice();
 		boolean turnOver = false;
 		while (!turnOver) {
 			ArrayList<String> options = new ArrayList<String>();
@@ -106,7 +58,7 @@ public class PlayerTurn {
 			options.add("View Marketplace");
 			options.add("View Board");
 			options.add("End Turn");
-			displayOptions(options);
+			this.view.displayOptions(options);
 			switch (inputScanner.nextLine()) {
 			case "1":
 				build();
@@ -115,18 +67,41 @@ public class PlayerTurn {
 				trade();
 				break;
 			case "3":
-				viewResources();
+				this.view.viewResources(this.player);
 				break;
 			case "4":
-				viewMarketplace();
+				this.view.viewMarketplace(this.marketplace);
 				break;
 			case "5":
-				viewBoard();
+				this.view.viewBoard(this.playerList, this.board.getGhostIsland());
 				break;
 			case "6":
 				turnOver = true;
 				break;
 			}
+		}
+	}
+	
+	private void rollDice() {
+		boolean validChoice = false;
+		Integer roll = random.nextInt(6) + 1;
+		this.view.display("\nIt is " + this.player.getName() + "'s turn!");
+		this.view.display("\nThe dice rolled a " + roll);
+		if (roll == 6) {
+			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
+			this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
+			while(!validChoice) {
+				char moveTo = this.inputScanner.next().charAt(0);
+				inputScanner.nextLine();
+				if((int) moveTo < 65 || (int) moveTo > 77) {
+					this.view.display("That is not a valid location. Choose a letter between A and M.");
+				} else {
+					this.board.moveGhostCaptain(String.valueOf(moveTo));
+					validChoice = true;
+				}
+			}
+		} else {
+			this.view.display(this.board.produceResources(roll));
 		}
 	}
 
@@ -140,7 +115,7 @@ public class PlayerTurn {
 		buildOptionsList.add("Go Back");
 		while (!finishedBuilding) {
 			this.view.display("\nWhat would you like to build?");
-			displayOptions(buildOptionsList);
+			this.view.displayOptions(buildOptionsList);
 			switch (inputScanner.nextLine()) {
 			case "1":
 				this.buildLair();
@@ -149,7 +124,7 @@ public class PlayerTurn {
 				this.buildShip();
 				break;
 			case "3":
-				viewResources();
+				this.view.viewResources(this.player);
 				break;
 			case "4":
 				this.view.display(player.viewAssets());
@@ -467,7 +442,7 @@ public class PlayerTurn {
 		Marketplace marketplace = board.getMarketplace();
 		while (!finishedTrading) {
 			this.view.display("\nWhat would you like to trade with?");
-			displayOptions(tradeOptionsList);
+			this.view.displayOptions(tradeOptionsList);
 			switch (inputScanner.nextLine()) {
 			case "1":
 				if (tradeOptions.canTradeWithMarketplace()) {
@@ -481,7 +456,7 @@ public class PlayerTurn {
 				tradeWithStockpile();
 				break;
 			case "3":
-				buyCocoTile();
+				this.view.viewResources(this.player);
 				break;
 			case "4":
 				viewResources();
@@ -501,10 +476,10 @@ public class PlayerTurn {
 
 	public void tradeWithMarketplace() {
 		ArrayList<String> giveResource = new ArrayList<String>();
-		this.view.display("What would you like?");
+		this.view.display("What would you like? (Enter a number from 1 - 5. Enter any other key to escape)");
 		ArrayList<String> marketplaceOptions = new ArrayList<String>();
 		marketplaceOptions = this.marketplace.getMarketPlace();
-		displayOptions(marketplaceOptions);
+		this.view.displayOptions(marketplaceOptions);
 		switch (inputScanner.nextLine()) {
 		case "1":
 			giveResource = getGivenResources();
@@ -528,7 +503,7 @@ public class PlayerTurn {
 			break;
 		}
 	}
-
+	
 	private ArrayList<String> getGivenResources() {
 		ArrayList<String> giveResource = new ArrayList<String>();
 		this.view.display("What will you give?");
@@ -536,7 +511,7 @@ public class PlayerTurn {
 		for (Map.Entry resource : this.player.getResources().entrySet()) {
 			giveOptions.add((String) resource.getKey() + " (You have " + resource.getValue() + ")");
 		}
-		displayOptions(giveOptions);
+		this.view.displayOptions(giveOptions);
 		switch (inputScanner.nextLine()) {
 		case "1":
 			giveResource.add("Gold");
@@ -569,8 +544,9 @@ public class PlayerTurn {
 		stockpileOptions.add("Wood (There are " + this.stockpile.getNumOfResource("Wood") + " in the stockpile)");
 		stockpileOptions.add("Goats (There are " + this.stockpile.getNumOfResource("Goats") + " in the stockpile)");
 		stockpileOptions.add("Cutlass (There are " + this.stockpile.getNumOfResource("Cutlass") + " in the stockpile)");
-		displayOptions(stockpileOptions);
-		switch (inputScanner.nextLine()) {
+
+		this.view.displayOptions(stockpileOptions);
+		switch(inputScanner.nextLine()) {
 		case "1":
 			num = getNumberFromPlayer("Gold");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Gold", num));
@@ -645,37 +621,4 @@ public class PlayerTurn {
 			return false;
 		}
 	}
-
-	private void displayOptions(ArrayList<String> options) {
-		int i = 1;
-		this.view.display("\nYour options are: ");
-		for (String option : options) {
-			this.view.display("\n\t" + i + " : " + option);
-			i++;
-		}
-	}
-
-	private void viewMarketplace() {
-		this.view.display("The Marketplace contains the following resources: ");
-		this.view.display(this.marketplace.toString());
-	}
-
-	private void viewStockpile() {
-		this.view.display(this.stockpile.toString());
-	}
-
-	private void viewResources() {
-		this.view.display(this.player.getResources().toString());
-	}
-
-	private void viewBoard() {
-		this.view.display("The board currently looks like this: ");
-		for (Player player : this.playerList.getList()) {
-			this.view.display(player.toString());
-		}
-		this.view.display("\nThe Ghost captain is on island: \t" + this.board.getGhostIsland().getName());
-		this.view.display("\n\n\n");
-		this.view.display(this.board.getBoardConfig());
-	}
-
 }
