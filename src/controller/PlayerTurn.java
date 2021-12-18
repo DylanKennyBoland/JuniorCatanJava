@@ -280,6 +280,12 @@ public class PlayerTurn {
 	public void buyCocoTile() {
 		if (!this.buildOptions.checkResources("CocoTile") && this.board.getNumOfCocoTiles() >= 1) {
 			Integer cocoTileNum = this.pickCocoTile(); // A number corresponding to the type of Coco tile a player pulls
+			this.player.takeResource("Cutlass", 1);
+			this.player.takeResource("Molasses", 1);
+			this.player.takeResource("Gold", 1);
+			this.stockpile.updateStockPile("Cutlass", 1);
+			this.stockpile.updateStockPile("Molasses", 1);
+			this.stockpile.updateStockPile("Gold", 1);
 			switch (cocoTileNum) {
 			case 1:
 				this.player.addCocoTile("Ghost Captain");
