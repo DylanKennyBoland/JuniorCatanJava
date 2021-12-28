@@ -6,7 +6,7 @@ package model.board;
  */
 
 public interface Tradeable {
-	public void set(); // A method to set up a data structure of resources...
+	public void initializeResources(); // A method to set up a data structure of resources...
 	
 	/* The isAvailable() method will query if a certain data structure  
 	has a certain number of a resource - it returns True or False... */

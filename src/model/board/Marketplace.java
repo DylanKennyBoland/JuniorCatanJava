@@ -22,11 +22,11 @@ public class Marketplace implements Tradeable {
 	 */
 	public Marketplace(String name) {
 		this.name = name;
-		this.set(); // Setting up the marketplace
+		this.initializeResources(); // Setting up the marketplace
 	}
 
 	@Override
-	public void set() {
+	public void initializeResources() {
 		this.marketplace.clear();
 		this.update("Gold", 1);
 		this.update("Molasses", 1);
@@ -67,13 +67,13 @@ public class Marketplace implements Tradeable {
 		}
 
 		if ((numIn > 1) && (this.areTilesAllSame())) {
-			this.set(); // Resetting the marketplace
+			this.initializeResources(); // Resetting the marketplace
 			return String.format(
 					"You've traded %1$d %2$s tiles for %3$d %4$s tiles."
 							+ "\nINFO: resetting the marketplace as it's flooded with the same resource...",
 					numIn, tilein, numOut, tileout);
 		} else if ((numIn == 1) && (this.areTilesAllSame())) {
-			this.set();
+			this.initializeResources();
 			return String.format(
 					"You've traded %1$d %2$s tile for %3$d %4$s tile."
 							+ "\nINFO: resetting the marketplace as it's flooded with the same resource...",

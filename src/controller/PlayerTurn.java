@@ -84,21 +84,6 @@ public class PlayerTurn {
 		this.view.display("\nThe dice rolled a " + roll);
 		if (roll == 6) {
 			this.moveGhostCaptain();
-//			this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-//			this.view.display("\nWhere would you like to move it to? (Input a letter from A - L) ");
-//			while(!validChoice) {
-//				char moveTo = this.inputScanner.next().charAt(0);
-//				inputScanner.nextLine();
-//				if ( moveTo < 65 || moveTo > 76) {
-//					this.view.display("That is not a valid location. (Input a letter from A - L) ");
-//				} else if ( moveTo  == this.board.getGhostIsland().getName()) {
-//					this.view.display("You have to move the Ghost Captain to a new Island. Try Again!");
-//				} 
-//				else {
-//					this.board.moveGhostCaptain(moveTo);
-//					validChoice = true;
-//				}
-//			}
 		} else {
 			this.view.display(this.board.produceResources(roll));
 		}
@@ -145,7 +130,7 @@ public class PlayerTurn {
 				this.view.viewResources(this.player);
 				break;
 			case "4":
-				this.view.display(player.viewAssets());
+				this.view.display(player.assetsToString());
 				break;
 			case "5":
 				finishedBuilding = true;

@@ -22,6 +22,7 @@ public class Islands{
 	private IslandEnums islandType;
 	private List<String> attachedLairs;
 	private List<String> attachedShipSites = new ArrayList<String>();
+	// The ghostCaptain variable indicates if the island has the ghostCaptain.
 	private boolean ghostCaptain = false;
 	
 	/**

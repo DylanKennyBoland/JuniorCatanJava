@@ -25,11 +25,11 @@ public class Stockpile implements Tradeable {
 	 */
 	public Stockpile(String name) { // The constructor...
 		this.name = name;
-		this.set();
+		this.initializeResources();
 	}
 
 	@Override
-	public void set() {
+	public void initializeResources() {
 		this.stockpile.put("Wood", resourceQuantity);
 		this.stockpile.put("Cutlass", resourceQuantity);
 		this.stockpile.put("Goats", resourceQuantity);

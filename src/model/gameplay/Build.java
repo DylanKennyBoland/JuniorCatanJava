@@ -77,7 +77,7 @@ public class Build {
 
 	public List<String> validLairSites() {
 		List<String> allLairSites = new ArrayList<String>(this.getBoard().getLairList());
-		allLairSites.removeAll(this.getBoard().getOccupiedLairs());
+		allLairSites.removeAll(this.getBoard().getUsedLairSites());
 		List<String> validLairSites = new ArrayList<String>();
 		for (String lair : allLairSites) {
 			for (String shipSite : this.player.getShipAssets()) {
