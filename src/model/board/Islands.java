@@ -46,47 +46,6 @@ public class Islands{
 		setAttachedShipSites();
 		initializeGhostCaptain();
 	}
-	
-	// Some getter methods for returning object variables.
-	public int getDiceNumber() {
-		return diceNumber;
-	}
-
-	public IslandEnums getIslandType() {
-		return islandType;
-	}
-	
-	public List<String> getAttachedLairs(){
-		return this.attachedLairs;
-	}
-
-	public char getName() {
-		return this.name;
-	}
-	
-	public List<String> getAttachedShipSites(){
-		return this.attachedShipSites;
-	}
-	
-	//This getter method gets the type of resource an Island produces according to the islandType
-	public String getIslandResource() {
-		switch (this.islandType) {
-		case FOREST:
-			return ResourceEnums.WOOD.getType();
-		case CAVES:
-			return ResourceEnums.CUTLASS.getType();
-		case RIVERS:
-			return ResourceEnums.GOLD.getType();
-		case SUGAR:
-			return ResourceEnums.MOLASSES.getType();
-		case PASTURES:
-			return ResourceEnums.GOATS.getType();
-		case SPOOKY:
-			return " ";
-		default:
-			return " ";
-		}
-	}
 
 	// A method for returning if the Island has the ghost captain.
 	public boolean hasGhostCaptain() {
@@ -138,7 +97,7 @@ public class Islands{
 		}
 	}
 	
-	/**This method uses the bubble sort algorithm sort two input strings according to the size of
+	/**This method sorts two input strings according to the size of
 	 * the number in the string. e.g. List = greaterThan(" 2 "," 1 ")
 	 * 								  List == [" 1 "," 2 "]
 	 * This is used in the setAttachedShipSites method to ensure the name of the ship sites always
@@ -161,8 +120,41 @@ public class Islands{
 		lairs.add(dst);
 		return lairs;
 	}
+	
+	//This getter method gets the type of resource an Island produces according to the islandType
+	public String getIslandResource() {
+		switch(this.islandType){
+		case FOREST: return ResourceEnums.WOOD.getType();
+		case CAVES: return ResourceEnums.CUTLASS.getType();
+		case RIVERS: return ResourceEnums.GOLD.getType();
+		case SUGAR: return ResourceEnums.MOLASSES.getType();
+		case PASTURES: return ResourceEnums.GOATS.getType();
+		case SPOOKY: return " ";
+		default : return " ";
+		}
+	}
+	
+	// Some getter methods for returning object variables.
+	public int getDiceNumber() {
+		return diceNumber;
+	}
 
-	@Override
+	public IslandEnums getIslandType() {
+		return islandType;
+	}
+	
+	public List<String> getAttachedLairs(){
+		return this.attachedLairs;
+	}
+
+	public char getName() {
+		return this.name;
+	}
+	
+	public List<String> getAttachedShipSites(){
+		return this.attachedShipSites;
+	}
+	
 	// A toString method for displaying the island variables.
 	public String toString() {
 		return "\nDice Number: " + this.diceNumber + "\nIsland Type: " + this.islandType + "\nLair Sites: "

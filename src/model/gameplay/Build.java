@@ -3,27 +3,38 @@ package model.gameplay;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
-
-import model.board.Board;
 import model.enums.TradeEnums;
+import model.board.Board;
+import model.board.Stockpile;
 import model.players.Player;
 
+/**
+ * Class for the Build Object which is used for the building functionality in the game.
+ * 
+ * @author: Adam Durning & Dylan Boland
+ * @Date: 27/12/2021
+ * 
+ */
+
 public class Build {
+	//Setting up the Build variables.
 	private Player player;
 	private Board board;
-	private String buildChoice;
-	private HashMap<String, Integer> playerResources;
+	private Stockpile stockpile;
 	private HashMap<String, Integer> lairCost = new HashMap<String, Integer>();
 	private HashMap<String, Integer> shipCost = new HashMap<String, Integer>();
-	private ArrayList<String> buildOptions;
-	private Scanner inputScanner;
 
-	public Build(Player player, Scanner inputScanner) {
+	
+	/**
+	 * The Build constructor.
+	 * 
+	 * @param: player - The player object that wants to build.
+	 * 
+	 * */
+	public Build(Player player) {
 		this.player = player;
 		this.board = Board.getInstance();
-		this.inputScanner = inputScanner;
-		this.buildOptions = new ArrayList<String>();
+		this.stockpile = board.getStockpile();
 		this.lairCost.put("Wood", 1);
 		this.lairCost.put("Cutlass", 1);
 		this.lairCost.put("Molasses", 1);
@@ -35,7 +46,7 @@ public class Build {
 	public boolean checkResources(TradeEnums event) {
 		boolean result;
 		switch (event) {
-		case BUILD_SHIP:
+		case BUILD_SHIP:// Checking the players resources for building a ship.
 			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
 				result = true;
 
@@ -43,15 +54,15 @@ public class Build {
 				result = false;
 			}
 			break;
-		case BUILD_LAIR:
-			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
-					&& player.isAvailable("Wood", 1)) {
+		case BUILD_LAIR:// Checking resources for a lair.
+			if (player.isAvailable("Cutlass", 1) /*&& player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
+					&& player.isAvailable("Wood", 1)*/) {
 				result = true;
 			} else {
 				result = false;
 			}
 			break;
-		case BUY_COCO_TILE:
+		case BUY_COCO_TILE:// Checking resources for a Coco Tile.		
 			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1)
 					&& player.isAvailable("Gold", 1)) {
 				result = true;
@@ -65,20 +76,55 @@ public class Build {
 		return result;
 	}
 
+	/**
+	 * This method adds a lair to the player's assets, takes the necessary resources from
+	 * the player, and puts them back in the stockpile.
+	 * 
+	 * @param: lair - The label of the lair site being built on.
+	 * 
+	 * @return: Returns a string indicating the build has been completed.
+	 * */
 	public String buildLair(String lair) {
 		this.player.addLairAsset(lair);
+		this.player.takeResource("Cutlass", 1);
+		this.player.takeResource("Molasses", 1);
+		this.player.takeResource("Goats", 1);
+		this.player.takeResource("Wood", 1);
+		this.stockpile.updateStockPile("Cutlass", 1);
+		this.stockpile.updateStockPile("Molasses", 1);
+		this.stockpile.updateStockPile("Goats", 1);
+		this.stockpile.updateStockPile("Wood", 1);
 		return ("Done!\n");
 	}
-
+	
+	/**
+	 * This method adds a ship to the player's assets, takes the necessary resources from
+	 * the player, and puts them back in the stockpile.
+	 * 
+	 * @param: ship - The label of the ship site being built on.
+	 * 
+	 * @return: Returns a string indicating the build has been completed.
+	 * */
 	public String buildShip(String ship) {
 		this.player.addShipAsset(ship);
+		this.player.takeResource("Goats", 1);
+		this.player.takeResource("Wood", 1);
+		this.stockpile.updateStockPile("Goats", 1);
+		this.stockpile.updateStockPile("Wood", 1);
 		return ("Done!\n");
 	}
 
+	/**
+	 * This method returns a list of the lair sites a player can build on.
+	 * */
 	public List<String> validLairSites() {
-		List<String> allLairSites = new ArrayList<String>(this.getBoard().getLairList());
-		allLairSites.removeAll(this.getBoard().getUsedLairSites());
+		// Getting the list of lair sites on the board.
+		List<String> allLairSites = new ArrayList<String>(this.board.getLairList());
+		// Removing the lair sites that have been built on.
+		allLairSites.removeAll(this.board.getUsedLairSites());
 		List<String> validLairSites = new ArrayList<String>();
+		// This for loop checks all of the player's ship assets and adds the 
+		// lair sites that are connected to these ship assets to the list that is returned.
 		for (String lair : allLairSites) {
 			for (String shipSite : this.player.getShipAssets()) {
 				if (shipSite.contains(lair)) {
@@ -89,9 +135,13 @@ public class Build {
 		return validLairSites;
 	}
 
+	/**
+	 * This method returns a list of the ship sites a player can build on.
+	 * The method works in a similar way to the validLairSites method.
+	 * */
 	public List<String> validShipSites() {
-		List<String> allShipSites = new ArrayList<String>(this.getBoard().getShipSites());
-		allShipSites.removeAll(this.getBoard().getUsedShipSites());
+		List<String> allShipSites = new ArrayList<String>(this.board.getShipSites());
+		allShipSites.removeAll(this.board.getUsedShipSites());
 		List<String> freeShipSites = new ArrayList<String>(allShipSites);
 		List<String> validShipSites = new ArrayList<String>();
 		for (String lair : this.player.getLairAssets()) {
@@ -102,18 +152,5 @@ public class Build {
 			}
 		}
 		return validShipSites;
-	}
-
-	public Board getBoard() {
-		return this.board;
-	}
-
-	private boolean canBuild(String location) {
-		for (String asset : player.getLairAssets()) {
-			if (asset.contains(" " + location + " ")) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

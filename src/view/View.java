@@ -1,10 +1,12 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Stockpile;
+import model.enums.PlayerEnums;
 import model.players.Player;
 import model.players.PlayerList;
 
@@ -52,5 +54,13 @@ public class View {
 			display(player.toString());
 		}
 		display("\nThe Ghost captain is on island: \t" + ghostIsland.getName());
+	}
+	
+	public void printAvailableColours(List<PlayerEnums> availableColours, ArrayList<Integer> colourIndex) {
+		int i = 0;
+		for(PlayerEnums colour : availableColours) {
+            this.display("\n" + colourIndex.get(i) + " : " +  colour.getColour());
+            i++;
+		}
 	}
 }
