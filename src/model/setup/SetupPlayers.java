@@ -197,7 +197,7 @@ public class SetupPlayers {
 	 * @return: Returns a boolean indicating if the input number is valid.
 	 * */
 	private boolean isValidNumber(Integer num) {
-		if(num < 3 || num > 4) {
+		if(num < 0 || num > 4) {
 			this.view.display("Not a valid number. Must be 3 or 4. Try again.");
 			return false;
 		} else if (num == 3) {

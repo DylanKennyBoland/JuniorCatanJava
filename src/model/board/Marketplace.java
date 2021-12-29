@@ -1,7 +1,6 @@
 package model.board;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @Author: Dylan Kenny Boland & Adam Durning
