@@ -34,8 +34,8 @@ public class Trade {
 	public String tradeMarketplace(String requestedResource, String givenResource) {
 		if(this.marketplace.isAvailable(requestedResource, 1)) {
 			if(player.isAvailable(givenResource, 1)) {
-				player.giveResource(requestedResource, 1);
-				player.takeResource(givenResource, 1);
+				player.update(requestedResource, 1);
+				player.update(givenResource, -1);
 				this.tradedWithMarketplace = true;
 				return(this.marketplace.trade(givenResource, 1, requestedResource, 1));
 			}	
@@ -56,10 +56,10 @@ public class Trade {
 		return output;
 	}
 	
-	private String swapWithStockpile(String givenResource, String requestedResource, Integer num) {
+	private String swapWithStockpile(String givenResource, String requestedResource, int num) {
 		if(player.isAvailable(givenResource, num*2)) {
-			player.giveResource(requestedResource, num);
-			player.takeResource(givenResource, num*2);
+			player.update(requestedResource, num);
+			player.update(givenResource, -num*2);
 			return(this.stockpile.trade(givenResource, num*2, requestedResource, num));
 		} else {return("You do not have enough " + givenResource + " for this trade!");}
 	}
