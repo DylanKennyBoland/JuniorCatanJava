@@ -328,8 +328,4 @@ public class Board {
 	public void setGhostIsland(Islands island) {
 		this.ghostIsland = island;
 	}
-
-	public void setPlayerWithMaxCocoTiles(Player player) {
-		this.playerWithMostCocoTiles = player;
-	}
 }
