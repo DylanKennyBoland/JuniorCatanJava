@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-
 import model.board.Board;
 import model.board.Marketplace;
 import model.board.Stockpile;
@@ -18,7 +17,16 @@ import model.players.Player;
 import model.players.PlayerList;
 import view.View;
 
+/**
+ * Class for the Player Turn Object.
+ * This class controls what the player can do each turn.
+ * 
+ * @author: Adam Durning & Dylan Boland
+ * @Date: 27/12/2021
+ * 
+ */
 public class PlayerTurn {
+	// Setting up the player turn variables.
 	private Player player;
 	private Board board;
 	private Stockpile stockpile;
@@ -29,23 +37,33 @@ public class PlayerTurn {
 	private Trade tradeOptions;
 	private Random random = new Random();
 	private View view;
+	private boolean turnOver;
 
+	/**
+	 * The PlayerTurn constructor.
+	 * 
+	 * @param: player - The player object who's turn it is.
+	 * @param: inputScanner - A scanner object for getting the user input.
+	 * */
 	public PlayerTurn(Player player, Scanner inputScanner) {
 		this.player = player;
 		this.board = Board.getInstance();
 		this.stockpile = board.getStockpile();
 		this.marketplace = board.getMarketplace();
 		this.inputScanner = inputScanner;
-		this.buildOptions = new Build(player, inputScanner);
-		this.tradeOptions = new Trade(player, inputScanner);
+		this.buildOptions = new Build(player);
+		this.tradeOptions = new Trade(player);
 		this.playerList = PlayerList.getInstance();
 		this.view = View.getInstance();
+		this.turnOver = false;
 	}
 
+	// This method starts the Player's turn.
 	public void startTurn() {
+		//Rolling the dice, always at the start of the turn
 		rollDice();
-		boolean turnOver = false;
-		while (!turnOver) {
+		// This while loop gives the player there options until they end their turn.
+		while (!this.turnOver) {
 			ArrayList<String> options = new ArrayList<String>();
 			options.add("Build");
 			options.add("Trade");
@@ -71,14 +89,18 @@ public class PlayerTurn {
 				this.view.viewBoard(this.playerList, this.board.getGhostIsland());
 				break;
 			case "6":
-				turnOver = true;
+				this.turnOver = true;
 				break;
 			}
 		}
 	}
 	
+	/**
+	 * This method generates a random number (1 - 6) for the dice and calls the board to
+	 * produce resources for the corresponding islands.
+	 * If a 6 is rolled the player can move the ghost captain.
+	 * */
 	private void rollDice() {
-		boolean validChoice = false;
 		Integer roll = random.nextInt(6) + 1;
 		this.view.display("\nIt is " + this.player.getName() + "'s turn!");
 		this.view.display("\nThe dice rolled a " + roll);
@@ -89,6 +111,9 @@ public class PlayerTurn {
 		}
 	}
 	
+	/**
+	 * This method gets the player's choice for moving the ghost captain.
+	 * */
 	private void moveGhostCaptain() {
 		boolean validChoice = false;
 		this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
@@ -108,6 +133,10 @@ public class PlayerTurn {
 		}
 	}
 
+	/**
+	 * This method is called when the Player chooses to Build.
+	 * It gives the player there build options and handles there input.
+	 * */
 	private void build() {
 		boolean finishedBuilding = false;
 		ArrayList<String> buildOptionsList = new ArrayList<String>();
@@ -122,6 +151,10 @@ public class PlayerTurn {
 			switch (inputScanner.nextLine()) {
 			case "1":
 				this.buildLair();
+				if (this.didPlayerWin()) {
+					finishedBuilding = true;
+					this.turnOver = true;
+				}
 				break;
 			case "2":
 				this.buildShip();
@@ -139,6 +172,15 @@ public class PlayerTurn {
 		}
 	}
 
+	/**
+	 * This method is called when the player chooses to build a lair.
+	 * It gets the available lair sites the player can build on from the model
+	 * and then gives these as options to the player.
+	 * This method is also called if a person draws a Build coco tile and
+	 * chooses to build a lair. The skipResourcesCheckStatus variable is true
+	 * if the player uses a Coco tile for building because this is a free build
+	 * and they do not need to use resources.
+	 * */
 	private void buildLair() {
 		ArrayList<String> validLairSites = new ArrayList<String>(this.buildOptions.validLairSites());
 		if (validLairSites.size() == 0) {
@@ -151,11 +193,12 @@ public class PlayerTurn {
 				return;
 			}
 		}
-		this.view.display("Where would you like to build a lair? Your options are: ");
 		ArrayList<String> options = new ArrayList<String>(validLairSites);
 		if (this.player.skipResourcesCheckStatus() == false) {
 			options.add("Cancel Build");
 		}
+		this.view.display("Where would you like to build a lair?" +
+				  " Enter your choice from 1 - " + options.size());
 		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
@@ -188,6 +231,15 @@ public class PlayerTurn {
 		}
 	}
 
+	/**
+	 * This method is called when the player chooses to build a ship.
+	 * It gets the available ship sites the player can build on from the model
+	 * and then gives these as options to the player.
+	 * This method is also called if a person draws a Build coco tile and
+	 * chooses to build a ship. The skipResourcesCheckStatus variable is true
+	 * if the player uses a Coco tile for building because this is a free build
+	 * and they do not need to use resources.
+	 * */
 	private void buildShip() {
 		ArrayList<String> validShipSites = new ArrayList<String>(this.buildOptions.validShipSites());
 		if (validShipSites.size() == 0) {
@@ -200,7 +252,6 @@ public class PlayerTurn {
 				return;
 			}
 		}
-		this.view.display("Where would you like to build a ship? Your options are: ");
 		ArrayList<String> options = new ArrayList<String>(validShipSites);
 		/* Next, we need to check if the player is currently using a build-type coco
 		 * tile... if they are then we shouldn't give the option to cancel a build
@@ -209,6 +260,8 @@ public class PlayerTurn {
 		if (this.player.skipResourcesCheckStatus() == false) {
 			options.add("Cancel Build");
 		}
+		this.view.display("Where would you like to build a ship?" +
+				  " Enter your choice from 1 - " + options.size());
 		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
@@ -287,18 +340,6 @@ public class PlayerTurn {
 				boolean validChoice = false;
 				this.view.display("You picked a ghost captain coco tile!");
 				this.moveGhostCaptain();
-//				this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
-//				this.view.display("\nWhere would you like to move it to? (Input a letter from A - M) ");
-//				while (!validChoice) {
-//					char moveTo = this.inputScanner.next().charAt(0);
-//					inputScanner.nextLine();
-//					if (moveTo < 65 || moveTo > 77) {
-//						this.view.display("That is not a valid location. Choose a letter between A and M.");
-//					} else {
-//						this.board.moveGhostCaptain(moveTo);
-//						validChoice = true;
-//					}
-//				}
 				break;
 			case 2:
 				this.exchange(TradeEnums.COCO_TILE_BUILD);
@@ -433,6 +474,11 @@ public class PlayerTurn {
 		}
 	}
 
+	/**
+	 * This method is called when the player chooses to Trade.
+	 * The player is shown their options and they input what they would
+	 * like to do.
+	 * */
 	private void trade() {
 		boolean finishedTrading = false;
 		ArrayList<String> tradeOptionsList = new ArrayList<String>();
@@ -478,7 +524,12 @@ public class PlayerTurn {
 		}
 	}
 
-	public void tradeWithMarketplace() {
+	/**
+	 * This method is called if the player chooses to trade with the marketplace.
+	 * The player is shown what resources they can get and when they make a
+	 * choice they are then asked what resource they will give.
+	 * */
+	private void tradeWithMarketplace() {
 		ArrayList<String> giveResource = new ArrayList<String>();
 		this.view.display("What would you like? (Enter a number from 1 - 5. Enter any other key to escape)");
 		ArrayList<String> marketplaceOptions = new ArrayList<String>();
@@ -508,6 +559,10 @@ public class PlayerTurn {
 		}
 	}
 	
+	/**
+	 * This method gets the resource(s) the player is going to give when
+	 * trading with the Stockpile/Marketplace. 
+	 * */
 	private ArrayList<String> getGivenResources() {
 		ArrayList<String> giveResource = new ArrayList<String>();
 		this.view.display("What will you give?");
@@ -536,15 +591,19 @@ public class PlayerTurn {
 		return giveResource;
 	}
 
+	/**
+	 * This method is called when the player chooses to trade with the stockpile.
+	 * The player is shown how much of each resource is available and then they can
+	 * pick what they would like and how much of that resource they would like.
+	 * They are then asked what resource(s) they are going to give.
+	 * */
 	public void tradeWithStockpile() {
 		int num;
 		ArrayList<String> tradeInfo;
 		this.view.display("What resource would you like?");
 		ArrayList<String> stockpileOptions = new ArrayList<String>();
 		stockpileOptions.add("Gold (There are " + this.stockpile.getNumOfResource("Gold") + " in the stockpile)");
-		stockpileOptions
-				.add("Mollasses (There are " + this.stockpile.getNumOfResource("Molasses") + " in the stockpile)");
-		;
+		stockpileOptions.add("Mollasses (There are " + this.stockpile.getNumOfResource("Molasses") + " in the stockpile)");
 		stockpileOptions.add("Wood (There are " + this.stockpile.getNumOfResource("Wood") + " in the stockpile)");
 		stockpileOptions.add("Goats (There are " + this.stockpile.getNumOfResource("Goats") + " in the stockpile)");
 		stockpileOptions.add("Cutlass (There are " + this.stockpile.getNumOfResource("Cutlass") + " in the stockpile)");
@@ -553,39 +612,49 @@ public class PlayerTurn {
 		case "1":
 			num = getNumberFromPlayer("Gold");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Gold", num));
-			tradeOptions.tradeStockpile("Gold", num, tradeInfo);
+			this.view.display(tradeOptions.tradeStockpile("Gold", num, tradeInfo));
 			break;
 		case "2":
 			num = getNumberFromPlayer("Mollasses");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Mollasses", num));
-			tradeOptions.tradeStockpile("Mollasses", num, tradeInfo);
+			this.view.display(tradeOptions.tradeStockpile("Mollasses", num, tradeInfo));
 			break;
 		case "3":
 			num = getNumberFromPlayer("Wood");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Wood", num));
-			tradeOptions.tradeStockpile("Wood", num, tradeInfo);
+			this.view.display(tradeOptions.tradeStockpile("Wood", num, tradeInfo));
 			break;
 		case "4":
 			num = getNumberFromPlayer("Goats");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Goats", num));
-			tradeOptions.tradeStockpile("Goats", num, tradeInfo);
+			this.view.display(tradeOptions.tradeStockpile("Goats", num, tradeInfo));
 			break;
 		case "5":
 			num = getNumberFromPlayer("Cutlass");
 			tradeInfo = new ArrayList<String>(getTradeInfo("Cutlass", num));
-			tradeOptions.tradeStockpile("Cutlass", num, tradeInfo);
+			this.view.display(tradeOptions.tradeStockpile("Cutlass", num, tradeInfo));
 			break;
 		}
 
 	}
 
+	/**
+	 * This method is used to get the number of the requested resource the player would like form the stockpile.
+	 * */
 	public int getNumberFromPlayer(String requestedResource) {
 		boolean enough = false;
 		int num = 0;
 		while (!enough) {
 			this.view.display("How many would you like?");
-			num = Integer.parseInt(inputScanner.nextLine());
-			if (this.stockpile.isAvailable(requestedResource, num)) {
+			try {
+				num = Integer.parseInt(inputScanner.nextLine());
+			}
+			catch(NumberFormatException e){
+				this.view.display("That is not a number. Try again.");
+			}
+			if (num < 1) {
+				this.view.display("Please enter a number greater than 0. Try again.");
+			}else if (this.stockpile.isAvailable(requestedResource, num)) {
 				enough = true;
 			} else {
 				this.view.display("There is not enough " + requestedResource + " in the stockpile");
@@ -594,6 +663,18 @@ public class PlayerTurn {
 		return num;
 	}
 
+	/**
+	 * This method gets the the information of what the player is going to 
+	 * give when trading with the stockpile. The player must give two of the same 
+	 * resource for one resource from the stockpile.
+	 * If the player wants multiple resources from the stockpile they can
+	 * offer to give multiple resources, however the 2 for 1 rule still applies.
+	 * 
+	 * @param: requstedResoure - The resource the player wants from the stockpile
+	 * @param: num - The amount of the requestedResource.
+	 * 
+	 * @return: Returns a list of the resource(s) that the player is going to give.
+	 * */
 	public ArrayList<String> getTradeInfo(String requestedResource, int num) {
 		ArrayList<String> tradeInfo = new ArrayList<String>();
 		int i = 1;
@@ -616,7 +697,8 @@ public class PlayerTurn {
 		}
 		return tradeInfo;
 	}
-
+	
+	// This method checks if the player has won the game.
 	public boolean didPlayerWin() {
 		if (this.player.getLairAssets().size() == 7) {
 			return true;
