@@ -3,11 +3,23 @@ package model.board;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Marketplace implements Tradeable {
-	private Integer marketplaceSize = 5;
-	private String name;
-	private ArrayList<String> marketplace = new ArrayList<String>(marketplaceSize);
+/**
+ * @Author: Dylan Kenny Boland & Adam Durning
+ * @Date: (of last update) 29/12/2021
+ */
 
+public class Marketplace implements Tradeable {
+	private Integer marketplaceCapacity = 5;
+	private String name;
+	private ArrayList<String> marketplace = new ArrayList<String>(marketplaceCapacity);
+
+	/**
+	 * Constructor for the Marketplace object.
+	 * @param name - the name of the marketplace.
+	 * @param marketplaceCapacity - the maximum number of tiles the marketplace can hold.
+	 * @param marketplace - the array which is representing the marketplace.
+	 * 
+	 */
 	public Marketplace(String name) {
 		this.name = name;
 		this.set(); // Setting up the marketplace
@@ -16,16 +28,27 @@ public class Marketplace implements Tradeable {
 	@Override
 	public void set() {
 		this.marketplace.clear();
-		this.marketplace.add("Gold");
-		this.marketplace.add("Molasses");
-		this.marketplace.add("Wood");
-		this.marketplace.add("Goats");
-		this.marketplace.add("Cutlass");
-		//Collections.shuffle(this.getMarketPlace()); // Shuffling them so the order of the tiles is not the same each time...
+		this.update("Gold", 1);
+		this.update("Molasses", 1);
+		this.update("Wood", 1);
+		this.update("Goats", 1);
+		this.update("Cutlass", 1);
+		Collections.shuffle(this.getMarketPlace()); 
+		/* Shuffling them so the order of
+		 * the tiles is not the same each time...
+		 */
+	}
+	
+	@Override
+	public void update(String resource, int num) {
+		if (this.marketplace.size() == this.marketplaceCapacity) {
+			return;
+		}
+		this.marketplace.add(resource);		
 	}
 
 	@Override
-	public boolean isAvailable(String resourceName, Integer number) {
+	public boolean isAvailable(String resourceName, int number) {
 		if (this.locations(resourceName).size() >= number) {
 			return true;
 		} else {
@@ -34,7 +57,7 @@ public class Marketplace implements Tradeable {
 	}
 
 	@Override
-	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
+	public String trade(String tilein, int numIn, String tileout, int numOut) {
 		if (!this.isAvailable(tileout, numOut)) {
 			return String.format("INFO: there are not enough %1$s tiles in the Marketplace at the moment.", tileout);
 		}
@@ -65,7 +88,7 @@ public class Marketplace implements Tradeable {
 	@Override
 	public String toString() {
 		String result = "";
-		for(String resource : this.marketplace) {
+		for (String resource : this.marketplace) {
 			result = result + "\t" + resource + "\n";
 		}
 		return result;
@@ -73,7 +96,7 @@ public class Marketplace implements Tradeable {
 
 	public ArrayList<Integer> locations(String resourceName) {
 		ArrayList<Integer> locations = new ArrayList<Integer>();
-		for (int i = 0; i < this.marketplaceSize; i++) {
+		for (int i = 0; i < this.marketplaceCapacity; i++) {
 			if (this.marketplace.get(i).contains(resourceName)) {
 				locations.add(i);
 			}
@@ -86,13 +109,13 @@ public class Marketplace implements Tradeable {
 	}
 
 	public boolean areTilesAllSame() {
-		boolean allEqual = true; // A local variable the value of which we'll return...
+		boolean answer = true; // A local variable the value of which we'll return...
 		for (String tile : this.getMarketPlace()) {
 			if (!tile.equals(this.getMarketPlace().get(0))) {
-				allEqual = false;
+				answer = false;
 			}
 		}
-		return allEqual;
+		return answer;
 	}
 
 	public String getName() {
