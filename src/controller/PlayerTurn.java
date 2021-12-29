@@ -409,6 +409,7 @@ public class PlayerTurn {
 			}
 		}
 	}
+	
 	/*
 	 * The method below is meant to emulate some of the main builds or
 	 * trades that can occur. A switch-case statement is used for easy
@@ -539,7 +540,6 @@ public class PlayerTurn {
 		this.view.display("What would you like? (Enter a number from 1 - 5. Enter any other key to escape)");
 		this.view.viewMarketplace(this.marketplace);
 		ArrayList<String> marketplaceOptions = new ArrayList<String>(this.marketplace.getMarketPlace());
-//		this.view.displayOptions(marketplaceOptions);
 		switch (inputScanner.nextLine()) {
 		case "1":
 			giveResource = getGivenResources();
@@ -608,13 +608,6 @@ public class PlayerTurn {
 		ArrayList<String> tradeInfo;
 		this.view.display("What resource would you like?");
 		this.view.viewStockpile(this.stockpile);
-//		ArrayList<String> stockpileOptions = new ArrayList<String>();
-//		stockpileOptions.add("Gold (There are " + this.stockpile.getNumOfResource("Gold") + " in the stockpile)");
-//		stockpileOptions.add("Mollasses (There are " + this.stockpile.getNumOfResource("Molasses") + " in the stockpile)");
-//		stockpileOptions.add("Wood (There are " + this.stockpile.getNumOfResource("Wood") + " in the stockpile)");
-//		stockpileOptions.add("Goats (There are " + this.stockpile.getNumOfResource("Goats") + " in the stockpile)");
-//		stockpileOptions.add("Cutlass (There are " + this.stockpile.getNumOfResource("Cutlass") + " in the stockpile)");
-//		this.view.displayOptions(stockpileOptions);
 		switch(inputScanner.nextLine()) {
 		case "1":
 			num = getNumberFromPlayer("Gold");
