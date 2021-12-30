@@ -62,8 +62,5 @@ public class Trade {
 			player.update(givenResource, -num*2);
 			return(this.stockpile.trade(givenResource, num*2, requestedResource, num));
 		} else {return("You do not have enough " + givenResource + " for this trade!");}
-	}
-	
-	
-	
+	}	
 }

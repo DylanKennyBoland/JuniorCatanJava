@@ -176,7 +176,11 @@ public class Player implements Tradeable {
 	public PlayerEnums getColour() {
 		return this.colour;
 	}
-
+	
+	public String getColourIcon() {
+		return String.valueOf(this.getColour().getColour().charAt(0)).toUpperCase();
+	}
+	
 	public void setColour(PlayerEnums colour) {
 		this.colour = colour;
 	}
@@ -191,13 +195,5 @@ public class Player implements Tradeable {
 
 	public void addCocoTile(String cocoTileType) {
 		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) + 1);
-	}
-
-	public void giveResource(String resource, Integer num) {
-		this.resources.put(resource, this.resources.get(resource) + num);
-	}
-
-	public void takeResource(String resource, Integer num) {
-		this.resources.put(resource, resources.get(resource) - num);
 	}
 }

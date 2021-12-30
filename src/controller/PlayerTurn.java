@@ -674,6 +674,8 @@ public class PlayerTurn {
 			this.view.display(player.toString());
 		}
 		this.view.display("\nThe Ghost captain is on island: \t" + this.board.getGhostIsland().getName());
+		this.view.display("\n\n\n");
+		this.view.display(this.board.getBoardConfig());
 	}
 
 }
