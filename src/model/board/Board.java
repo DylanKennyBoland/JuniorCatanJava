@@ -4,15 +4,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import model.players.Player;
 import model.players.PlayerList;
 
-public class Board {
+/**
+ * Class for the Board Object. This is a Singleton object as there is only one board in the Game.
+ * 
+ * @author: Adam Durning & Dylan Boland
+ * @Date: 27/12/2021
+ * 
+ */
 
+public class Board {
+	// Setting up the Board variables. These will be explained in comments below.
 	private static Board gameBoard;
 	private List<String> lairLocations = new ArrayList<String>();
 	private List<String> shipSites = new ArrayList<String>();
@@ -28,6 +38,9 @@ public class Board {
 	private Islands ghostIsland;
 	protected String boardConfig;
 
+	/** A method for getting the instance of the Board object. If an instance does
+	 *  not exist than one is created.
+	 */
 	public static Board getInstance() {
 		if (gameBoard == null) {
 			gameBoard = new Board();
@@ -35,6 +48,9 @@ public class Board {
 		return gameBoard;
 	}
 
+	/**
+	 * The Board constructor.
+	 */
 	private Board() {
 		this.initializeLairLocations();
 		this.islands = new ArrayList<Islands>();
@@ -75,6 +91,68 @@ public class Board {
 				this.updateBoard(site, player.getColourIcon());
 			}
 		}
+	}
+	
+	// This method initializes the list of lair locations on the board.
+	private void initializeLairLocations() {
+		for (int i = 1; i < 33; i++) {
+			this.lairLocations.add(" " + String.valueOf(i) + " ");
+		}
+	}
+
+	// This method initializes the number of each Coco Tile in the game.
+	public void initializeCocoTiles() {
+		this.cocoTiles.put("Ghost Captain", this.initialNumCocoTiles);
+		this.cocoTiles.put("Build", this.initialNumCocoTiles);
+		this.cocoTiles.put("Resource Combination 1", this.initialNumCocoTiles);
+		this.cocoTiles.put("Resource Combination 2", this.initialNumCocoTiles);
+	}
+	
+	// This method updates the list of ship sites according to the ship sites for each island on the board.
+	public void setupShipSites() {
+		for (Islands island : this.islands) {
+			this.shipSites.removeAll(island.getAttachedShipSites());
+			this.shipSites.addAll(island.getAttachedShipSites());
+		}
+	}
+	
+	/**
+	 * This method produces the Island Resources according to the dice number that is rolled.
+	 * 
+	 * @param: roll - An integer representing the number rolled that turn.
+	 * 
+	 * @return: A string indicating the resources given to each player and/or if an island cannot produce
+	 *			if the island has the ghost captain (GC). 
+	 */
+	public String produceResources(Integer roll) {
+		String string = "";
+		for (Islands island : islands) {
+			//boolean isSpooky = ;
+			// Checks if the islands dice number matches the rolled number and if the island does not have the GC.
+			if (island.getDiceNumber() == roll && !island.hasGhostCaptain()) {
+				for (Player player : playerList.getList()) {
+					List<String> playerLairAssets = player.getLairAssets();
+					List<String> islandLairs = island.getAttachedLairs();
+					// Checks if the Player has any lairs surrounding the Island.
+					// The disjoint method checks if the two inputted lists have no elements in common.
+					if (!Collections.disjoint(playerLairAssets, islandLairs)) {
+						// Getting the number of lairs the Player has surrounding the Island
+						Integer numOfAttachedLairs = playerLairAssets.stream().distinct().filter(islandLairs::contains)
+								.collect(Collectors.toList()).size();
+						String resource = island.getIslandResource();
+						// The player gets as many resources as they have lairs surrounding the Island.
+						player.giveResource(resource, numOfAttachedLairs);
+						// Removing the resources from the stockpile
+						this.stockpile.update(resource, -numOfAttachedLairs);
+						string += ("\nGiving " + resource + " to " + player.getName());
+					}
+				}
+			// If the island has the GC, it cannot produce resources.
+			} else if(island.getDiceNumber() == roll && island.hasGhostCaptain()) {
+				string += ("\nIsland " + island.getName() + " cannot produce!");
+			}
+		}
+		return string;
 	}
 	
 	public void readInBoardTemplate() throws IOException {
@@ -120,21 +198,6 @@ public class Board {
 				v.get(" 21 "), v.get(" 19 "));
 		return this.boardConfig; // returning the string...
 	}
-	
-	private void initializeLairLocations() {
-		for (int i = 1; i < 33; i++) {
-			this.lairLocations.add(" " + String.valueOf(i) + " ");
-		}
-		System.out.println(this.lairLocations.toString());
-	}
-
-	public void setupShipSites() {
-		for (Islands island : this.islands) {
-			this.shipSites.removeAll(island.getAttachedShipSites());
-			this.shipSites.addAll(island.getAttachedShipSites());
-		}
-		System.out.println(this.shipSites.toString());
-	}
 
 	public void setUpCocoTiles() {
 		this.cocoTiles.put("Ghost Captain", this.initialNumCocoTiles);
@@ -142,7 +205,27 @@ public class Board {
 		this.cocoTiles.put("Resource Combination 1", this.initialNumCocoTiles);
 		this.cocoTiles.put("Resource Combination 2", this.initialNumCocoTiles);
 	}
+	
+	// This method removes a Coco tile from the boards Map of Coco tiles. Used when someone builds a Coco tile.
+	public void removeCocoTile(String cocoTileType) {
+		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) - 1);
+	}
 
+	// Increments the currentMaxCocoTiles which is a variable indicating the current largest number of Coco tiles one of the players has.
+	public void incrementCurrentMaxCocoTiles() {
+		this.currentMaxCocoTiles = this.currentMaxCocoTiles + 1;
+	}
+	
+	// This method moves the GC to the island with the name islandName
+	public void moveGhostCaptain(char islandName) {
+		this.islands.get(islands.indexOf(this.ghostIsland)).setGhostCaptain(false);
+		Islands newGhostIsland = getIslandByName(islandName);
+		newGhostIsland.setGhostCaptain(true);
+		// The ghostIsland variable contains the island that currently has the GC.
+		this.ghostIsland = newGhostIsland;
+	}
+	
+	// This method returns a list of Ship sites that have been built on.
 	public List<String> getUsedShipSites() {
 		List<String> usedShipSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
@@ -150,92 +233,27 @@ public class Board {
 		}
 		return usedShipSites;
 	}
-
-	public List<String> getOccupiedLairs() {
+	
+	// This method returns a list of Lair sites that have been built on.
+	public List<String> getUsedLairSites() {
 		List<String> usedLairSites = new ArrayList<String>();
 		for (Player player : this.getPlayerList().getList()) {
 			usedLairSites.addAll(player.getLairAssets());
 		}
-//		List<String> usedLairSitesAsInts = new ArrayList<String>();
-//		for (String lair : usedLairSites) {
-//			usedLairSitesAsInts.add(Integer.valueOf(lair.replace(" ", "")));
-//		}
 		return usedLairSites;
 	}
 	
-	public void setIslands(List<Islands> islands) {
-		this.islands = islands;
-	}
-
-	public void setGhostIsland(Islands island) {
-		this.ghostIsland = island;
-	}
-
-	public Map<String, Integer> getCocoTiles() {
-		return this.cocoTiles;
-	}
-
-	public void removeCocoTile(String cocoTileType) {
-		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) - 1);
-	}
-
-	public Islands getGhostIsland() {
-		return this.ghostIsland;
-	}
-
-	public boolean isLairAvailable(String location) {
-		for (Player player : playerList.getList()) {
-			if (player.getLairAssets().contains(location)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public void incrementCurrentMaxCocoTiles() {
-		this.currentMaxCocoTiles = this.currentMaxCocoTiles + 1;
-	}
-	
-	public Player getPlayerWithMaxCocoTiles() {
-		return this.playerWithMostCocoTiles;
-	}
-
-	public void setPlayerWithMaxCocoTiles(Player player) {
-		this.playerWithMostCocoTiles = player;
-	}
-
-	public void updateLairLocations(String location) {
-		this.lairLocations.remove(this.lairLocations.indexOf(location));
-	}
-
-	public Integer getCurrentMaxCocoTiles() {
-		return this.currentMaxCocoTiles;
-	}
-
-	public String getIslandInfo() {
-		String islandInfo = "";
-		for (Islands island : islands) {
-			islandInfo += island.toString() + "\n";
-		}
-		return islandInfo;
-	}
-
-	public void moveGhostCaptain(String islandName) {
-		this.islands.get(islands.indexOf(this.ghostIsland)).setGhostCaptain(false);
-		Islands newGhostIsland = getIslandByName(islandName);
-		newGhostIsland.setGhostCaptain(true);
-		this.ghostIsland = newGhostIsland;
-	}
-
-	public Islands getIslandByName(String islandName) {
+	// This method returns an Island object given the island Name.
+	public Islands getIslandByName(char islandName) {
 		for (Islands island : this.islands) {
-			if (island.getName().contains(islandName)) {
+			if (island.getName() == islandName) {
 				return island;
 			}
 		}
 		return this.ghostIsland;
 	}
-
+	
+	// This method gets the number of Coco Tiles that can be built.
 	public Integer getNumOfCocoTiles() {
 		int num = 0;
 		for (Integer value : this.getCocoTiles().values()) {
@@ -243,7 +261,12 @@ public class Board {
 		}
 		return num;
 	}
-
+	
+	//Some Getter and Setter methods for the Board variables.
+	public Map<String, Integer> getCocoTiles() {
+		return this.cocoTiles;
+	}
+	
 	public PlayerList getPlayerList() {
 		return this.playerList;
 	}
@@ -266,5 +289,29 @@ public class Board {
 
 	public List<String> getLairList() {
 		return this.lairLocations;
+	}
+
+	public Integer getCurrentMaxCocoTiles() {
+		return this.currentMaxCocoTiles;
+	}
+
+	public Islands getGhostIsland() {
+		return this.ghostIsland;
+	}
+	
+	public Player getPlayerWithMaxCocoTiles() {
+		return this.playerWithMostCocoTiles;
+	}
+
+	public void setIslands(List<Islands> islands) {
+		this.islands = islands;
+	}
+
+	public void setGhostIsland(Islands island) {
+		this.ghostIsland = island;
+	}	
+
+	public void setPlayerWithMaxCocoTiles(Player player) {
+		this.playerWithMostCocoTiles = player;
 	}
 }

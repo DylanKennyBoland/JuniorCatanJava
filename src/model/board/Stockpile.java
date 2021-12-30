@@ -25,11 +25,11 @@ public class Stockpile implements Tradeable {
 	 */
 	public Stockpile(String name) { // The constructor...
 		this.name = name;
-		this.set();
+		this.initializeResources();
 	}
 
 	@Override
-	public void set() {
+	public void initializeResources() {
 		this.stockpile.put("Wood", resourceQuantity);
 		this.stockpile.put("Cutlass", resourceQuantity);
 		this.stockpile.put("Goats", resourceQuantity);
@@ -57,7 +57,7 @@ public class Stockpile implements Tradeable {
 		// Now we update the values associated with the keys...
 		this.stockpile.replace(tilein, currNumTileIn + numIn);
 		this.stockpile.replace(tileout, currNumTileOut - numOut);
-		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
+		return String.format("You've traded %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
 	}
 
 	@Override

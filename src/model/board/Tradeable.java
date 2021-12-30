@@ -6,7 +6,7 @@ package model.board;
  */
 
 public interface Tradeable {
-	public void set(); // A method to set up a data structure of resources...
+	public void initializeResources(); // A method to set up a data structure of resources...
 	
 	/* The isAvailable() method will query if a certain data structure  
 	has a certain number of a resource - it returns True or False... */
@@ -17,7 +17,7 @@ public interface Tradeable {
 	 * arguments are useful, as a trade done with the Marketplace is slightly different 
 	 * from when a trade is done with the Stockpile.
 	 */
-	public String trade(String tilein, int numIn, String tileout, int numOut);
+	public String trade(String tileIn, int numIn, String tileOut, int numOut);
 	
 	/* The Player and Stockpile classes both have hash maps which can be
 	 * updated in nearly identical ways. For this reason, it seems a good idea
