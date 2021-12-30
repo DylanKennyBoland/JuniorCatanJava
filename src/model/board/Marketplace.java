@@ -32,10 +32,6 @@ public class Marketplace implements Tradeable {
 		this.update("Wood", 1);
 		this.update("Goats", 1);
 		this.update("Cutlass", 1);
-		Collections.shuffle(this.getMarketPlace()); 
-		/* Shuffling them so the order of
-		 * the tiles is not the same each time...
-		 */
 	}
 	
 	@Override

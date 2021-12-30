@@ -112,7 +112,6 @@ public class Player implements Tradeable {
 		return ("You own these lairs: " + this.lairAssets.toString() + "\nYou own these ships: "
 				+ this.shipAssets.toString());
 	}
-
 	
 	/** 
 	 * This method checks if a player has a particular number of a resource. Used when building and trading.
@@ -142,7 +141,7 @@ public class Player implements Tradeable {
 	 * @return: A string indicating the resources that were given and received.
 	 * */
 	@Override
-	public String trade(String tileIn, Integer numIn, String tileOut, Integer numOut) {
+	public String trade(String tileIn, int numIn, String tileOut, int numOut) {
 		if (!this.isAvailable(tileOut, numOut)) {
 			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileOut);
 		}

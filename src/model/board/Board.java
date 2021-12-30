@@ -143,7 +143,7 @@ public class Board {
 						// The player gets as many resources as they have lairs surrounding the Island.
 						player.giveResource(resource, numOfAttachedLairs);
 						// Removing the resources from the stockpile
-						this.stockpile.updateStockPile(resource, -numOfAttachedLairs);
+						this.stockpile.update(resource, -numOfAttachedLairs);
 						string += ("\nGiving " + resource + " to " + player.getName());
 					}
 				}
@@ -152,6 +152,7 @@ public class Board {
 				string += ("\nIsland " + island.getName() + " cannot produce!");
 			}
 		}
+		return string;
 	}
 	
 	public void readInBoardTemplate() throws IOException {
@@ -320,6 +321,10 @@ public class Board {
 	public Islands getGhostIsland() {
 		return this.ghostIsland;
 	}
+	
+	public Player getPlayerWithMaxCocoTiles() {
+		return this.playerWithMostCocoTiles;
+	}
 
 	public void setIslands(List<Islands> islands) {
 		this.islands = islands;
@@ -327,5 +332,9 @@ public class Board {
 
 	public void setGhostIsland(Islands island) {
 		this.ghostIsland = island;
+	}	
+
+	public void setPlayerWithMaxCocoTiles(Player player) {
+		this.playerWithMostCocoTiles = player;
 	}
 }

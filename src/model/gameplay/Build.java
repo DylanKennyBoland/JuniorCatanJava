@@ -90,10 +90,10 @@ public class Build {
 		this.player.takeResource("Molasses", 1);
 		this.player.takeResource("Goats", 1);
 		this.player.takeResource("Wood", 1);
-		this.stockpile.updateStockPile("Cutlass", 1);
-		this.stockpile.updateStockPile("Molasses", 1);
-		this.stockpile.updateStockPile("Goats", 1);
-		this.stockpile.updateStockPile("Wood", 1);
+		this.stockpile.update("Cutlass", 1);
+		this.stockpile.update("Molasses", 1);
+		this.stockpile.update("Goats", 1);
+		this.stockpile.update("Wood", 1);
 		return ("Done!\n");
 	}
 	
@@ -109,8 +109,8 @@ public class Build {
 		this.player.addShipAsset(ship);
 		this.player.takeResource("Goats", 1);
 		this.player.takeResource("Wood", 1);
-		this.stockpile.updateStockPile("Goats", 1);
-		this.stockpile.updateStockPile("Wood", 1);
+		this.stockpile.update("Goats", 1);
+		this.stockpile.update("Wood", 1);
 		return ("Done!\n");
 	}
 

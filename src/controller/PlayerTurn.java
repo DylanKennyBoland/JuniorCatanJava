@@ -342,7 +342,6 @@ public class PlayerTurn {
 			switch (cocoTileNum) {
 			case 1:
 				this.exchange(TradeEnums.COCO_TILE_GHOST_CAPTAIN);
-				boolean validChoice = false;
 				this.view.display("You picked a ghost captain coco tile!");
 				this.moveGhostCaptain();
 				break;

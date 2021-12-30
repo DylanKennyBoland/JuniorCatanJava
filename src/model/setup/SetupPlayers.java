@@ -64,8 +64,8 @@ public class SetupPlayers {
 			playersSelected = true;
 		}
 		//Removing the resources from the stockpile that are given to the Players at the start of the game.
-		this.stockpile.updateStockPile("Wood", -this.numPlayers);
-		this.stockpile.updateStockPile("Molasses", -this.numPlayers);
+		this.stockpile.update("Wood", -this.numPlayers);
+		this.stockpile.update("Molasses", -this.numPlayers);
 	}
 
 	/**
