@@ -14,6 +14,7 @@ import model.board.Board;
 import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Stockpile;
+import model.enums.TradeEnums;
 import model.gameplay.Build;
 import model.gameplay.Trade;
 import model.players.Player;
@@ -84,8 +85,8 @@ public class PlayerTurn {
 							break;
 						} else {
 							this.view.display("Giving " + resource + " to " + player.getName());
-							player.giveResource(resource, numOfAttachedLairs);
-							this.stockpile.updateStockPile(resource, -numOfAttachedLairs);
+							player.update(resource, numOfAttachedLairs);
+							this.stockpile.update(resource, -numOfAttachedLairs);
 						}
 					}
 				}
@@ -167,7 +168,7 @@ public class PlayerTurn {
 			return;
 		}
 		if (this.player.skipResourcesCheckStatus() == false) { // Meaning we should not skip checking their resources...
-			if (!this.buildOptions.checkResources("Lair")) { // They don't have enough resources...
+			if (!this.buildOptions.checkResources(TradeEnums.BUILD_LAIR)) { // They don't have enough resources...
 				this.view.display("You do not have enough resources");
 				return;
 			}
@@ -187,6 +188,7 @@ public class PlayerTurn {
 				if ((option >= 1) && (option <= validLairSites.size())) {
 					this.view.display("You have chosen option " + option);
 					this.view.display("\nBuilding... ");
+					this.exchange(TradeEnums.BUILD_LAIR);
 					this.buildOptions.buildLair(validLairSites.get(option - 1));
 					validInput = true;
 				} else if (option == options.size()) {
@@ -215,17 +217,17 @@ public class PlayerTurn {
 			return;
 		}
 		if (this.player.skipResourcesCheckStatus() == false) { // Meaning we should not skip checking their resources...
-			if (!this.buildOptions.checkResources("Ship")) { // They don't have enough resources...
+			if (!this.buildOptions.checkResources(TradeEnums.BUILD_SHIP)) { // They don't have enough resources...
 				this.view.display("You do not have enough resources");
 				return;
 			}
 		}
 		this.view.display("Where would you like to build a ship? Your options are: ");
 		ArrayList<String> options = new ArrayList<String>(validShipSites);
-		// Next, we need to check if the player is currently using a build-type coco
-		// tile... if they are
-		// then we shouldn't give the option to cancel a build (as the rules state that
-		// they must build a lair or ship immediately)
+		/* Next, we need to check if the player is currently using a build-type coco
+		 * tile... if they are then we shouldn't give the option to cancel a build
+		 * (as the rules state that they must build a lair or ship immediately)
+		 */ 
 		if (this.player.skipResourcesCheckStatus() == false) {
 			options.add("Cancel Build");
 		}
@@ -239,6 +241,7 @@ public class PlayerTurn {
 				if ((option >= 1) && (option <= validShipSites.size())) {
 					this.view.display("You have chosen option " + option);
 					this.view.display("Building... ");
+					this.exchange(TradeEnums.BUILD_SHIP);
 					this.buildOptions.buildShip(validShipSites.get(option - 1));
 					validInput = true;
 				} else if (option == options.size()) {
@@ -276,15 +279,33 @@ public class PlayerTurn {
 		Integer randi = random.nextInt(validTypes.size());
 		return validTypes.get(randi);
 	}
-
+	
+	public void hasMostCocoTiles() {
+		if (this.player.getResources().get("Coco tiles") > this.board.getCurrentMaxCocoTiles()) {
+			if (this.board.getPlayerWithMaxCocoTiles() != null) {
+				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+			}
+			this.board.setPlayerWithMaxCocoTiles(this.player);
+			this.player.addLairAsset(" 33 ");
+			this.board.incrementCurrentMaxCocoTiles();
+			this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
+		} else if (this.player.getResources().get("Coco tiles") == this.board.getCurrentMaxCocoTiles()) {
+			if (this.board.getPlayerWithMaxCocoTiles() != null) {
+				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+				this.board.setPlayerWithMaxCocoTiles(null);
+			}
+		} else {
+			return;
+		}
+	}
+	
 	public void buyCocoTile() {
-		if (!this.buildOptions.checkResources("CocoTile") && this.board.getNumOfCocoTiles() >= 1) {
-			Integer cocoTileNum = this.pickCocoTile(); // A number corresponding to the type of Coco tile a player pulls
+		if (this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE) && this.board.getNumOfCocoTiles() >= 1) {
+			this.exchange(TradeEnums.BUY_COCO_TILE);
+			int cocoTileNum = this.pickCocoTile(); // A number corresponding to the type of Coco tile a player pulls
 			switch (cocoTileNum) {
 			case 1:
-				this.player.addCocoTile("Ghost Captain");
-				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
-				this.board.removeCocoTile("Ghost Captain");
+				this.exchange(TradeEnums.COCO_TILE_GHOST_CAPTAIN);
 				boolean validChoice = false;
 				this.view.display("You picked a ghost captain coco tile!");
 				this.view.display("\nGhost Captain is on Island " + board.getGhostIsland().getName());
@@ -301,9 +322,7 @@ public class PlayerTurn {
 				}
 				break;
 			case 2:
-				this.player.addCocoTile("Build");
-				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
-				this.board.removeCocoTile("Build");
+				this.exchange(TradeEnums.COCO_TILE_BUILD);
 				if ((this.buildOptions.validShipSites().size() != 0)
 						&& (this.buildOptions.validShipSites().size() != 0)) {
 					this.view.display("You can build a lair or a ship!");
@@ -346,61 +365,94 @@ public class PlayerTurn {
 				}
 				break;
 			case 3:
-				this.player.addCocoTile("Resource Combination 1");
-				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
-				this.board.removeCocoTile("Resource Combination 1");
+				this.exchange(TradeEnums.COCO_TILE_RESOURCE1);
 				this.view.display("You get 2 Molasses and 2 Woods!\n");
-				this.player.giveResource("Molasses", 2);
-				this.player.giveResource("Wood", 2);
-				this.stockpile.updateStockPile("Molasses", -2);
-				this.stockpile.updateStockPile("Wood", -2);
 				break;
 			case 4:
-				this.player.addCocoTile("Resource Combination 2");
-				this.player.getResources().put("Coco tiles", this.player.getNumOfCocoTiles());
-				this.board.removeCocoTile("Resource Combination 2");
+				this.exchange(TradeEnums.COCO_TILE_RESOURCE2);
 				this.view.display("You get 2 Goats and 2 Cutlass!\n");
-				this.player.giveResource("Goats", 2);
-				this.player.giveResource("Cutlass", 2);
-				this.stockpile.updateStockPile("Goats", -2);
-				this.stockpile.updateStockPile("Cutlass", -2);
 				break;
 			default:
 				this.view.display("Invalid number received for coco tile type.");
 				break;
 			}
 		} else {
-			if (this.buildOptions.checkResources("CocoTile")) {
+			if (!this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE)) {
 				this.view.display("You do not have enough resources for a coco tile unfortunately!");
 			} else {
 				this.view.display("Unfortunately there are no coco tiles left!");
 			}
 		}
 	}
-//	public void buyCocoTile() {
-//		boolean purchaseDone = false;
-//		this.view.display("How many Coco tiles would you like to buy? Enter 'Q' or 'q' to go back.");
-//		while (!purchaseDone) {
-//			this.view.display("\nEnter here: ");
-//			if (inputScanner.hasNextInt()) {
-//				Integer number = inputScanner.nextInt();
-//				inputScanner.nextLine();
-//				if (number == 0) {
-//					this.view.display("You entered 0, please enter a positive integer.");
-//					continue;
-//				} else if ((number == 1) && (this.buildOptions.checkResources("CocoTile"))
-//						&& (this.board.getNumOfCocoTiles() >= number)) {
-//					this.view.display("Giving you a coco tile now!");
-//				}
-//			} else if (inputScanner.nextLine() == "Q" || inputScanner.nextLine() == "q") {
-//				purchaseDone = true;
-//				continue;
-//			} else {
-//				this.view.display("Please input an integer for the option number.");
-//				inputScanner.next();
-//			}
-//		}
-//	}
+	/*
+	 * The method below is meant to emulate some of the main builds or
+	 * trades that can occur. A switch-case statement is used for easy
+	 * readability. The reason for having this method is that for
+	 * many transactions, such as building a lair or ship, or buying
+	 * a coco tile, we know exactly how the resources of the
+	 * player and stockpile (and board) are affected... as a result, we
+	 * can group all the logic here, instead of having all of these
+	 * update() method calls scattered throughout other parts of the
+	 * code...
+	 */
+	public void exchange(TradeEnums event) {
+		switch (event) {
+		case BUILD_LAIR:
+			this.player.update("Cutlass", -1);
+			this.player.update("Molasses", -1);
+			this.player.update("Goats", -1);
+			this.player.update("Wood", -1);
+			this.stockpile.update("Cutlass", 1);
+			this.stockpile.update("Molasses", 1);
+			this.stockpile.update("Goats", 1);
+			this.stockpile.update("Wood", 1);
+			break;
+		case BUILD_SHIP:
+			this.player.update("Goats", -1);
+			this.player.update("Wood", -1);
+			this.stockpile.update("Goats", 1);
+			this.stockpile.update("Wood", 1);
+			break;
+		case BUY_COCO_TILE:
+			this.player.update("Cutlass", -1);
+			this.player.update("Molasses", -1);
+			this.player.update("Goats", -1);
+			this.player.update("Coco tiles", 1);
+			this.stockpile.update("Cutlass", 1);
+			this.stockpile.update("Molasses", 1);
+			this.stockpile.update("Goats", 1);
+			this.hasMostCocoTiles();
+			break;
+		case COCO_TILE_GHOST_CAPTAIN:
+			// One can now imagine removing one of the Coco tiles from the side of
+			// the board and giving it to the player...
+			this.board.removeCocoTile("Ghost Captain");
+			this.player.addCocoTile("Ghost Captain");
+			break;
+		case COCO_TILE_BUILD:
+			this.board.removeCocoTile("Build");
+			this.player.addCocoTile("Build");
+			break;
+		case COCO_TILE_RESOURCE1:
+			this.board.removeCocoTile("Resource Combination 1");
+			this.player.addCocoTile("Resource Combination 1");
+			this.player.update("Molasses", 2);
+			this.player.update("Wood", 2);
+			this.stockpile.update("Molasses", -2);
+			this.stockpile.update("Wood", -2);
+			break;
+		case COCO_TILE_RESOURCE2:
+			this.board.removeCocoTile("Resource Combination 2");
+			this.player.addCocoTile("Resource Combination 2");
+			this.player.update("Goats", 2);
+			this.player.update("Cutlass", 2);
+			this.stockpile.update("Goats", -2);
+			this.stockpile.update("Cutlass", -2);
+			break;
+		default:
+			break;
+		}
+	}
 
 	private void trade() {
 		boolean finishedTrading = false;
@@ -622,6 +674,8 @@ public class PlayerTurn {
 			this.view.display(player.toString());
 		}
 		this.view.display("\nThe Ghost captain is on island: \t" + this.board.getGhostIsland().getName());
+		this.view.display("\n\n\n");
+		this.view.display(this.board.getBoardConfig());
 	}
 
 }

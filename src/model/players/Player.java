@@ -8,6 +8,11 @@ import java.util.Map;
 import model.board.Tradeable;
 import model.enums.PlayerEnums;
 
+/**
+ * @Author: Dylan Kenny Boland & Adam Durning
+ * @Date: (of last update) 29/12/2021
+ */
+
 public class Player implements Tradeable {
 	private String name;
 	private PlayerEnums colour;
@@ -20,6 +25,14 @@ public class Player implements Tradeable {
 	private boolean skipResourcesCheck = false; // Used for when the player gets a Coco tile that allows them to
 	// immediately build a lair or a ship...
 
+	/**
+	 * Constructor for the Player object.
+	 * 
+	 * @param name - the name (or nickname) of the player.
+	 * @param colour - the colour of the player.
+	 * @param age -  the age of the player.
+	 * 
+	 */
 	public Player(String name, PlayerEnums colour, String age) { // The constructor...
 		this.name = name;
 		this.colour = colour;
@@ -99,7 +112,7 @@ public class Player implements Tradeable {
 	}
 
 	@Override
-	public boolean isAvailable(String resourceName, Integer number) {
+	public boolean isAvailable(String resourceName, int number) {
 		if ((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
 			return true;
 		} else {
@@ -108,7 +121,7 @@ public class Player implements Tradeable {
 	}
 
 	@Override
-	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
+	public String trade(String tilein, int numIn, String tileout, int numOut) {
 		if (!this.isAvailable(tileout, numOut)) {
 			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
 		}
@@ -118,6 +131,11 @@ public class Player implements Tradeable {
 		this.resources.replace(tilein, currNumTileIn + numIn);
 		this.resources.replace(tileout, currNumTileOut - numOut);
 		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
+	}
+
+	@Override
+	public void update(String resource, int num) { // We're using primitive integers here: they are lighter and quicker in most cases...
+		this.resources.put(resource, this.resources.get(resource) + (num)); // 'num' could be negative...
 	}
 
 	public Integer getNumOfCocoTiles() {
@@ -158,7 +176,11 @@ public class Player implements Tradeable {
 	public PlayerEnums getColour() {
 		return this.colour;
 	}
-
+	
+	public String getColourIcon() {
+		return String.valueOf(this.getColour().getColour().charAt(0)).toUpperCase();
+	}
+	
 	public void setColour(PlayerEnums colour) {
 		this.colour = colour;
 	}
@@ -173,13 +195,5 @@ public class Player implements Tradeable {
 
 	public void addCocoTile(String cocoTileType) {
 		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) + 1);
-	}
-
-	public void giveResource(String resource, Integer num) {
-		this.resources.put(resource, this.resources.get(resource) + num);
-	}
-
-	public void takeResource(String resource, Integer num) {
-		this.resources.put(resource, resources.get(resource) - num);
 	}
 }

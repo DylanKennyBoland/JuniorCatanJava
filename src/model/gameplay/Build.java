@@ -3,10 +3,10 @@ package model.gameplay;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import model.board.Board;
+import model.enums.TradeEnums;
 import model.players.Player;
 
 public class Build {
@@ -32,28 +32,10 @@ public class Build {
 		this.shipCost.put("Wood", 1);
 	}
 
-//	public boolean checkResources(String buildChoice) {
-//		if (buildChoice.contains("Ship")) {
-//			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		} else if (buildChoice.contains("Lair")) {
-//			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
-//					&& player.isAvailable("Wood", 1)) {
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		} else {
-//			return false;
-//		}
-//	}
-	public boolean checkResources(String type) {
+	public boolean checkResources(TradeEnums event) {
 		boolean result;
-		switch (type) {
-		case "Ship":
+		switch (event) {
+		case BUILD_SHIP:
 			if (player.isAvailable("Wood", 1) && player.isAvailable("Goats", 1)) {
 				result = true;
 
@@ -61,7 +43,7 @@ public class Build {
 				result = false;
 			}
 			break;
-		case "Lair":
+		case BUILD_LAIR:
 			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1) && player.isAvailable("Goats", 1)
 					&& player.isAvailable("Wood", 1)) {
 				result = true;
@@ -69,7 +51,7 @@ public class Build {
 				result = false;
 			}
 			break;
-		case "CocoTile":
+		case BUY_COCO_TILE:
 			if (player.isAvailable("Cutlass", 1) && player.isAvailable("Molasses", 1)
 					&& player.isAvailable("Gold", 1)) {
 				result = true;
@@ -84,38 +66,13 @@ public class Build {
 	}
 
 	public String buildLair(String lair) {
-		this.buildChoice = "Lair";
 		this.player.addLairAsset(lair);
-		this.player.takeResource("Cutlass", 1);
-		this.player.takeResource("Molasses", 1);
-		this.player.takeResource("Goats", 1);
-		this.player.takeResource("Wood", 1);
-		this.getBoard().getStockpile().updateStockPile("Cutlass", 1);
-		this.getBoard().getStockpile().updateStockPile("Molasses", 1);
-		this.getBoard().getStockpile().updateStockPile("Goats", 1);
-		this.getBoard().getStockpile().updateStockPile("Wood", 1);
 		return ("Done!\n");
 	}
 
 	public String buildShip(String ship) {
 		this.player.addShipAsset(ship);
-		this.player.takeResource("Goats", 1);
-		this.player.takeResource("Wood", 1);
-		this.getBoard().getStockpile().updateStockPile("Goats", 1);
-		this.getBoard().getStockpile().updateStockPile("Wood", 1);
 		return ("Done!\n");
-	}
-
-	private void swap(HashMap<String, Integer> costs, String asset, String type) {
-		if (type == "Ship") {
-			player.addShipAsset(asset);
-		} else {
-			player.addLairAsset(asset);
-		}
-		for (Map.Entry cost : costs.entrySet()) {
-			player.takeResource((String) cost.getKey(), (Integer) cost.getValue());
-		}
-
 	}
 
 	public List<String> validLairSites() {

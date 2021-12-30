@@ -1,7 +1,8 @@
 package model.setup;
-import java.util.*;
-import model.board.*;
-import model.enums.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import model.board.Board;
 import model.board.Islands;
 import model.enums.IslandEnums;
@@ -103,6 +104,7 @@ public class SetupBoard {
 		board.setIslands(boardIslands);
 		board.setGhostIsland(spooky);
 		board.setupShipSites();
+		board.initializeBoardStatus();
 	}
 	
 	public Board getBoard() {

@@ -3,11 +3,26 @@ package model.board;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @Author: Dylan Kenny Boland & Adam Durning
+ * @Date: (of last update) 29/12/2021
+ */
+
+
 public class Stockpile implements Tradeable {
 	private Integer resourceQuantity = 18;
 	private String name;
 	private Map<String, Integer> stockpile = new HashMap<String, Integer>();
-
+	
+	
+	/**
+	 * Constructor for the Stockpile object.
+	 * 
+	 * @param: name - the name of the stockpile.
+	 * @param: resourceQuantity - the amount of each resource tile at the start of the game.
+	 * @param: stockpile - the hash map representing the pile of resources.
+	 * 
+	 */
 	public Stockpile(String name) { // The constructor...
 		this.name = name;
 		this.set();
@@ -24,7 +39,7 @@ public class Stockpile implements Tradeable {
 	}
 
 	@Override
-	public boolean isAvailable(String resourceName, Integer number) {
+	public boolean isAvailable(String resourceName, int number) {
 		if ((this.getStockPile().containsKey(resourceName)) && (this.getStockPile().get(resourceName) >= number)) {
 			return true;
 		} else {
@@ -33,7 +48,7 @@ public class Stockpile implements Tradeable {
 	}
 
 	@Override
-	public String trade(String tilein, Integer numIn, String tileout, Integer numOut) {
+	public String trade(String tilein, int numIn, String tileout, int numOut) {
 		if (!this.isAvailable(tileout, numOut)) {
 			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
 		}
@@ -54,20 +69,21 @@ public class Stockpile implements Tradeable {
 		return stockpileResources;
 	}
 
-	public void updateStockPile(String resourceName, int number) {
-		if(this.getStockPile().containsKey(resourceName)) {
-			int numOfResource = this.stockpile.get(resourceName);
-			this.stockpile.replace(resourceName, numOfResource + number);
-		}
-		else {
-			this.stockpile.put(resourceName, number);
+	@Override
+	public void update(String resource, int num) {
+		if (this.stockpile.containsKey(resource)) { // We can use access the stockpile directly as we're inside the
+													// Stockpile class...
+			this.stockpile.replace(resource, this.stockpile.get(resource) + (num)); // 'num' could be negative...
+		} else {
+			this.stockpile.put(resource, num);
 		}
 	}
-
-	// The 'get' and 'set' methods are very useful for when objects of other
-	// classes want to interact with this one, Stockpile. For methods defined
-	// inside this class, however, direct field or attribute access if faster and
-	// more sensible than using the 'get' and 'set' methods.
+	/*
+	 * The 'get' and 'set' methods are very useful for when objects of other
+	 * classes want to interact with this one, Stockpile. For methods defined
+	 * inside this class, however, direct field or attribute access if faster and
+	 * more sensible than using the 'get' and 'set' methods.
+	 */
 	public Map<String, Integer> getStockPile() {
 		return this.stockpile;
 	}
@@ -79,7 +95,7 @@ public class Stockpile implements Tradeable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public int getNumOfResource(String resource) {
 		return this.stockpile.get(resource);
 	}
