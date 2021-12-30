@@ -279,9 +279,28 @@ public class PlayerTurn {
 		Integer randi = random.nextInt(validTypes.size());
 		return validTypes.get(randi);
 	}
-
+	
+	public void hasMostCocoTiles() {
+		if (this.player.getResources().get("Coco tiles") > this.board.getCurrentMaxCocoTiles()) {
+			if (this.board.getPlayerWithMaxCocoTiles() != null) {
+				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+			}
+			this.board.setPlayerWithMaxCocoTiles(this.player);
+			this.player.addLairAsset(" 33 ");
+			this.board.incrementCurrentMaxCocoTiles();
+			this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
+		} else if (this.player.getResources().get("Coco tiles") == this.board.getCurrentMaxCocoTiles()) {
+			if (!this.board.getPlayerWithMaxCocoTiles().equals(null)) {
+				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+				this.board.setPlayerWithMaxCocoTiles(null);
+			}
+		} else {
+			return;
+		}
+	}
+	
 	public void buyCocoTile() {
-		if (!this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE) && this.board.getNumOfCocoTiles() >= 1) {
+		if (this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE) && this.board.getNumOfCocoTiles() >= 1) {
 			this.exchange(TradeEnums.BUY_COCO_TILE);
 			int cocoTileNum = this.pickCocoTile(); // A number corresponding to the type of Coco tile a player pulls
 			switch (cocoTileNum) {
@@ -358,7 +377,7 @@ public class PlayerTurn {
 				break;
 			}
 		} else {
-			if (this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE)) {
+			if (!this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE)) {
 				this.view.display("You do not have enough resources for a coco tile unfortunately!");
 			} else {
 				this.view.display("Unfortunately there are no coco tiles left!");
@@ -402,6 +421,7 @@ public class PlayerTurn {
 			this.stockpile.update("Cutlass", 1);
 			this.stockpile.update("Molasses", 1);
 			this.stockpile.update("Goats", 1);
+			this.hasMostCocoTiles();
 			break;
 		case COCO_TILE_GHOST_CAPTAIN:
 			// One can now imagine removing one of the Coco tiles from the side of
