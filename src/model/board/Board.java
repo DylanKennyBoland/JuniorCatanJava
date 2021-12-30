@@ -20,7 +20,7 @@ public class Board {
 	private Integer initialNumCocoTiles = 17;
 	private Map<String, Integer> cocoTiles = new HashMap<String, Integer>();
 	private Integer currentMaxCocoTiles = 0;
-	private Player playerWithMostCocoTiles;
+	private Player playerWithMostCocoTiles = null;
 	private Islands ghostIsland;
 
 	public static Board getInstance() {
@@ -122,6 +122,10 @@ public class Board {
 	public void incrementCurrentMaxCocoTiles() {
 		this.currentMaxCocoTiles = this.currentMaxCocoTiles + 1;
 	}
+	
+	public Player getPlayerWithMaxCocoTiles() {
+		return this.playerWithMostCocoTiles;
+	}
 
 	public void setPlayerWithMaxCocoTiles(Player player) {
 		this.playerWithMostCocoTiles = player;
@@ -161,7 +165,7 @@ public class Board {
 
 	public Integer getNumOfCocoTiles() {
 		int num = 0;
-		for (Integer value : this.cocoTiles.values()) {
+		for (Integer value : this.getCocoTiles().values()) {
 			num += value;
 		}
 		return num;
