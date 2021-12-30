@@ -67,11 +67,13 @@ public class Build {
 
 	public String buildLair(String lair) {
 		this.player.addLairAsset(lair);
+		this.board.updateBoard(lair, this.player.getColourIcon());
 		return ("Done!\n");
 	}
 
 	public String buildShip(String ship) {
 		this.player.addShipAsset(ship);
+		this.board.updateBoard(ship, this.player.getColourIcon());
 		return ("Done!\n");
 	}
 
