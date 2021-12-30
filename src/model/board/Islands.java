@@ -14,7 +14,6 @@ import model.enums.ResourceEnums;
  * 
  */
 
-
 public class Islands{
 	// Variable Setup
 	private char name;

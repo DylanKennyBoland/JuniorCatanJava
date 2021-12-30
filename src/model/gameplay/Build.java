@@ -43,6 +43,14 @@ public class Build {
 		this.shipCost.put("Wood", 1);
 	}
 
+	/**
+	 * This method checks if the player has enough resources to build the type of asset
+	 * and returns a boolean.
+	 * 
+	 * @param: event - The build event to check the player has enough resources for. (Ship, Lair, Coco Tile)
+	 * 
+	 * @return: A boolean indicating if the player has enough resources for the asset type.
+	 * */
 	public boolean checkResources(TradeEnums event) {
 		boolean result;
 		switch (event) {

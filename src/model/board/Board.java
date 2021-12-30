@@ -211,25 +211,10 @@ public class Board {
 		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) - 1);
 	}
 
-//	// This method checks if any Player has the inputted location. Used for checking if a lair site can be built on.
-//	public boolean isLairAvailable(String location) {
-//		for (Player player : playerList.getList()) {
-//			if (player.getLairAssets().contains(location)) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-
 	// Increments the currentMaxCocoTiles which is a variable indicating the current largest number of Coco tiles one of the players has.
 	public void incrementCurrentMaxCocoTiles() {
 		this.currentMaxCocoTiles = this.currentMaxCocoTiles + 1;
 	}
-
-//	//
-//	public void updateLairLocations(String location) {
-//		this.lairLocations.remove(this.lairLocations.indexOf(location));
-//	}
 	
 	// This method moves the GC to the island with the name islandName
 	public void moveGhostCaptain(char islandName) {
@@ -256,14 +241,6 @@ public class Board {
 			usedLairSites.addAll(player.getLairAssets());
 		}
 		return usedLairSites;
-	}
-	
-	public String getIslandInfo() {
-		String islandInfo = "";
-		for (Islands island : islands) {
-			islandInfo += island.toString() + "\n";
-		}
-		return islandInfo;
 	}
 	
 	// This method returns an Island object given the island Name.
