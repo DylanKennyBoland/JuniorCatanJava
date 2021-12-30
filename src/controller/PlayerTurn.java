@@ -290,7 +290,7 @@ public class PlayerTurn {
 			this.board.incrementCurrentMaxCocoTiles();
 			this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
 		} else if (this.player.getResources().get("Coco tiles") == this.board.getCurrentMaxCocoTiles()) {
-			if (!this.board.getPlayerWithMaxCocoTiles().equals(null)) {
+			if (this.board.getPlayerWithMaxCocoTiles() != null) {
 				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
 				this.board.setPlayerWithMaxCocoTiles(null);
 			}
