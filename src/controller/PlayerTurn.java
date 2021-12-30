@@ -287,11 +287,13 @@ public class PlayerTurn {
 			}
 			this.board.setPlayerWithMaxCocoTiles(this.player);
 			this.player.addLairAsset(" 33 ");
+			this.board.updateBoard(" 33 ", this.player.getColourIcon());
 			this.board.incrementCurrentMaxCocoTiles();
 			this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
 		} else if (this.player.getResources().get("Coco tiles") == this.board.getCurrentMaxCocoTiles()) {
 			if (this.board.getPlayerWithMaxCocoTiles() != null) {
 				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+				this.board.updateBoard(" 33 ", "33");
 				this.board.setPlayerWithMaxCocoTiles(null);
 			}
 		} else {
