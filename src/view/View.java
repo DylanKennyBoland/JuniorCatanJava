@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import model.board.Board;
 import model.board.Islands;
 import model.board.Marketplace;
 import model.board.Stockpile;
@@ -72,12 +73,14 @@ public class View {
 		display("\n");
 	}
 	
-	public void viewBoard(PlayerList playerList, Islands ghostIsland) {
+	public void viewBoard(PlayerList playerList, Islands ghostIsland, Board board) {
 		display("The board currently looks like this: ");
 		for(Player player: playerList.getList()) {
 			display(player.toString());
 		}
 		display("\nThe Ghost captain is on island: \t" + ghostIsland.getName());
+		display("\n\n\n");
+		display(board.getBoardConfig());
 	}
 	
 	public void printAvailableColours(List<PlayerEnums> availableColours, ArrayList<Integer> colourIndex) {

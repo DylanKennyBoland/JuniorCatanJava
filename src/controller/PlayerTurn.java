@@ -87,7 +87,7 @@ public class PlayerTurn {
 				this.view.viewMarketplace(this.marketplace);
 				break;
 			case "5":
-				this.view.viewBoard(this.playerList, this.board.getGhostIsland());
+				this.view.viewBoard(this.playerList, this.board.getGhostIsland(), this.board);
 				break;
 			case "6":
 				this.turnOver = true;
