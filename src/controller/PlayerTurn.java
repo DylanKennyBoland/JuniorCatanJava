@@ -504,7 +504,7 @@ public class PlayerTurn {
 				if (tradeOptions.canTradeWithMarketplace()) {
 					tradeWithMarketplace();
 				} else {
-					this.view.display("You have already traded with the Marketplace");
+					this.view.display("You have already traded with the Marketplace this turn.");
 				}
 				;
 				break;
@@ -701,6 +701,9 @@ public class PlayerTurn {
 	// This method checks if the player has won the game.
 	public boolean didPlayerWin() {
 		if (this.player.getLairAssets().size() == 7) {
+			this.view.display("Congratulations " + this.player.getName() + 
+							  "!!!!!\nYou have won the game");
+			this.player.wins();
 			return true;
 		} else {
 			return false;

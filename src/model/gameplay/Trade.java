@@ -55,19 +55,24 @@ public class Trade {
 	 * @return: Returns a string indicating the status of the trade.
 	 * */
 	public String tradeMarketplace(String requestedResource, String givenResource) {
-		// Checking if the marketplace has the requested resource.
-		if(this.marketplace.isAvailable(requestedResource, 1)) {
-			// Checking if the player has the resource being given.
-			if(player.isAvailable(givenResource, 1)) {
-				// Performing the swap of the resources.
-				player.update(requestedResource, 1);
-				player.update(givenResource, -1);
-				// Updating the variable indicating that the player has traded with the marketplace.
-				this.tradedWithMarketplace = true;
-				return(this.marketplace.trade(givenResource, 1, requestedResource, 1));
-			}	
-		}else {
-			return("The marketplace does not have any " + requestedResource);
+		// Checking if the player has already traded with Marketplace.
+		if(!this.tradedWithMarketplace) {
+			// Checking if the marketplace has the requested resource.
+			if(this.marketplace.isAvailable(requestedResource, 1)) {
+				// Checking if the player has the resource being given.
+				if(player.isAvailable(givenResource, 1)) {
+					// Performing the swap of the resources.
+					player.update(requestedResource, 1);
+					player.update(givenResource, -1);
+					// Updating the variable indicating that the player has traded with the marketplace.
+					this.tradedWithMarketplace = true;
+					return(this.marketplace.trade(givenResource, 1, requestedResource, 1));
+				}	
+			}else {
+				return("The marketplace does not have any " + requestedResource);
+			}
+		} else {
+			return("You have already traded with the Marketplace this turn.");
 		}
 		return("Error, something went wrong!");
 	}

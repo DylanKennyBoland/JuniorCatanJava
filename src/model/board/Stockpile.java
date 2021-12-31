@@ -50,7 +50,7 @@ public class Stockpile implements Tradeable {
 	@Override
 	public String trade(String tilein, int numIn, String tileout, int numOut) {
 		if (!this.isAvailable(tileout, numOut)) {
-			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
+			return String.format("There is no %1$s in the stockpile.", tileout);
 		}
 		int currNumTileIn = this.stockpile.get(tilein);
 		int currNumTileOut = this.stockpile.get(tileout);
