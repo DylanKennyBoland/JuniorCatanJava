@@ -71,7 +71,7 @@ public class Board {
 				this.updateBoard(lair, player.getColourIcon()); // Change the value to be a single capital letter indicating the player's colour...
 			}
 			for (String site : player.getShipAssets()) {
-				this.updateBoard(site, player.getColourIcon());
+				this.updateBoard(site, player.getColourIcon().toUpperCase());
 			}
 		}
 	}
