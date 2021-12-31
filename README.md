@@ -15,10 +15,12 @@ When playing the game, the player will be presented with a list of options that 
 6.  End Turn
 
 Simply enter the number corresponding to your desired action and the Game will take care of the rest.
+
 (NOTE: Whenever you are presented with a list of options, only enter a number corresponding to the action you
 want to take. Any numbers outside the list of options will prompt you to try again.)
 
 The Game board looks like this:
+
 	                 .               6               8               .
 	               .   .           .   .           .   .           .   .
 	             .       .       +       +       +       +       .       .
@@ -49,11 +51,17 @@ The Game board looks like this:
 	               .   .           .   .           .   .           .   .
 	                 .               21              19              .
                    
+		   
 For a nicer picture of the board, see the board.png image in the Diagrams folder.
+
+
 Lair sites are represented by the numbers 1 - 33.
-Ship sites are represented by the '+' symbol. Note in the game when you view the board, you will see
+Ship sites are represented by the '+' symbol. 
+
+Note in the game when you view the board, you will also be given a list of
 the player's ships labeled as " 1 - 2 " and so on. This means that player owns the ship site between lair 
 site 1 and lair site 2.
+
 When a player builds on a site a letter corresponding to the players colour will appear on that site:
 Lairs are represented by lowercase letters and ships are represented by upper case letters.
 
