@@ -17,7 +17,6 @@ public class SetupBoardTest extends TestParent{
 	
 	@Before
 	public void setupTest() {
-		// Setting up the List of Players which is needed for setting up the players initial assets.
 		this.board = Board.getInstance();
 		this.view = View.getInstance();
 		this.playerList = board.getPlayerList();

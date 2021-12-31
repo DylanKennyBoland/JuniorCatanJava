@@ -25,7 +25,6 @@ public class BuildTest extends TestParent{
 	Stockpile stockpile;
 	@Before
 	public void setupTest() {
-		// Setting up the List of Players which is needed for setting up the players initial assets.
 		this.board = Board.getInstance();
 		this.stockpile = board.getStockpile();
 		stockpile.update("Wood", -2);

@@ -17,7 +17,6 @@ public class MoveGhostCaptainTest extends TestParent{
 	
 	@Before
 	public void testSetup() {
-		// Setting up the List of Players which is needed for setting up the players initial assets.
 		this.board = Board.getInstance();
 		this.view = View.getInstance();
 		SetupBoard boardSetup = SetupBoard.getInstance();
