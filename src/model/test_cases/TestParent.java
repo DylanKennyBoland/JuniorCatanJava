@@ -9,6 +9,12 @@ public class TestParent {
 	Scanner input;
 	View view = View.getInstance();
 	
+	protected void printTestName(String test) {
+		printSeperator(50);
+		this.view.display(test);
+		printSeperator(50);
+	}
+	
 	protected Scanner setSimulatedInput(String simulatedInput) {
 		System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 		return new Scanner(System.in);

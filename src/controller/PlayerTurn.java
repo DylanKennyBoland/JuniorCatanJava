@@ -101,7 +101,7 @@ public class PlayerTurn {
 	 * produce resources for the corresponding islands.
 	 * If a 6 is rolled the player can move the ghost captain.
 	 * */
-	private void rollDice() {
+	public void rollDice() {
 		Integer roll = random.nextInt(6) + 1;
 		this.view.display("\nIt is " + this.player.getName() + "'s turn!");
 		this.view.display("\nThe dice rolled a " + roll);
@@ -139,7 +139,7 @@ public class PlayerTurn {
 	 * This method is called when the Player chooses to Build.
 	 * It gives the player there build options and handles there input.
 	 * */
-	private void build() {
+	public void build() {
 		boolean finishedBuilding = false;
 		ArrayList<String> buildOptionsList = new ArrayList<String>();
 		buildOptionsList.add("Lair");

@@ -50,7 +50,7 @@ public class Board {
 	/**
 	 * The Board constructor.
 	 */
-	private Board() {
+	public Board() {
 		this.initializeLairLocations();
 		this.islands = new ArrayList<Islands>();
 		this.marketplace = new Marketplace("The marketplace");
@@ -306,6 +306,7 @@ public class Board {
 
 	public void setGhostIsland(Islands island) {
 		this.ghostIsland = island;
+		this.moveGhostCaptain(island.getName());
 	}	
 
 	public void setPlayerWithMaxCocoTiles(Player player) {
