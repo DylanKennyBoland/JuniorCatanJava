@@ -1,52 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
+  <zoom_level>5</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>424</x>
-      <y>8</y>
-      <w>80</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>/Model/
---
-
---</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>88</x>
-      <y>216</y>
-      <w>224</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>Board (Singleton)
---
-
-- board Board Object
-- islands: List&lt;Islands&gt;
-- marketplace: Marketplace
-- stockpile: Stockpile
-
---
-
-- getInstance()
-- Board()
-+ setIslands()
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>600</x>
-      <y>152</y>
-      <w>192</w>
-      <h>160</h>
+      <x>175</x>
+      <y>185</y>
+      <w>120</w>
+      <h>75</h>
     </coordinates>
     <panel_attributes>Marketplace
 --
@@ -68,24 +29,17 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
-      <y>152</y>
-      <w>168</w>
-      <h>160</h>
+      <x>30</x>
+      <y>185</y>
+      <w>105</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>Stockpile
 --
-
-- name: String
-- stockpile:HashMap&lt;String,Int&gt;
-
+-name: String
+-stockpile: HashMap&lt;String,Int&gt;
 --
-- Stockpile()
-- updateStockpile()
-- isAvailable()
-- trade()
-- getStockpile()
-- initializeStockpile()
++getNumOfResource(String resource): int
 
 
 
@@ -95,32 +49,28 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>88</x>
-      <y>424</y>
-      <w>224</w>
-      <h>264</h>
+      <x>0</x>
+      <y>360</y>
+      <w>110</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>Islands
 --
-
-- diceNumber:int
-- islandType: enum(PASTURES, CAVES, 
-							RIVERS, SUGAR, FOREST)
-- attachedLairs: List&lt;Integer&gt;
-- attachedShipSites: List&lt;String&gt;
-- ghostCaptain:boolean
+-name: char
+-diceNumber: int
+-islandType: enum
+-attachedLairs: List&lt;String&gt;
+-attachedShipSites: List&lt;String&gt;
+-ghostCaptain: boolean
 
 --
-
-- Islands()
-- getDiceNumber()
-- getIslandType()
-- hasGhostCaptain()
-- setGhostCaptain()
-- getAttachedLairs()
-- setAttahcedShipSites()
-- getAttahcedShipSites()
-- initializeGhostCaptain()
++initializeGhostCaptain(): void
++hasGhostCaptain(): boolean
++setGhostCaptain(String setGhostCaptain): void
+-setAttachedShipSites(): void
+-setAttachedLairs(): void
++getIslandResource(): String
++greaterThan(String src, String dst): List&lt;String&gt;
 
 </panel_attributes>
     <additional_attributes/>
@@ -128,10 +78,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>352</y>
-      <w>152</w>
-      <h>152</h>
+      <x>355</x>
+      <y>460</y>
+      <w>115</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>Setup (Singleton)
 --
@@ -150,10 +100,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>328</x>
-      <y>424</y>
-      <w>152</w>
-      <h>192</h>
+      <x>200</x>
+      <y>450</y>
+      <w>95</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>SetupBoard
 --
@@ -175,10 +125,233 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>520</y>
-      <w>152</w>
+      <x>450</x>
+      <y>185</y>
+      <w>125</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+-name: String
+-colour: PlayerEnums
+-resources: Map&lt;String, Integer&gt;
+-cocoTiles: Map&lt;String, Integer&gt;
+-lairAssets: List&lt;String&gt;
+-shipAssets: List&lt;String&gt;
+-skipResourcesCheck: boolean
+--
++initialiseAssets(): void
++addLairAsset(String lair): void
++addShipAsset(String ship): void
++addCocoTile(String cocoTileType): void
++setResourcesCheckStatus(boolean status): void
++skipResourcesCheckStatus(): boolean
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>315</x>
+      <y>185</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>PlayerList
+--
+-playerList: ArrayList&lt;Player&gt;
+--
++addPlayer(Player player): void
++sortByAge(): void
++getNumOfPlayers(): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>390</x>
+      <y>185</y>
+      <w>70</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>260</x>
+      <y>90</y>
+      <w>210</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tradeable&gt;&gt;
+--
++initializeResources(): void
++isAvailable(String resource, int number): boolean
++trade(String tileIn, int numIn, String tileOut, int numOut): String
++update(String resource, int number): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>75</x>
+      <y>70</y>
+      <w>300</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>580.0;60.0;580.0;10.0;10.0;10.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>230</x>
+      <y>95</y>
+      <w>145</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>270.0;10.0;10.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>95</y>
+      <w>160</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;300.0;10.0;300.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>480</y>
+      <w>75</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>395</y>
+      <w>20</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>185</x>
+      <y>310</y>
+      <w>115</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Board (Singleton)
+--
+-LairLocations: ArrayList&lt;String&gt;
+-ShipLocations: ArrayList&lt;String&gt;
+-playerList: List&lt;Player&gt;
+-marketplace: Marketplace
+-stockpile: Stockpile
+-Player: playerWithMostCocoTiles
+-boardTemplate: String
+--
++updateBoard(): void
++initializeBoardStatus(): void
++initializeLairLocations(): void
++setUpCocoTiles(): void
++readInBoardTemplate(): void
++moveGhostCaptain(char islandName): void
++produceResources(int roll): String
++getBoardConfig(): String
++getUsedLairSites(): List&lt;String&gt;
++getUsedShipSites(): List&lt;String&gt;
++getIslandByName(char islandName): Islands
+ 
+
+
+
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>105</x>
+      <y>370</y>
+      <w>90</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=13
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>295</x>
+      <y>215</y>
+      <w>80</w>
       <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>130.0;10.0;130.0;210.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>235</x>
+      <y>255</y>
+      <w>20</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>75</x>
+      <y>225</y>
+      <w>120</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0;220.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>465</y>
+      <w>110</w>
+      <h>95</h>
     </coordinates>
     <panel_attributes>SetupPlayers
 --
@@ -197,111 +370,150 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>456</x>
-      <y>80</y>
-      <w>248</w>
-      <h>88</h>
+      <x>465</x>
+      <y>505</y>
+      <w>65</w>
+      <h>20</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0;290.0;50.0;290.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>456</x>
-      <y>80</y>
-      <w>24</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>888</x>
-      <y>416</y>
-      <w>80</w>
-      <h>152</h>
+      <x>425</x>
+      <y>325</y>
+      <w>115</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>Tiles
+    <panel_attributes>PlayerTurn
 --
-
-- type: Enum
-- num: int
-
+-board: Board
+-buildOptions: Build
+-tradeOptions: Trade
+-view: View
 --
-
-- Tiles()
-- getType()
-- getNum()
-- setNum()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>800</x>
-      <y>632</y>
-      <w>80</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>Resource
---
-
-- type: Enum
-- num: int
-
---
-
-- Tiles()
-- getType()
-- getNum()
-- setNum()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>952</x>
-      <y>632</y>
-      <w>80</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>Coco
---
-
-- type: Enum
-- num: int
-
---
-
-- Tiles()
-- getType()
-- getNum()
-- setNum()</panel_attributes>
++startTurn(): void
+-rollDice(): void
+-moveGhostCaptain(): void
+-build(): void
+-buildLair(): void
+-buildShip(): void
+-trade(): void
+-tradeWithMarketplace(): void
+-tradeWithStockpile(): void
+-getGivenResources(): ArrayList&lt;String&gt;
++pickCocoTile(): int
++hasMostCocoTiles(): void
++buyCocoTile(): void
++exchange(TradeEnums event): void
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>912</x>
-      <y>560</y>
-      <w>96</w>
-      <h>88</h>
+      <x>295</x>
+      <y>335</y>
+      <w>140</w>
+      <h>20</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;100.0;60.0;100.0;90.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>605</x>
+      <y>325</y>
+      <w>120</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>View
+--
+-VIEW: View
+--
++display(String string): void
++displayOptions(ArrayList&lt;String&gt; options): void
++viewMarketplace(Marketplace marketplace): void
++viewStockpile(Stockpile stockpile): void
++viewResources(Player player): void
++viewBoard(): void
++printAvailableColours(List&lt;PlayerEnums&gt; availableColours,
+ArrayList&lt;Integer&gt; colourIndex): void
+
+</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>832</x>
-      <y>560</y>
-      <w>104</w>
-      <h>88</h>
+      <x>535</x>
+      <y>345</y>
+      <w>80</w>
+      <h>20</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>110.0;10.0;110.0;60.0;10.0;60.0;10.0;90.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>620</x>
+      <y>255</y>
+      <w>90</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Build
+--
+-player: Player
+-board: Board
+-stockpile: Stockpile
+--
++checkResources(TradeEnums event): boolean
++buildLair(String lair): String
++buildShip(String ship): String
++validLairSites(): List&lt;String&gt;
++validShipSites(): List&lt;String&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>260</y>
+      <w>150</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>280.0;10.0;10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>565</x>
+      <y>375</y>
+      <w>50</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>215</y>
+      <w>65</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;230.0;110.0;230.0</additional_attributes>
   </element>
 </diagram>
