@@ -49,7 +49,7 @@ public class Controller {
     			currentTurn.startTurn();
     			// Ending the game if the player has won.
     			if(currentTurn.didPlayerWin()) {
-    				this.view.display("you have won the game");
+    				this.view.display("You have won the game!");
     				gameOver = true;
     				break;
     			}

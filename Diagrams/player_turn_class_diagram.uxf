@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>312</x>
+      <y>200</y>
+      <w>224</w>
+      <h>264</h>
+    </coordinates>
+    <panel_attributes>PlayerTurn
+--
+-board: Board
+-buildOptions: Build
+-tradeOptions: Trade
+-view: View
+--
++startTurn(): void
+-rollDice(): void
+-moveGhostCaptain(): void
+-build(): void
+-buildLair(): void
+-buildShip(): void
+-trade(): void
+-tradeWithMarketplace(): void
+-tradeWithStockpile(): void
+-getGivenResources(): ArrayList&lt;String&gt;
++pickCocoTile(): int
++hasMostCocoTiles(): void
++buyCocoTile(): void
++exchange(TradeEnums event): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>200</y>
+      <w>296</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>View
+--
+-VIEW: View
+--
++display(String string): void
++displayOptions(ArrayList&lt;String&gt; options): void
++viewMarketplace(Marketplace marketplace): void
++viewStockpile(Stockpile stockpile): void
++viewResources(Player player): void
++viewBoard(): void
++printAvailableColours(List&lt;PlayerEnums&gt; availableColours,
+ArrayList&lt;Integer&gt; colourIndex): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>256</y>
+      <w>128</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>552</x>
+      <y>88</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Build
+--
+-player: Player
+-board: Board
+-stockpile: Stockpile
+--
++checkResources(TradeEnums event): boolean
++buildLair(String lair): String
++buildShip(String ship): String
++validLairSites(): List&lt;String&gt;
++validShipSites(): List&lt;String&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>104</y>
+      <w>160</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>32</x>
+      <y>200</y>
+      <w>184</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Board (Singleton)
+--
+-LairLocations: ArrayList&lt;String&gt;
+-ShipLocations: ArrayList&lt;String&gt;
+-playerList: List&lt;Player&gt;
+-marketplace: Marketplace
+-stockpile: Stockpile
+-Player: playerWithMostCocoTiles
+-boardTemplate: String
+--
++updateBoard(): void
++initializeBoardStatus(): void
++initializeLairLocations(): void
++setUpCocoTiles(): void
++readInBoardTemplate(): void
++moveGhostCaptain(char islandName): void
++produceResources(int roll): String
++getBoardConfig(): String
++getUsedLairSites(): List&lt;String&gt;
++getUsedShipSites(): List&lt;String&gt;
++getIslandByName(char islandName): Islands
+ 
+
+
+
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>208</x>
+      <y>200</y>
+      <w>120</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>392</y>
+      <w>128</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>PlayerList
+--
+-playerList: ArrayList&lt;Player&gt;
+--
++addPlayer(Player player): void
++sortByAge(): void
++getNumOfPlayers(): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>400</y>
+      <w>128</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

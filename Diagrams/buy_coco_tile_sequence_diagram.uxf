@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>114</x>
+      <y>48</y>
+      <w>60</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>_:User_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>402</x>
+      <y>48</y>
+      <w>60</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>_:PlayerTurn_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>60</y>
+      <w>18</w>
+      <h>552</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;900.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>138</x>
+      <y>60</y>
+      <w>18</w>
+      <h>558</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;910.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>138</x>
+      <y>60</y>
+      <w>306</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+
+3
+</panel_attributes>
+    <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>78</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+buyCocoTile()</panel_attributes>
+    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>102</y>
+      <w>102</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+
+view.display(Q)
+
+</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>318</x>
+      <y>48</y>
+      <w>60</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>_:View_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>60</y>
+      <w>18</w>
+      <h>552</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;900.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>114</x>
+      <y>138</y>
+      <w>474</w>
+      <h>450</h>
+    </coordinates>
+    <panel_attributes>alt
+--
+
+halign=left
+-.
+[1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+[2]
+
+
+-.
+[3]
+
+
+
+-.
+[4]
+
+
+
+-.
+[5]
+
+
+
+
+-.
+[6]
+
+
+
+-.
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>132</x>
+      <y>180</y>
+      <w>438</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Marketplace
+--
+halign=left
+
+-.
+[if allowed to trade with marketplace]
+
+
+
+-.
+[else]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>210</y>
+      <w>132</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+tradeWithMarketplace()</panel_attributes>
+    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>246</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+
+
+display(infoMsg)</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>324</y>
+      <w>120</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+tradeWithStockpile()</panel_attributes>
+    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>360</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+buyCocoTile()</panel_attributes>
+    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>396</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+
+
+viewResources()</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>444</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+
+
+viewMarketplace()</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>492</y>
+      <w>102</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+
+
+viewStockpile()</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>120</x>
+      <y>540</y>
+      <w>426</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>break
+--
+halign=left
+[7]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>642</x>
+      <y>48</y>
+      <w>60</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>_:Build_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>108</y>
+      <w>180</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>280.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

@@ -173,16 +173,6 @@ public class Player implements Tradeable {
 		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) + 1);
 	}
 
-	//This method adds/gives a number of a resource to the Player's resources list.
-	public void giveResource(String resource, Integer num) {
-		this.resources.put(resource, this.resources.get(resource) + num);
-	}
-	
-	//This method subtracts/takes a number of a resource from the Player's resources list.
-	public void takeResource(String resource, Integer num) {
-		this.resources.put(resource, resources.get(resource) - num);
-	}
-
 	// This method returns a string representation of the Player attributes.
 	@Override
 	public String toString() {

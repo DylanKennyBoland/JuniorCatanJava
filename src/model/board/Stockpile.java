@@ -35,7 +35,7 @@ public class Stockpile implements Tradeable {
 		this.stockpile.put("Goats", resourceQuantity);
 		this.stockpile.put("Gold", resourceQuantity);
 		this.stockpile.put("Molasses", resourceQuantity);
-		this.stockpile.put("Coco tiles", resourceQuantity);
+		//this.stockpile.put("Coco tiles", resourceQuantity);
 	}
 
 	@Override

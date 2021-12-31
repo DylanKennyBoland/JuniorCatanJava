@@ -23,7 +23,7 @@ public interface Tradeable {
 	 * updated in nearly identical ways. For this reason, it seems a good idea
 	 * to include an update() method in this interface.
 	 */
-	public void update(String resource, int num);
+	public void update(String resource, int number);
 	
 	// Every class should have a toString() method.
 	@Override

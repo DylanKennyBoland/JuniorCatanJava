@@ -299,7 +299,10 @@ public class PlayerTurn {
 			}
 		}
 	}
-
+	
+	/* The method below picks a coco tile at random and returns an integer
+	 * corresponding to the type of the coco tile.
+	 */
 	public Integer pickCocoTile() {
 		Map<Integer, String> cocoTypes = new HashMap<Integer, String>();
 		cocoTypes.put(1, "Ghost Captain");
@@ -316,7 +319,14 @@ public class PlayerTurn {
 		Integer randi = random.nextInt(validTypes.size());
 		return validTypes.get(randi);
 	}
-
+	
+	/* This method checks if a player has the most coco tiles. If they
+	 * do, it add one of their lairs to Spooky Island (33), and it sets
+	 * them as the player with the highest number of coco tiles. The method
+	 * also checks if two player have the most number of coco tiles. In this
+	 * case, neither play can have a lair on Spooky Island - and the board object sets
+	 * its 'playerWithMostCocoTiles' to null.
+	 */
 	public void hasMostCocoTiles() {
 		if (this.player.getResources().get("Coco tiles") > this.board.getCurrentMaxCocoTiles()) {
 			if (this.board.getPlayerWithMaxCocoTiles() != null) {
@@ -337,7 +347,12 @@ public class PlayerTurn {
 			return;
 		}
 	}
-
+	
+	/* This method emulated the buying of a Coco tile. Based on the type of Coco tile
+	 * that a player receives, it performs the relevant tasks. The reduction of the
+	 * board's supply of Coco tiles, as well as the adjustment of the stockpile and
+	 * player resources is handled by the exchange() method in tandem with the TradeEnums class.
+	 */
 	public void buyCocoTile() {
 		if (this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE) && this.board.getNumOfCocoTiles() >= 1) {
 			this.exchange(TradeEnums.BUY_COCO_TILE);
@@ -400,14 +415,14 @@ public class PlayerTurn {
 				this.view.display("You get 2 Goats and 2 Cutlass!\n");
 				break;
 			default:
-				this.view.display("Invalid number received for coco tile type.");
+				this.view.display("Invalid number received for Coco tile type.");
 				break;
 			}
 		} else {
 			if (!this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE)) {
-				this.view.display("You do not have enough resources for a coco tile unfortunately!");
+				this.view.display("You do not have enough resources for a Coco tile unfortunately!");
 			} else {
-				this.view.display("Unfortunately there are no coco tiles left!");
+				this.view.display("Unfortunately there are no Coco tiles left!");
 			}
 		}
 	}
@@ -416,7 +431,7 @@ public class PlayerTurn {
 	 * The method below is meant to emulate some of the main builds or trades that
 	 * can occur. A switch-case statement is used for easy readability. The reason
 	 * for having this method is that for many transactions, such as building a lair
-	 * or ship, or buying a coco tile, we know exactly how the resources of the
+	 * or ship, or buying a Coco tile, we know exactly how the resources of the
 	 * player and stockpile (and board) are affected... as a result, we can group
 	 * all the logic here, instead of having all of these update() method calls
 	 * scattered throughout other parts of the code...
