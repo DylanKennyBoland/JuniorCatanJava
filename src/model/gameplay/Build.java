@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import model.enums.TradeEnums;
 import model.board.Board;
-import model.board.Stockpile;
 import model.players.Player;
 
 /**
@@ -20,7 +19,6 @@ public class Build {
 	// Setting up the Build variables.
 	private Player player;
 	private Board board;
-	private Stockpile stockpile;
 	private HashMap<String, Integer> lairCost = new HashMap<String, Integer>();
 	private HashMap<String, Integer> shipCost = new HashMap<String, Integer>();
 
@@ -34,7 +32,6 @@ public class Build {
 	public Build(Player player) {
 		this.player = player;
 		this.board = Board.getInstance();
-		this.stockpile = board.getStockpile();
 		this.lairCost.put("Wood", 1);
 		this.lairCost.put("Cutlass", 1);
 		this.lairCost.put("Molasses", 1);
@@ -95,7 +92,7 @@ public class Build {
 	public String buildLair(String lair) {
 		this.player.addLairAsset(lair);
 		this.board.updateBoard(lair, this.player.getColourIcon());
-		return ("Done!\n");
+		return ("You have built on Lair Site" + lair + "!\n");
 	}
 	
 	/**
@@ -109,7 +106,7 @@ public class Build {
 	public String buildShip(String ship) {
 		this.player.addShipAsset(ship);
 		this.board.updateBoard(ship, this.player.getColourIcon().toUpperCase());
-		return ("Done!\n");
+		return ("You have built on Ship Site" + ship + "!\n");
 	}
 
 	/**

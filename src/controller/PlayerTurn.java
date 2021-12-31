@@ -71,7 +71,7 @@ public class PlayerTurn {
 			options.add("View Marketplace");
 			options.add("View Board");
 			options.add("End Turn");
-			this.view.display("Your options are:");
+			this.view.display("Your options are:(Enter a number from 1 - 6)\n");
 			this.view.displayOptions(options);
 			switch (inputScanner.nextLine()) {
 			case "1":
@@ -101,7 +101,7 @@ public class PlayerTurn {
 	 * produce resources for the corresponding islands.
 	 * If a 6 is rolled the player can move the ghost captain.
 	 * */
-	private void rollDice() {
+	public void rollDice() {
 		Integer roll = random.nextInt(6) + 1;
 		this.view.display("\nIt is " + this.player.getName() + "'s turn!");
 		this.view.display("\nThe dice rolled a " + roll);
@@ -139,7 +139,7 @@ public class PlayerTurn {
 	 * This method is called when the Player chooses to Build.
 	 * It gives the player there build options and handles there input.
 	 * */
-	private void build() {
+	public void build() {
 		boolean finishedBuilding = false;
 		ArrayList<String> buildOptionsList = new ArrayList<String>();
 		buildOptionsList.add("Lair");
@@ -149,7 +149,7 @@ public class PlayerTurn {
 		buildOptionsList.add("Go Back");
 		while (!finishedBuilding) {
 			this.view.display("\nWhat would you like to build?");
-			this.view.display("Your options are:");
+			this.view.display("Your options are:(Enter a number from 1 - 5)\n");
 			this.view.displayOptions(buildOptionsList);
 			switch (inputScanner.nextLine()) {
 			case "1":
@@ -202,7 +202,7 @@ public class PlayerTurn {
 		}
 		this.view.display("Where would you like to build a lair?" +
 				  " Enter your choice from 1 - " + options.size());
-		this.view.display("Your options are:");
+		this.view.display("Your options are:\n");
 		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
@@ -267,7 +267,7 @@ public class PlayerTurn {
 		}
 		this.view.display("Where would you like to build a ship?" +
 				  " Enter your choice from 1 - " + options.size());
-		this.view.display("Your options are:");
+		this.view.display("Your options are:\n");
 		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
@@ -512,14 +512,14 @@ public class PlayerTurn {
 		tradeOptionsList.add("Go Back");
 		while (!finishedTrading) {
 			this.view.display("\nWhat would you like to trade with?");
-			this.view.display("Your options are:");
+			this.view.display("Your options are:(Enter a number from 1 - 7)\n");
 			this.view.displayOptions(tradeOptionsList);
 			switch (inputScanner.nextLine()) {
 			case "1":
 				if (tradeOptions.canTradeWithMarketplace()) {
 					tradeWithMarketplace();
 				} else {
-					this.view.display("You have already traded with the Marketplace");
+					this.view.display("You have already traded with the Marketplace this turn.");
 				}
 				;
 				break;
@@ -590,7 +590,7 @@ public class PlayerTurn {
 		for (Map.Entry<String, Integer> resource : this.player.getResources().entrySet()) {
 			giveOptions.add((String) resource.getKey() + " (You have " + resource.getValue() + ")");
 		}
-		this.view.display("Your options are:");
+		this.view.display("Your options are:(Enter a number from 1 - 5)\n");
 		this.view.displayOptions(giveOptions);
 		switch (inputScanner.nextLine()) {
 		case "1":
@@ -716,6 +716,9 @@ public class PlayerTurn {
 	// This method checks if the player has won the game.
 	public boolean didPlayerWin() {
 		if (this.player.getLairAssets().size() == 7) {
+			this.view.display("Congratulations " + this.player.getName() + 
+							  "!!!!!\nYou have won the game");
+			this.player.wins();
 			return true;
 		} else {
 			return false;
