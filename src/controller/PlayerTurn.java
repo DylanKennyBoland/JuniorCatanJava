@@ -214,7 +214,7 @@ public class PlayerTurn {
 					this.view.display("You have chosen option " + option);
 					this.view.display("\nBuilding... ");
 					this.exchange(TradeEnums.BUILD_LAIR);
-					this.buildOptions.buildLair(validLairSites.get(option - 1));
+					this.view.display(this.buildOptions.buildLair(validLairSites.get(option - 1)));
 					validInput = true;
 				} else if (option == options.size()) {
 					if (this.player.skipResourcesCheckStatus() == true) {
@@ -257,10 +257,11 @@ public class PlayerTurn {
 			}
 		}
 		ArrayList<String> options = new ArrayList<String>(validShipSites);
-		/* Next, we need to check if the player is currently using a build-type coco
-		 * tile... if they are then we shouldn't give the option to cancel a build
-		 * (as the rules state that they must build a lair or ship immediately)
-		 */ 
+		/*
+		 * Next, we need to check if the player is currently using a build-type coco
+		 * tile... if they are then we shouldn't give the option to cancel a build (as
+		 * the rules state that they must build a lair or ship immediately)
+		 */
 		if (this.player.skipResourcesCheckStatus() == false) {
 			options.add("Cancel Build");
 		}
@@ -278,7 +279,7 @@ public class PlayerTurn {
 					this.view.display("You have chosen option " + option);
 					this.view.display("Building... ");
 					this.exchange(TradeEnums.BUILD_SHIP);
-					this.buildOptions.buildShip(validShipSites.get(option - 1));
+					this.view.display(this.buildOptions.buildShip(validShipSites.get(option - 1)));
 					validInput = true;
 				} else if (option == options.size()) {
 					if (this.player.skipResourcesCheckStatus() == true) {
@@ -315,7 +316,7 @@ public class PlayerTurn {
 		Integer randi = random.nextInt(validTypes.size());
 		return validTypes.get(randi);
 	}
-	
+
 	public void hasMostCocoTiles() {
 		if (this.player.getResources().get("Coco tiles") > this.board.getCurrentMaxCocoTiles()) {
 			if (this.board.getPlayerWithMaxCocoTiles() != null) {
@@ -323,18 +324,20 @@ public class PlayerTurn {
 			}
 			this.board.setPlayerWithMaxCocoTiles(this.player);
 			this.player.addLairAsset(" 33 ");
+			this.board.updateBoard(" 33 ", this.player.getColourIcon());
 			this.board.incrementCurrentMaxCocoTiles();
 			this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
 		} else if (this.player.getResources().get("Coco tiles") == this.board.getCurrentMaxCocoTiles()) {
 			if (this.board.getPlayerWithMaxCocoTiles() != null) {
 				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+				this.board.updateBoard(" 33 ", "33");
 				this.board.setPlayerWithMaxCocoTiles(null);
 			}
 		} else {
 			return;
 		}
 	}
-	
+
 	public void buyCocoTile() {
 		if (this.buildOptions.checkResources(TradeEnums.BUY_COCO_TILE) && this.board.getNumOfCocoTiles() >= 1) {
 			this.exchange(TradeEnums.BUY_COCO_TILE);
@@ -408,17 +411,15 @@ public class PlayerTurn {
 			}
 		}
 	}
-	
+
 	/*
-	 * The method below is meant to emulate some of the main builds or
-	 * trades that can occur. A switch-case statement is used for easy
-	 * readability. The reason for having this method is that for
-	 * many transactions, such as building a lair or ship, or buying
-	 * a coco tile, we know exactly how the resources of the
-	 * player and stockpile (and board) are affected... as a result, we
-	 * can group all the logic here, instead of having all of these
-	 * update() method calls scattered throughout other parts of the
-	 * code...
+	 * The method below is meant to emulate some of the main builds or trades that
+	 * can occur. A switch-case statement is used for easy readability. The reason
+	 * for having this method is that for many transactions, such as building a lair
+	 * or ship, or buying a coco tile, we know exactly how the resources of the
+	 * player and stockpile (and board) are affected... as a result, we can group
+	 * all the logic here, instead of having all of these update() method calls
+	 * scattered throughout other parts of the code...
 	 */
 	public void exchange(TradeEnums event) {
 		switch (event) {
