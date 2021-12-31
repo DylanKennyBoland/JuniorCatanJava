@@ -73,7 +73,7 @@ public class Build {
 
 	public String buildShip(String ship) {
 		this.player.addShipAsset(ship);
-		this.board.updateBoard(ship, this.player.getColourIcon());
+		this.board.updateBoard(ship, this.player.getColourIcon().toUpperCase());
 		return ("Done!\n");
 	}
 
