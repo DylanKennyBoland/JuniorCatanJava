@@ -9,11 +9,14 @@ import model.board.Tradeable;
 import model.enums.PlayerEnums;
 
 /**
- * @Author: Dylan Kenny Boland & Adam Durning
- * @Date: (of last update) 29/12/2021
+ * Class for the Player object 
+ * 
+ * @author: Adam Durning & Dylan Boland
+ * @Date: 27/12/2021
+ * 
  */
-
 public class Player implements Tradeable {
+	// Setting up the Player variables.
 	private String name;
 	private PlayerEnums colour;
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
@@ -22,29 +25,30 @@ public class Player implements Tradeable {
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
 	private String age;
-	private boolean skipResourcesCheck = false; 
-	/* The above attribute is used for when the player gets a Coco tile that
-	 * allows them to immediately build a lair or a ship...
-	 */
+	private boolean skipResourcesCheck = false; // Used for when the player gets a Coco tile that allows them to
+												// immediately build a lair or a ship...
 
 	/**
-	 * Constructor for the Player object.
-	 *
-	 * @param name - the name (or nickname) of the player.
-	 * @param colour - the colour of the player.
-	 * @param age - the age of the player.
-	 *
-	 */
+	 * The Player Constructor
+	 * 
+	 * @param: name - The players name.
+	 * @param: colour - The players colour {RED, WHITE, ORANGE, BLUE}
+	 * @param: age - The players age (For deciding the order of the player turns.)
+	 * */
 	public Player(String name, PlayerEnums colour, String age) { // The constructor...
 		this.name = name;
 		this.colour = colour;
 		this.age = age;
-		this.set();
+		this.initializeResources();
 		this.initializeAssets(); // Setting up the player's starting lair and ship locations...
 	}
 
+	/**
+	 * This method initializes the resources and coco tiles. Called at the start of the game
+	 * when the initial values are all 0.
+	 * */
 	@Override
-	public void set() {
+	public void initializeResources() {
 		this.resources.put("Wood", 1);
 		this.resources.put("Cutlass", this.initialNum);
 		this.resources.put("Goats", this.initialNum);
@@ -61,6 +65,7 @@ public class Player implements Tradeable {
 		return Integer.parseInt(this.age);
 	}
 
+	// This method initializes the Player's assets according to the colour they chose.
 	public void initializeAssets() {
 		switch (this.colour) {
 			case RED :
@@ -91,28 +96,31 @@ public class Player implements Tradeable {
 				break;
 		}
 	}
-
+	
+	// This method adds a ship to the Player's ship assets.
 	public void addShipAsset(String asset) {
 		this.shipAssets.add(asset);
 	}
 
+	// This method adds a lair to the Player's lair assets.
 	public void addLairAsset(String asset) {
 		this.lairAssets.add(asset);
 	}
 
-	public String viewAssets() {
-		return ("You own these lairs: " + this.lairAssets.toString()
-				+ "\nYou own these ships: " + this.shipAssets.toString());
+	// This method returns a string representation of the Player's lair and ship assets.
+	public String assetsToString() {
+		return ("You own these lairs: " + this.lairAssets.toString() + "\nYou own these ships: "
+				+ this.shipAssets.toString());
 	}
-
-	public List<String> getLairAssets() {
-		return this.lairAssets;
-	}
-
-	public List<String> getShipAssets() {
-		return this.shipAssets;
-	}
-
+	
+	/** 
+	 * This method checks if a player has a particular number of a resource. Used when building and trading.
+	 * 
+	 * @param: resourceName - The resource being checked
+	 * @param: number - The amount of the resource needed.
+	 * 
+	 * @return: A boolean indicating if the player has at least the number of the resource. 
+	 * */
 	@Override
 	public boolean isAvailable(String resourceName, int number) {
 		if ((this.resources.containsKey(resourceName))
@@ -123,20 +131,27 @@ public class Player implements Tradeable {
 		}
 	}
 
+	/** 
+	 * This method is used when trading with the stockpile.
+	 * 
+	 * @param: tileIn - The resource received from the stockpile
+	 * @param: numIn - The number of the received resource
+	 * @param: tileOut - The resource given to the stockpile
+	 * @param: numOut - The number of the given resource
+	 * 
+	 * @return: A string indicating the resources that were given and received.
+	 * */
 	@Override
-	public String trade(String tilein, int numIn, String tileout, int numOut) {
-		if (!this.isAvailable(tileout, numOut)) {
-			return String.format(
-					"There are no '%1$s' tiles in the stockpile to trade with.",
-					tileout);
+	public String trade(String tileIn, int numIn, String tileOut, int numOut) {
+		if (!this.isAvailable(tileOut, numOut)) {
+			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileOut);
 		}
-		int currNumTileIn = this.resources.get(tilein);
-		int currNumTileOut = this.resources.get(tileout);
+		int currNumTileIn = this.resources.get(tileIn);
+		int currNumTileOut = this.resources.get(tileOut);
 		// Now we update the values associated with the keys...
-		this.resources.replace(tilein, currNumTileIn + numIn);
-		this.resources.replace(tileout, currNumTileOut - numOut);
-		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn,
-				tilein, numOut, tileout);
+		this.resources.replace(tileIn, currNumTileIn + numIn);
+		this.resources.replace(tileOut, currNumTileOut - numOut);
+		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tileIn, numOut, tileOut);
 	}
 
 	@Override
@@ -144,6 +159,7 @@ public class Player implements Tradeable {
 		this.resources.put(resource, this.resources.get(resource) + (num)); // 'num' could be negative...
 	}
 
+	// This method gets the number of Coco tiles that the player has.
 	public Integer getNumOfCocoTiles() {
 		int num = 0;
 		for (Integer value : this.getCocoTiles().values()) {
@@ -152,6 +168,22 @@ public class Player implements Tradeable {
 		return num;
 	}
 
+	//This method adds a Coco tile to the Players Map of Coco tiles 
+	public void addCocoTile(String cocoTileType) {
+		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) + 1);
+	}
+
+	//This method adds/gives a number of a resource to the Player's resources list.
+	public void giveResource(String resource, Integer num) {
+		this.resources.put(resource, this.resources.get(resource) + num);
+	}
+	
+	//This method subtracts/takes a number of a resource from the Player's resources list.
+	public void takeResource(String resource, Integer num) {
+		this.resources.put(resource, resources.get(resource) - num);
+	}
+
+	// This method returns a string representation of the Player attributes.
 	@Override
 	public String toString() {
 		String playerResources = "";
@@ -159,9 +191,8 @@ public class Player implements Tradeable {
 			playerResources = playerResources + "\n" + resource + ": "
 					+ this.resources.get(resource);
 		}
-		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour
-				+ "\n\tPlayer's lairs:" + this.lairAssets.toString()
-				+ "\n\tPlayer's ships:" + this.shipAssets.toString();
+		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\t" + this.name + "'s lairs:"
+				+ this.lairAssets.toString() + "\n\t" + this.name + "'s ships:" + this.shipAssets.toString();
 	}
 
 	// 'get' and 'set' methods:
@@ -201,7 +232,11 @@ public class Player implements Tradeable {
 		return this.cocoTiles;
 	}
 
-	public void addCocoTile(String cocoTileType) {
-		this.cocoTiles.put(cocoTileType, this.cocoTiles.get(cocoTileType) + 1);
+	public List<String> getLairAssets() {
+		return this.lairAssets;
+	}
+
+	public List<String> getShipAssets() {
+		return this.shipAssets;
 	}
 }

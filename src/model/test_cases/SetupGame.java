@@ -1,7 +1,6 @@
 package model.test_cases;
 import model.setup.*;
 import model.board.*;
-import static org.junit.Assert.*;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,17 +8,16 @@ import org.junit.Test;
 public class SetupGame {
 	
 	private SetupBoard boardSetup;
-	private SetupPlayers playerSetup;
 	//private Board gameBoard;
 	@Before
 	public void setUp() throws Exception {
 		boardSetup = new SetupBoard();
-		boardSetup.startingBoard();
+		boardSetup.createIslands();;
 	}
 
 	@Test
 	public void testSetup() {
-		Board gameBoard = boardSetup.getBoard();
+		Board gameBoard = Board.getInstance();
 		List<Islands> islands = gameBoard.getIslands();
 		for(Islands island: islands) {
 			System.out.println(island.toString() + "\n");
