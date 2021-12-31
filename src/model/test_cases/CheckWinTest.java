@@ -29,8 +29,8 @@ public class CheckWinTest extends TestParent{
 		this.view = View.getInstance();
 		PlayerList playerList = PlayerList.getInstance();
 		Adam = new Player("Adam", PlayerEnums.BLUE, "22");
-		Adam.giveResource("Goats", 1);
-		Adam.giveResource("Cutlass", 1);
+		Adam.update("Goats", 1);
+		Adam.update("Cutlass", 1);
 		// Giving the player some assets so they only have to build 1 more to win. 
 		Adam.addLairAsset(" 1 ");
 		Adam.addLairAsset(" 2 ");

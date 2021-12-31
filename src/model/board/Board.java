@@ -100,11 +100,11 @@ public class Board {
 	}
 
 	// This method initializes the number of each Coco Tile in the game.
-	public void initializeCocoTiles() {
-		this.cocoTiles.put("Ghost Captain", this.initialNumCocoTiles);
-		this.cocoTiles.put("Build", this.initialNumCocoTiles);
-		this.cocoTiles.put("Resource Combination 1", this.initialNumCocoTiles);
-		this.cocoTiles.put("Resource Combination 2", this.initialNumCocoTiles);
+	public void setUpCocoTiles() {
+		this.cocoTiles.put("Ghost Captain", 8);
+		this.cocoTiles.put("Build", 6);
+		this.cocoTiles.put("Resource Combination 1", 3);
+		this.cocoTiles.put("Resource Combination 2", 3);
 	}
 	
 	// This method updates the list of ship sites according to the ship sites for each island on the board.
@@ -140,7 +140,7 @@ public class Board {
 								.collect(Collectors.toList()).size();
 						String resource = island.getIslandResource();
 						// The player gets as many resources as they have lairs surrounding the Island.
-						player.giveResource(resource, numOfAttachedLairs);
+						player.update(resource, numOfAttachedLairs);
 						// Removing the resources from the stockpile
 						this.stockpile.update(resource, -numOfAttachedLairs);
 						string += ("\nGiving " + resource + " to " + player.getName());
@@ -200,13 +200,6 @@ public class Board {
 	
 	public Map<String, String> getBoardStatus() {
 		return this.boardStatus;
-	}
-
-	public void setUpCocoTiles() {
-		this.cocoTiles.put("Ghost Captain", this.initialNumCocoTiles);
-		this.cocoTiles.put("Build", this.initialNumCocoTiles);
-		this.cocoTiles.put("Resource Combination 1", this.initialNumCocoTiles);
-		this.cocoTiles.put("Resource Combination 2", this.initialNumCocoTiles);
 	}
 	
 	// This method removes a Coco tile from the boards Map of Coco tiles. Used when someone builds a Coco tile.

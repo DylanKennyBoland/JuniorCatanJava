@@ -16,7 +16,7 @@ import model.players.Player;
  */
 
 public class Build {
-	//Setting up the Build variables.
+	// Setting up the Build variables.
 	private Player player;
 	private Board board;
 	private HashMap<String, Integer> lairCost = new HashMap<String, Integer>();

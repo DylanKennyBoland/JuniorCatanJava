@@ -34,9 +34,9 @@ public class BuildTest extends TestParent{
 		this.view = View.getInstance();
 		PlayerList playerList = PlayerList.getInstance();
 		Adam = new Player("Adam", PlayerEnums.BLUE, "22");
-		Adam.giveResource("Wood", 1);
-		Adam.giveResource("Goats", 2);
-		Adam.giveResource("Cutlass", 1);
+		Adam.update("Wood", 1);
+		Adam.update("Goats", 2);
+		Adam.update("Cutlass", 1);
 		playerList.addPlayer(Adam);
 		// Setting up the Board.
 		SetupBoard boardSetup = SetupBoard.getInstance();

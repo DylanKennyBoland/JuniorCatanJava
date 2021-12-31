@@ -79,7 +79,10 @@ public class View {
 			display(player.toString());
 		}
 		display("\nThe Ghost captain is on island: \t" + ghostIsland.getName());
-		display("\n\n\n");
+		display("\n\n\n"
+				+ "The letters indicate the colour of the player associated with each position.\n"
+				+ "-> Lowercase letters represent lairs.\n-> Uppercase letters represent ship sites."
+				+ "\n\n For example, a 'b' corresponds to a lair site owned by the Blue player.");
 		display(board.getBoardConfig());
 	}
 	

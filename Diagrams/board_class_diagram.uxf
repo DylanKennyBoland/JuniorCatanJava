@@ -5,17 +5,12 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>140</x>
-      <y>560</y>
-      <w>210</w>
-      <h>200</h>
+      <x>120</x>
+      <y>350</y>
+      <w>100</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Stockpile
---
--stockpile:HashMap&lt;String,Int&gt;
-
---
-+tradeWithStockpile()
 
 
 </panel_attributes>
@@ -24,39 +19,49 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>340</x>
-      <y>240</y>
-      <w>280</w>
-      <h>190</h>
+      <x>310</x>
+      <y>200</y>
+      <w>230</w>
+      <h>260</h>
     </coordinates>
-    <panel_attributes>/Board/
+    <panel_attributes>Board
 --
--LairLocations:ArrayList&lt;int&gt;
--ShipLocations:ArrayList&lt;int&gt;
--playerList:List&lt;Player&gt;
-
-
+-LairLocations: ArrayList&lt;String&gt;
+-ShipLocations: ArrayList&lt;String&gt;
+-playerList: List&lt;Player&gt;
+-marketplace: Marketplace
+-stockpile: Stockpile
+-Player: playerWithMostCocoTiles
+-boardTemplate: String
 --
-/+UpdateResources()/
-/+viewResources()/
++updateBoard(): void
++initializeBoardStatus(): void
++initializeLairLocations(): void
++setUpCocoTiles(): void
++readInBoardTemplate(): void
++moveGhostCaptain(char islandName): void
++produceResources(int roll): String
++getBoardConfig(): String
++getUsedLairSites(): List&lt;String&gt;
++getUsedShipSites(): List&lt;String&gt;
++getIslandByName(char islandName): Islands
+ 
 
-</panel_attributes>
+
+
+
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
-      <y>570</y>
-      <w>240</w>
-      <h>200</h>
+      <x>80</x>
+      <y>220</y>
+      <w>140</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Marketplace
---
--marketplace:ArrayList&lt;string&gt;
-
---
-+tradeWithMarketplace()
 
 </panel_attributes>
     <additional_attributes/>
@@ -64,20 +69,12 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>740</x>
-      <y>550</y>
-      <w>280</w>
-      <h>200</h>
+      <x>120</x>
+      <y>290</y>
+      <w>100</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Islands
---
-
-- diceNumber:int
-- islandType: enum(PASTURES, CAVES, 
-							RIVERS, SUGAR, FOREST)
-- ghostCaptain:boolean
-
---
 
 
 </panel_attributes>
@@ -86,43 +83,91 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>170</x>
-      <y>890</y>
-      <w>240</w>
-      <h>200</h>
-    </coordinates>
-    <panel_attributes>Player
---
--resources:HashMap&lt;string, int&gt;
--name:string
--colour:enum&lt;RED,WHITE,ORANGE,BLUE&gt;
--isGhostCaptain:boolean
--accessibleLairLocations:List&lt;int&gt;
--accessibleShipLocations:List&lt;int&gt;
---
-
--buy()
--trade()
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>750</x>
-      <y>830</y>
-      <w>280</w>
-      <h>150</h>
+      <x>700</x>
+      <y>210</y>
+      <w>60</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>Lair
---
--Color:enum
--location:int range(1:37)
---
 
 
 </panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>290</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>PlayerList</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>530</x>
+      <y>300</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>530</x>
+      <y>210</y>
+      <w>190</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=32
+m2=1</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>230</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>300</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=13
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>360</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
   </element>
 </diagram>
