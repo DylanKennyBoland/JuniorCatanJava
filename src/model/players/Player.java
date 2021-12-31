@@ -68,32 +68,32 @@ public class Player implements Tradeable {
 	// This method initializes the Player's assets according to the colour they chose.
 	public void initializeAssets() {
 		switch (this.colour) {
-		case RED:
-			// The two initial lair locations for the red player
-			this.addLairAsset(" 5 ");
-			this.addLairAsset(" 15 ");
-			// And their two ship locations...
-			this.addShipAsset(" 4 - 5 ");
-			this.addShipAsset(" 15 - 16 ");
-			break;
-		case WHITE:
-			this.addLairAsset(" 2 ");
-			this.addLairAsset(" 18 ");
-			this.addShipAsset(" 2 - 3 ");
-			this.addShipAsset(" 17 - 18 ");
-			break;
-		case ORANGE:
-			this.addLairAsset(" 9 ");
-			this.addLairAsset(" 25 ");
-			this.addShipAsset(" 9 - 10 ");
-			this.addShipAsset(" 24 - 25 ");
-			break;
-		case BLUE:
-			this.addLairAsset(" 12 ");
-			this.addLairAsset(" 22 ");
-			this.addShipAsset(" 11 - 12 ");
-			this.addShipAsset(" 22 - 23 ");
-			break;
+			case RED :
+				// The two initial lair locations for the red player
+				this.addLairAsset(" 5 ");
+				this.addLairAsset(" 15 ");
+				// And their two ship locations...
+				this.addShipAsset(" 4 - 5 ");
+				this.addShipAsset(" 15 - 16 ");
+				break;
+			case WHITE :
+				this.addLairAsset(" 2 ");
+				this.addLairAsset(" 18 ");
+				this.addShipAsset(" 2 - 3 ");
+				this.addShipAsset(" 17 - 18 ");
+				break;
+			case ORANGE :
+				this.addLairAsset(" 9 ");
+				this.addLairAsset(" 25 ");
+				this.addShipAsset(" 9 - 10 ");
+				this.addShipAsset(" 24 - 25 ");
+				break;
+			case BLUE :
+				this.addLairAsset(" 12 ");
+				this.addLairAsset(" 22 ");
+				this.addShipAsset(" 11 - 12 ");
+				this.addShipAsset(" 22 - 23 ");
+				break;
 		}
 	}
 	
@@ -123,7 +123,8 @@ public class Player implements Tradeable {
 	 * */
 	@Override
 	public boolean isAvailable(String resourceName, int number) {
-		if ((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
+		if ((this.resources.containsKey(resourceName))
+				&& (this.resources.get(resourceName) >= number)) {
 			return true;
 		} else {
 			return false;
@@ -187,7 +188,8 @@ public class Player implements Tradeable {
 	public String toString() {
 		String playerResources = "";
 		for (String resource : this.resources.keySet()) {
-			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
+			playerResources = playerResources + "\n" + resource + ": "
+					+ this.resources.get(resource);
 		}
 		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\t" + this.name + "'s lairs:"
 				+ this.lairAssets.toString() + "\n\t" + this.name + "'s ships:" + this.shipAssets.toString();
@@ -213,11 +215,11 @@ public class Player implements Tradeable {
 	public PlayerEnums getColour() {
 		return this.colour;
 	}
-	
+
 	public String getColourIcon() {
-		return String.valueOf(this.getColour().getColour().charAt(0)).toUpperCase();
+		return String.valueOf(this.getColour().getColour().charAt(0)).toLowerCase();
 	}
-	
+
 	public void setColour(PlayerEnums colour) {
 		this.colour = colour;
 	}

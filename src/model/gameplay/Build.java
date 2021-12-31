@@ -94,14 +94,7 @@ public class Build {
 	 * */
 	public String buildLair(String lair) {
 		this.player.addLairAsset(lair);
-		this.player.takeResource("Cutlass", 1);
-		this.player.takeResource("Molasses", 1);
-		this.player.takeResource("Goats", 1);
-		this.player.takeResource("Wood", 1);
-		this.stockpile.update("Cutlass", 1);
-		this.stockpile.update("Molasses", 1);
-		this.stockpile.update("Goats", 1);
-		this.stockpile.update("Wood", 1);
+		this.board.updateBoard(lair, this.player.getColourIcon());
 		return ("Done!\n");
 	}
 	
@@ -115,10 +108,7 @@ public class Build {
 	 * */
 	public String buildShip(String ship) {
 		this.player.addShipAsset(ship);
-		this.player.takeResource("Goats", 1);
-		this.player.takeResource("Wood", 1);
-		this.stockpile.update("Goats", 1);
-		this.stockpile.update("Wood", 1);
+		this.board.updateBoard(ship, this.player.getColourIcon().toUpperCase());
 		return ("Done!\n");
 	}
 
