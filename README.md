@@ -15,6 +15,8 @@ When playing the game, the player will be presented with a list of options that 
 6.  End Turn
 
 Simply enter the number corresponding to your desired action and the Game will take care of the rest.
+When you make a choice, you will be presented with a your next list of options. Make sure to look above this list
+as sometimes additional information will also be displayed above this list.
 
 (NOTE: Whenever you are presented with a list of options, only enter a number corresponding to the action you
 want to take. Any numbers outside the list of options will prompt you to try again.)
