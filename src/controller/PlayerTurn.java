@@ -71,7 +71,7 @@ public class PlayerTurn {
 			options.add("View Marketplace");
 			options.add("View Board");
 			options.add("End Turn");
-			this.view.display("Your options are:");
+			this.view.display("Your options are:(Enter a number from 1 - 6)\n");
 			this.view.displayOptions(options);
 			switch (inputScanner.nextLine()) {
 			case "1":
@@ -149,7 +149,7 @@ public class PlayerTurn {
 		buildOptionsList.add("Go Back");
 		while (!finishedBuilding) {
 			this.view.display("\nWhat would you like to build?");
-			this.view.display("Your options are:");
+			this.view.display("Your options are:(Enter a number from 1 - 5)\n");
 			this.view.displayOptions(buildOptionsList);
 			switch (inputScanner.nextLine()) {
 			case "1":
@@ -202,7 +202,7 @@ public class PlayerTurn {
 		}
 		this.view.display("Where would you like to build a lair?" +
 				  " Enter your choice from 1 - " + options.size());
-		this.view.display("Your options are:");
+		this.view.display("Your options are:\n");
 		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
@@ -267,7 +267,7 @@ public class PlayerTurn {
 		}
 		this.view.display("Where would you like to build a ship?" +
 				  " Enter your choice from 1 - " + options.size());
-		this.view.display("Your options are:");
+		this.view.display("Your options are:\n");
 		this.view.displayOptions(options);
 		boolean validInput = false;
 		while (!validInput) {
@@ -497,7 +497,7 @@ public class PlayerTurn {
 		tradeOptionsList.add("Go Back");
 		while (!finishedTrading) {
 			this.view.display("\nWhat would you like to trade with?");
-			this.view.display("Your options are:");
+			this.view.display("Your options are:(Enter a number from 1 - 7)\n");
 			this.view.displayOptions(tradeOptionsList);
 			switch (inputScanner.nextLine()) {
 			case "1":
@@ -575,7 +575,7 @@ public class PlayerTurn {
 		for (Map.Entry<String, Integer> resource : this.player.getResources().entrySet()) {
 			giveOptions.add((String) resource.getKey() + " (You have " + resource.getValue() + ")");
 		}
-		this.view.display("Your options are:");
+		this.view.display("Your options are:(Enter a number from 1 - 5)\n");
 		this.view.displayOptions(giveOptions);
 		switch (inputScanner.nextLine()) {
 		case "1":
