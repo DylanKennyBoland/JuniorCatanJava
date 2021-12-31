@@ -22,16 +22,18 @@ public class Player implements Tradeable {
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
 	private String age;
-	private boolean skipResourcesCheck = false; // Used for when the player gets a Coco tile that allows them to
-	// immediately build a lair or a ship...
+	private boolean skipResourcesCheck = false; 
+	/* The above attribute is used for when the player gets a Coco tile that
+	 * allows them to immediately build a lair or a ship...
+	 */
 
 	/**
 	 * Constructor for the Player object.
-	 * 
+	 *
 	 * @param name - the name (or nickname) of the player.
 	 * @param colour - the colour of the player.
-	 * @param age -  the age of the player.
-	 * 
+	 * @param age - the age of the player.
+	 *
 	 */
 	public Player(String name, PlayerEnums colour, String age) { // The constructor...
 		this.name = name;
@@ -61,32 +63,32 @@ public class Player implements Tradeable {
 
 	public void initializeAssets() {
 		switch (this.colour) {
-		case RED:
-			// The two initial lair locations for the red player
-			this.addLairAsset(" 5 ");
-			this.addLairAsset(" 15 ");
-			// And their two ship locations...
-			this.addShipAsset(" 4 - 5 ");
-			this.addShipAsset(" 15 - 16 ");
-			break;
-		case WHITE:
-			this.addLairAsset(" 2 ");
-			this.addLairAsset(" 18 ");
-			this.addShipAsset(" 2 - 3 ");
-			this.addShipAsset(" 17 - 18 ");
-			break;
-		case ORANGE:
-			this.addLairAsset(" 9 ");
-			this.addLairAsset(" 25 ");
-			this.addShipAsset(" 9 - 10 ");
-			this.addShipAsset(" 24 - 25 ");
-			break;
-		case BLUE:
-			this.addLairAsset(" 12 ");
-			this.addLairAsset(" 22 ");
-			this.addShipAsset(" 11 - 12 ");
-			this.addShipAsset(" 22 - 23 ");
-			break;
+			case RED :
+				// The two initial lair locations for the red player
+				this.addLairAsset(" 5 ");
+				this.addLairAsset(" 15 ");
+				// And their two ship locations...
+				this.addShipAsset(" 4 - 5 ");
+				this.addShipAsset(" 15 - 16 ");
+				break;
+			case WHITE :
+				this.addLairAsset(" 2 ");
+				this.addLairAsset(" 18 ");
+				this.addShipAsset(" 2 - 3 ");
+				this.addShipAsset(" 17 - 18 ");
+				break;
+			case ORANGE :
+				this.addLairAsset(" 9 ");
+				this.addLairAsset(" 25 ");
+				this.addShipAsset(" 9 - 10 ");
+				this.addShipAsset(" 24 - 25 ");
+				break;
+			case BLUE :
+				this.addLairAsset(" 12 ");
+				this.addLairAsset(" 22 ");
+				this.addShipAsset(" 11 - 12 ");
+				this.addShipAsset(" 22 - 23 ");
+				break;
 		}
 	}
 
@@ -99,8 +101,8 @@ public class Player implements Tradeable {
 	}
 
 	public String viewAssets() {
-		return ("You own these lairs: " + this.lairAssets.toString() + "\nYou own these ships: "
-				+ this.shipAssets.toString());
+		return ("You own these lairs: " + this.lairAssets.toString()
+				+ "\nYou own these ships: " + this.shipAssets.toString());
 	}
 
 	public List<String> getLairAssets() {
@@ -113,7 +115,8 @@ public class Player implements Tradeable {
 
 	@Override
 	public boolean isAvailable(String resourceName, int number) {
-		if ((this.resources.containsKey(resourceName)) && (this.resources.get(resourceName) >= number)) {
+		if ((this.resources.containsKey(resourceName))
+				&& (this.resources.get(resourceName) >= number)) {
 			return true;
 		} else {
 			return false;
@@ -123,14 +126,17 @@ public class Player implements Tradeable {
 	@Override
 	public String trade(String tilein, int numIn, String tileout, int numOut) {
 		if (!this.isAvailable(tileout, numOut)) {
-			return String.format("There are no '%1$s' tiles in the stockpile to trade with.", tileout);
+			return String.format(
+					"There are no '%1$s' tiles in the stockpile to trade with.",
+					tileout);
 		}
 		int currNumTileIn = this.resources.get(tilein);
 		int currNumTileOut = this.resources.get(tileout);
 		// Now we update the values associated with the keys...
 		this.resources.replace(tilein, currNumTileIn + numIn);
 		this.resources.replace(tileout, currNumTileOut - numOut);
-		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn, tilein, numOut, tileout);
+		return String.format("You've traded a %1$d %2$s for %3$d %4$s.", numIn,
+				tilein, numOut, tileout);
 	}
 
 	@Override
@@ -150,10 +156,12 @@ public class Player implements Tradeable {
 	public String toString() {
 		String playerResources = "";
 		for (String resource : this.resources.keySet()) {
-			playerResources = playerResources + "\n" + resource + ": " + this.resources.get(resource);
+			playerResources = playerResources + "\n" + resource + ": "
+					+ this.resources.get(resource);
 		}
-		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour + "\n\tPlayer's lairs:"
-				+ this.lairAssets.toString() + "\n\tPlayer's ships:" + this.shipAssets.toString();
+		return "\nName: " + this.name + "\n\t" + "Colour: " + this.colour
+				+ "\n\tPlayer's lairs:" + this.lairAssets.toString()
+				+ "\n\tPlayer's ships:" + this.shipAssets.toString();
 	}
 
 	// 'get' and 'set' methods:
@@ -176,11 +184,11 @@ public class Player implements Tradeable {
 	public PlayerEnums getColour() {
 		return this.colour;
 	}
-	
+
 	public String getColourIcon() {
-		return String.valueOf(this.getColour().getColour().charAt(0)).toUpperCase();
+		return String.valueOf(this.getColour().getColour().charAt(0)).toLowerCase();
 	}
-	
+
 	public void setColour(PlayerEnums colour) {
 		this.colour = colour;
 	}
