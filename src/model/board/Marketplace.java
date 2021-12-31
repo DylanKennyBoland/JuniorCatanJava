@@ -61,22 +61,26 @@ public class Marketplace implements Tradeable {
 			this.marketplace.set(index, tilein);
 		}
 
-		if ((numIn > 1) && (this.areTilesAllSame())) {
-			this.initializeResources(); // Resetting the marketplace
-			return String.format(
-					"You've traded %1$d %2$s tiles for %3$d %4$s tiles."
-							+ "\nINFO: resetting the marketplace as it's flooded with the same resource...",
-					numIn, tilein, numOut, tileout);
-		} else if ((numIn == 1) && (this.areTilesAllSame())) {
+//		if ((numIn > 1) && (this.areTilesAllSame())) {
+//			this.initializeResources(); // Resetting the marketplace
+//			return String.format(
+//					"You've traded %1$d %2$s tiles for %3$d %4$s tiles."
+//							+ "\nINFO: resetting the marketplace as it's flooded with the same resource...",
+//					numIn, tilein, numOut, tileout);
+//		} 
+		
+		if ((this.areTilesAllSame())) {
 			this.initializeResources();
 			return String.format(
-					"You've traded %1$d %2$s tile for %3$d %4$s tile."
+					"You've traded %1$d %2$s for %3$d %4$s."
 							+ "\nINFO: resetting the marketplace as it's flooded with the same resource...",
 					numIn, tilein, numOut, tileout);
-		} else if (numIn == 1) {
-			return String.format("You've traded %1$d %2$s tile for %3$d %4$s tile.", numIn, tilein, numOut, tileout);
-		} else {
-			return String.format("You've traded %1$d %2$s tiles for %3$d %4$s tiles.", numIn, tilein, numOut, tileout);
+		} 
+//		else if (numIn == 1) {
+//			return String.format("You've traded %1$d %2$s tile for %3$d %4$s tile.", numIn, tilein, numOut, tileout);
+//		} 
+		else {
+			return String.format("You've traded %1$d %2$s for %3$d %4$s", numIn, tilein, numOut, tileout);
 		}
 	}
 

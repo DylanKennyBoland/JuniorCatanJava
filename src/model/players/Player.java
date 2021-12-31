@@ -25,6 +25,7 @@ public class Player implements Tradeable {
 	private List<String> shipAssets = new ArrayList<String>();
 	private List<String> lairAssets = new ArrayList<String>();
 	private String age;
+	private boolean winner = false;
 	private boolean skipResourcesCheck = false; // Used for when the player gets a Coco tile that allows them to
 												// immediately build a lair or a ship...
 
@@ -238,5 +239,13 @@ public class Player implements Tradeable {
 
 	public List<String> getShipAssets() {
 		return this.shipAssets;
+	}
+	
+	public boolean getWinner() {
+		return winner;
+	}
+	
+	public void wins() {
+		this.winner = true;
 	}
 }
