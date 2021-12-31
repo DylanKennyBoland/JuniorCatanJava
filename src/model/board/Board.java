@@ -37,7 +37,6 @@ public class Board {
 	private Player playerWithMostCocoTiles = null;
 	private Islands ghostIsland;
 	protected String boardConfig;
-
 	/** A method for getting the instance of the Board object. If an instance does
 	 *  not exist than one is created.
 	 */
@@ -77,7 +76,6 @@ public class Board {
 			this.boardStatus.put(site, "+");
 		}
 		this.boardStatus.put(" 33 ", "33");
-		System.out.println(this.boardStatus.size());
 		/* Updating the board configuration string with information
 		 * about which lair and ship sites are occupied from the start
 		 * of the game - we know the initial lair and ship sites associated
@@ -170,7 +168,6 @@ public class Board {
 			 */
 			this.boardConfig = this.boardConfig.replace("2s", "%2s"); // Some lair locations are double digit numbers - hence the '2'...
 			this.boardConfig = this.boardConfig.replace(" s", " %s");
-			System.out.println(this.boardConfig);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

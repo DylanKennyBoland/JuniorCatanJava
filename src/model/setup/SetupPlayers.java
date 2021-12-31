@@ -22,7 +22,7 @@ public class SetupPlayers {
 	// The SetupPlayers variables
 	private static SetupPlayers setupPlayers;
 	private PlayerList playerList;
-	private ArrayList<PlayerEnums> availableColors = new ArrayList<PlayerEnums>();
+	private ArrayList<PlayerEnums> availableColours = new ArrayList<PlayerEnums>();
 	private Integer numPlayers;
 	private String numPlayersString;
 	private ArrayList<Integer> colourIndex = new ArrayList<Integer>();
@@ -96,7 +96,7 @@ public class SetupPlayers {
 	 * 
 	 *  @return: Returns a string representing a players age.
 	 * */
-	private String getPlayerAge(Scanner input) {
+	public String getPlayerAge(Scanner input) {
 		boolean validAge = false;
 		String age = " ";
 		this.view.display("\nWhat is your age?");
@@ -126,11 +126,11 @@ public class SetupPlayers {
 	 * 
 	 * @return: Returns a string representation of the chosen colour.
 	 * */
-	private String getPlayerColour(Scanner input) {
+	public String getPlayerColour(Scanner input) {
 		this.view.display("\nWhat colour would you like: ");
 		boolean chosenColour = false;
 		while(!chosenColour) {
-			this.view.printAvailableColours(this.availableColors, this.colourIndex);
+			this.view.printAvailableColours(this.availableColours, this.colourIndex);
 			String choice = "5";
 			int choiceInt = 5;
 			boolean validChoice = false;
@@ -152,16 +152,24 @@ public class SetupPlayers {
 			// Updating the available colours according to the chosen colour.
 			switch (choice) {
 			case "1" :
-				chosenColour = updateColourList(availableColors.indexOf(PlayerEnums.BLUE)); return "BLUE";
+				chosenColour = updateColourList(availableColours.indexOf(PlayerEnums.BLUE));
+				this.view.display("You have chosen the colour BLUE");
+				return "BLUE";
 			case "2":
-				chosenColour = updateColourList(availableColors.indexOf(PlayerEnums.RED)); return "RED";
+				chosenColour = updateColourList(availableColours.indexOf(PlayerEnums.RED)); 
+				this.view.display("You have chosen the colour RED");
+				return "RED";
 			case "3":
-				chosenColour = updateColourList(availableColors.indexOf(PlayerEnums.ORANGE)); return "ORANGE";
+				chosenColour = updateColourList(availableColours.indexOf(PlayerEnums.ORANGE));
+				this.view.display("You have chosen the colour ORANGE");
+				return "ORANGE";
 			case "4":
-				chosenColour = updateColourList(availableColors.indexOf(PlayerEnums.WHITE)); return "WHITE";
+				chosenColour = updateColourList(availableColours.indexOf(PlayerEnums.WHITE));
+				this.view.display("You have chosen the colour WHITE");
+				return "WHITE";
 			}
 		}
-		return " ";
+		return " Something went wrong! ";
 	}
 	
 	/**
@@ -171,7 +179,7 @@ public class SetupPlayers {
 	 * 
 	 * @return: Returns an integer of the number of players.
 	 * */
-	private Integer getNumPlayers(Scanner input) {
+	public int getNumPlayers(Scanner input) {
 		this.view.display("How many people are playing the game? (3 or 4): ");
 		boolean validNumber = false;
 		while(!validNumber) {
@@ -182,42 +190,59 @@ public class SetupPlayers {
 				numPlayers = 0;
 			}
 			// Checking the number entered is a valid number (i.e. between 3 and 4).
-			validNumber = isValidNumber(numPlayers);
+			validNumber = isValidNumber(numPlayers, 3, 4);
 		}
+		setColourList(numPlayers);
 		return numPlayers;
 	}
 	
 	/**
-	 * This method checks that the chosen number of players is valid and
-	 * sets up the colours available to pick according to the number of players.
-	 * (The colour WHITE is not available in a 3 player game.)
+	 * This method checks that the integer num is between a lower and upper limit
 	 * 
 	 * @param: num - The number being checked. 
+	 * @param lowerLim - The lower limit of the number.
+	 * @param upperLim - The upper limit of the number.
 	 * 
-	 * @return: Returns a boolean indicating if the input number is valid.
+	 * @return: Returns a boolean indicating if the input number is between the limits.
 	 * */
-	private boolean isValidNumber(Integer num) {
-		if(num < 0 || num > 4) {
-			this.view.display("Not a valid number. Must be 3 or 4. Try again.");
+	public boolean isValidNumber(Integer num, Integer lowerLim, Integer upperLim) {
+		if(num < lowerLim || num > upperLim) {
+			this.view.display("Not a valid number. Must be between " + lowerLim  + " and " + upperLim);
 			return false;
-		} else if (num == 3) {
+		}
+		else {
+			return true;
+		}
+	}
+	
+	/**
+	 * This method sets the colourIndex and availableColours according to the number
+	 * of Players in the game.
+	 * 
+	 * @param: numPlayers - Number of Players in the game.
+	 * */
+	public void setColourList(Integer numPlayers) {
+		switch(numPlayers) {
+		case 3:
+			this.view.display("You have chosen 3 players");
 			this.colourIndex.add(1);
 			this.colourIndex.add(2);
 			this.colourIndex.add(3);
-			this.availableColors.add(PlayerEnums.BLUE);
-			this.availableColors.add(PlayerEnums.RED);
-			this.availableColors.add(PlayerEnums.ORANGE);
-			return true;
-		} else {
+			this.availableColours.add(PlayerEnums.BLUE);
+			this.availableColours.add(PlayerEnums.RED);
+			this.availableColours.add(PlayerEnums.ORANGE);
+			break;
+		case 4:
+			this.view.display("You have chosen 4 players");
 			this.colourIndex.add(1);
 			this.colourIndex.add(2);
 			this.colourIndex.add(3);
 			this.colourIndex.add(4);
-			this.availableColors.add(PlayerEnums.BLUE);
-			this.availableColors.add(PlayerEnums.RED);
-			this.availableColors.add(PlayerEnums.ORANGE);
-			this.availableColors.add(PlayerEnums.WHITE);
-			return true;
+			this.availableColours.add(PlayerEnums.BLUE);
+			this.availableColours.add(PlayerEnums.RED);
+			this.availableColours.add(PlayerEnums.ORANGE);
+			this.availableColours.add(PlayerEnums.WHITE);
+			break;
 		}
 	}
 	
@@ -229,10 +254,10 @@ public class SetupPlayers {
 	 * @return: Returns a boolean indicating the lists have been updated.
 	 * */
 	private boolean updateColourList(int index) {
-		if(availableColors.size() == 1) {
+		if(availableColours.size() == 1) {
 			return true;
 		}
-		this.availableColors.remove(index);
+		this.availableColours.remove(index);
 		this.colourIndex.remove(index);
 		return true;
 	}
