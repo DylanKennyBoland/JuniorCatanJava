@@ -30,8 +30,9 @@ public class Controller {
     
     // The Constructor of the Controller.
     public Controller(View viewInstance, Setup setupInstance, Scanner inputScanner) {
-    	setupInstance.setupGame(inputScanner);
     	this.view = viewInstance;
+    	this.view.displayWelcomeMessage();
+    	setupInstance.setupGame(inputScanner);
     	this.playerList = PlayerList.getInstance();
     	this.gameOver = false;
     	
@@ -39,6 +40,7 @@ public class Controller {
     
     // This method is the main method for the controller and starts the Game.
     public void playGame(Scanner inputScanner) {
+    	
     	PlayerTurn currentTurn;
     	while(!gameOver) {
     		// Looping through the players in the game.

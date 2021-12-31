@@ -90,4 +90,8 @@ public class View {
             i++;
 		}
 	}
+	
+	public void displayWelcomeMessage() {
+		display("Welcome to Catan Junior!\n");
+	}
 }
