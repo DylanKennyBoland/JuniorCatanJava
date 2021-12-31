@@ -30,8 +30,8 @@ public class StockpileTradeTest extends TestParent{
 		this.view = View.getInstance();
 		PlayerList playerList = PlayerList.getInstance();
 		Adam = new Player("Adam", PlayerEnums.BLUE, "22");
-		Adam.giveResource("Wood", 3);
-		Adam.giveResource("Molasses", 5);
+		Adam.update("Wood", 3);
+		Adam.update("Molasses", 5);
 		playerList.addPlayer(Adam);
 		this.trade = new Trade(Adam);
 	}

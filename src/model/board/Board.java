@@ -101,10 +101,10 @@ public class Board {
 
 	// This method initializes the number of each Coco Tile in the game.
 	public void setUpCocoTiles() {
-		this.cocoTiles.put("Ghost Captain", this.initialNumCocoTiles);
-		this.cocoTiles.put("Build", this.initialNumCocoTiles);
-		this.cocoTiles.put("Resource Combination 1", this.initialNumCocoTiles);
-		this.cocoTiles.put("Resource Combination 2", this.initialNumCocoTiles);
+		this.cocoTiles.put("Ghost Captain", 8);
+		this.cocoTiles.put("Build", 6);
+		this.cocoTiles.put("Resource Combination 1", 3);
+		this.cocoTiles.put("Resource Combination 2", 3);
 	}
 	
 	// This method updates the list of ship sites according to the ship sites for each island on the board.

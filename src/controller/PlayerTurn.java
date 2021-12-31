@@ -462,6 +462,7 @@ public class PlayerTurn {
 			this.stockpile.update("Cutlass", 1);
 			this.stockpile.update("Molasses", 1);
 			this.stockpile.update("Goats", 1);
+			this.stockpile.update("Coco tiles", -1);
 			this.hasMostCocoTiles();
 			break;
 		case COCO_TILE_GHOST_CAPTAIN:
