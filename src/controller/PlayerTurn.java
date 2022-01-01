@@ -329,16 +329,28 @@ public class PlayerTurn {
 	 */
 	public void hasMostCocoTiles() {
 		if (this.player.getResources().get("Coco tiles") > this.board.getCurrentMaxCocoTiles()) {
-			if (this.board.getPlayerWithMaxCocoTiles() != null) {
-				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
-			}
-			this.board.setPlayerWithMaxCocoTiles(this.player);
-			this.player.addLairAsset(" 33 ");
-			this.board.updateBoard(" 33 ", this.player.getColourIcon());
 			this.board.incrementCurrentMaxCocoTiles();
-			this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
+			if (this.player == this.board.getPlayerWithMaxCocoTiles()) {
+				this.view.display("You still have the most Coco tiles, and a lair on Spooky Island!");
+			}
+			else if (this.board.getPlayerWithMaxCocoTiles() == null) {
+				this.board.setPlayerWithMaxCocoTiles(this.player);
+				this.player.addLairAsset(" 33 ");
+				this.board.updateBoard(" 33 ", this.player.getColourIcon());
+				this.view.display("\nYou have the most Coco tiles, and now have a lair on Spooky Island!\n");
+			}
+			else {
+				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
+				this.player.addLairAsset(" 33 ");
+				this.board.updateBoard(" 33 ", this.player.getColourIcon());
+				this.board.setPlayerWithMaxCocoTiles(this.player);
+			}
 		} else if (this.player.getResources().get("Coco tiles") == this.board.getCurrentMaxCocoTiles()) {
 			if (this.board.getPlayerWithMaxCocoTiles() != null) {
+				this.view.display(this.player.getName() + " " + "now has the same number of Coco tiles"
+						+ " as " + this.board.getPlayerWithMaxCocoTiles().getName() + " ...removing their lair"
+								+ " from Spooky Island...\n\n5"
+								+ "");
 				this.board.getPlayerWithMaxCocoTiles().getLairAssets().remove(" 33 ");
 				this.board.updateBoard(" 33 ", "33");
 				this.board.setPlayerWithMaxCocoTiles(null);
@@ -366,7 +378,7 @@ public class PlayerTurn {
 			case 2:
 				this.exchange(TradeEnums.COCO_TILE_BUILD);
 				if ((this.buildOptions.validShipSites().size() != 0)
-						&& (this.buildOptions.validShipSites().size() != 0)) {
+						&& (this.buildOptions.validLairSites().size() != 0)) {
 					this.view.display("You can build a lair or a ship!");
 					boolean validInput = false;
 					while (!validInput) {
@@ -395,12 +407,12 @@ public class PlayerTurn {
 						}
 					}
 				} else if (this.buildOptions.validLairSites().size() != 0) {
-					this.view.display("You can buld a lair! (You currently have no valid ship sites.)");
+					this.view.display("You can build a lair! (You currently have no valid ship sites.)");
 					this.player.setResourcesCheckStatus(true);
 					this.buildLair();
 					this.player.setResourcesCheckStatus(false);
 				} else {
-					this.view.display("You can buld a ship! (You currently have no valid lair sites.)");
+					this.view.display("You can build a ship! (You currently have no valid lair sites.)");
 					this.player.setResourcesCheckStatus(true);
 					this.buildShip();
 					this.player.setResourcesCheckStatus(false);
@@ -712,6 +724,10 @@ public class PlayerTurn {
 			}
 		}
 		return tradeInfo;
+	}
+	
+	public Player getPlayer() {
+		return this.player;
 	}
 	
 	// This method checks if the player has won the game.

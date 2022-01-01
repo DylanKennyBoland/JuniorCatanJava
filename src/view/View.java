@@ -61,6 +61,7 @@ public class View {
 		stockpileOptions.add("Wood (There are " + stockpile.getNumOfResource("Wood") + " in the stockpile)");
 		stockpileOptions.add("Goats (There are " + stockpile.getNumOfResource("Goats") + " in the stockpile)");
 		stockpileOptions.add("Cutlass (There are " + stockpile.getNumOfResource("Cutlass") + " in the stockpile)");
+		stockpileOptions.add("Coco tiles (There are " + stockpile.getNumOfResource("Coco tiles") + " in the stockpile)");
 		display("The Stockpile contains : ");
 		displayOptions(stockpileOptions);
 	}

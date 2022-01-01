@@ -50,8 +50,8 @@ public class Controller {
     			// Starting the players turn.
     			currentTurn.startTurn();
     			// Ending the game if the player has won.
-    			if(currentTurn.didPlayerWin()) {
-    				this.view.display("You have won the game!");
+    			if(currentTurn.getPlayer().getWinner()) {
+    				this.view.display("Well done!");
     				gameOver = true;
     				break;
     			}
