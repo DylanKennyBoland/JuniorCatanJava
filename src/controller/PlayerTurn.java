@@ -451,20 +451,24 @@ public class PlayerTurn {
 	public void exchange(TradeEnums event) {
 		switch (event) {
 		case BUILD_LAIR:
-			this.player.update("Cutlass", -1);
-			this.player.update("Molasses", -1);
-			this.player.update("Goats", -1);
-			this.player.update("Wood", -1);
-			this.stockpile.update("Cutlass", 1);
-			this.stockpile.update("Molasses", 1);
-			this.stockpile.update("Goats", 1);
-			this.stockpile.update("Wood", 1);
+			if (!this.player.skipResourcesCheckStatus()) {
+				this.player.update("Cutlass", -1);
+				this.player.update("Molasses", -1);
+				this.player.update("Goats", -1);
+				this.player.update("Wood", -1);
+				this.stockpile.update("Cutlass", 1);
+				this.stockpile.update("Molasses", 1);
+				this.stockpile.update("Goats", 1);
+				this.stockpile.update("Wood", 1);
+			}
 			break;
 		case BUILD_SHIP:
-			this.player.update("Goats", -1);
-			this.player.update("Wood", -1);
-			this.stockpile.update("Goats", 1);
-			this.stockpile.update("Wood", 1);
+			if (!this.player.skipResourcesCheckStatus()) {
+				this.player.update("Goats", -1);
+				this.player.update("Wood", -1);
+				this.stockpile.update("Goats", 1);
+				this.stockpile.update("Wood", 1);
+			}
 			break;
 		case BUY_COCO_TILE:
 			this.player.update("Cutlass", -1);
